@@ -6,9 +6,15 @@ labels: ''
 assignees: ''
 ---
 
-EPIC: [Which epic does this relate to?]
+**Epic**  
+Add the epic her
 
-As a **role** I want to **feature** so that **outcome**
+**Story points**  
+3
+
+**User story**
+
+    As a **role** I want to **feature** so that **outcome**
 
 **Acceptance Criteria**
 
