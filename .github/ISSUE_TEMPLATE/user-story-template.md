@@ -7,10 +7,10 @@ assignees: ''
 ---
 
 **Epic**  
-Add the epic her
+`Add the epic here`
 
 **Story points**  
-3
+`Add the story points here`
 
 **User story**
 

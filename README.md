@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - 🎨 [UX-Design](#ux-design)
+- 📉 [Agile](#agile)
 - 🛠️ [Technologies](#technologies)
 
 
@@ -79,9 +80,12 @@ Features, such as the "Logged in as Joe" indicator, keep the user informed about
 
 - The design facilitates scalability by leaving ample room for future features without overloading the current design.
 
+## Agile
+
+The Reoptinew project has been developed using an **Agile methodology** with only a single iteration so far. In-depth documentation for the first iteration, its sprints, diagrams, and more can be found [here](docs/iteration_1).
+
 ## Technologies
 
-To be 
 Read more about the programming languages, frameworks, and tools used to build **Reoptinew** in this section.
 
 <details>
