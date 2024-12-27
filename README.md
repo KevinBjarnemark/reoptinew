@@ -2,10 +2,16 @@
 
 ## Table of Contents
 
+- 🌐 [API and GitHub Projects](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
 - 🛠️ [Technologies](#technologies)
+- 🌌 [Philosophy](#philosophy)
+- 🖊️ [References](#references)
 
+## API
+
+The Reoptinew web app uses a decoupled architecture, separating the frontend and backend repositories. The **backend API repository** can be found [**here**](https://github.com/KevinBjarnemark/reoptinew-api). Both of these repositories share the same [Kanban board](https://github.com/users/KevinBjarnemark/projects/10).
 
 ## UX-Design
 
@@ -98,3 +104,41 @@ Read more about the programming languages, frameworks, and tools used to build *
 Vite optimizes production builds with ESBuild and Rollup. It also offers Hot Module Replacement (HMR) which enables instant updates to specific parts of your application during development, without requiring a full page reload.
 
 </details>
+
+<details>
+    <summary>
+        Bootstrap
+    </summary>
+
+**A CSS framework for responsive web design.** 
+
+Bootstrap provides a collection of CSS utilities, components, and a responsive grid system to streamline front-end development. This project exclusively uses Bootstrap’s CSS utility classes to achieve consistent styling and layout, without relying on its prebuilt components or JavaScript.
+
+</details>
+
+## Philosophy
+
+### Bootstrap Usage Philosophy
+
+This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities as a foundation for responsive and consistent design, while deliberately avoiding [React-Bootstrap](https://www.npmjs.com/package/react-bootstrap) and its prebuilt components. This approach ensures a design that is uniquely tailored to Reoptinew. **Here's why:**
+
+1. **Flexibility and Customization**  
+    React-Bootstrap’s prebuilt components (e.g., `Button`, `Card`, `Modal`) are robust but often impose structural limitations.
+    By exclusively using Bootstrap’s utility classes (e.g., `d-flex`, `text-center`, `mt-4`), this project achieves greater customization and control over the final result.
+
+2. **Lightweight and Streamlined Code**  
+    Avoiding [React-Bootstrap](https://www.npmjs.com/package/react-bootstrap) reduces dependencies, resulting in:
+
+    - **A leaner bundle size**
+    - **Simplified code without unnecessary abstraction layers**
+
+3. **Unique components for Brand Identity**  
+    To create a user experience that feels uniquely Reoptinew, this project avoids Bootstrap’s prebuilt JavaScript components, such as modals and dropdowns. The goal is to craft interactive features that align more closely with the app’s branding and visual identity, moving beyond generic solutions.
+
+    By focusing on custom implementations, this approach opens the door for **long-term flexibility**. As needs evolve, these components can be iteratively improved or expanded without the constraints of prebuilt structures. This philosophy prioritizes flexibility and scalability, allowing the design and functionality to grow naturally over time.
+
+    The goal is to achieve a more distinctive design and enhances brand awareness by emphasizing elements unique to Reoptinew.
+
+## References
+
+- [Bootstrap](https://www.npmjs.com/package/bootstrap)  
