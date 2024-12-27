@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+  
+  @font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+  
+  @font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+  
+  @font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+  
+  @font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Niramit';
+    src: url('/fonts/Niramit/Niramit-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Niramit', Arial, sans-serif;
+    font-size: 16px;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 8px; 
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #5a6063; 
+    border-radius: 6px;
+}
+::-webkit-scrollbar-corner {
+    background-color: #555a5f; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #787c7e;
+}
+
+/* Variables */
+:root {
+    --sidebar-width: 50px;
+    --color-background: #494D4F;
+    --color-dark-background: #383d40;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    min-width: 100%;
+    justify-content: flex-start;
+    align-items: flex-end;
+    background-color: var(--color-background);
+    padding-bottom: 100px  
+}
+
+/* Basic page class */
+article {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    /* Center relative to the page content */
+    min-width: calc(100% - var(--sidebar-width));
+    padding-bottom: 100px
+} 
+
+header {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    height: fit-content;
+    min-height: 120px;
+    /* Center relative to the page content */
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    padding-top: 10px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #53575A;
+    height: fit-content;
+    width: fit-content;
+    min-height: 100vh;
+    min-width: var(--sidebar-width);
+}

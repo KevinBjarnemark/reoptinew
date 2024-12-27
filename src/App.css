@@ -1,0 +1,17 @@
+
+.flex-row-relative {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+}
+
+.flex-column-relative {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+}
+
