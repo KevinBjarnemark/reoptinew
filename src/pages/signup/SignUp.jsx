@@ -16,7 +16,7 @@ const SignUp = () => {
         username: "",
         password1: "",
         password2: "",
-        birth_date: "1995-03-13",
+        birth_date: "",
         image: null,
     });
     const [termsAccepted, setTermsAccepted] = useState(false);
@@ -49,26 +49,33 @@ const SignUp = () => {
                     "Special characters like @, +, and others are not allowed."
                 );
             }
-            // Password
+            // Password is missing
             case formDataDraft.password1.length < 1: {
                 throw new Error("Password is missing.");
             }
-            // Password
+            // Password must be a certain length
             case formDataDraft.password1.length < 8: {
                 throw new Error("Password must be at least 8 characters.");
             }
-            // Password
+            // Passwords must be identical
             case formDataDraft.password1 !== formDataDraft.password2: {
                 throw new Error("Passwords must be identical.");
             }
+            // Birth date is missing
+            case !formDataDraft.birth_date: {
+                throw new Error("Birth date is missing.");
+            }
+            // Birth date cannot be in the future
+            case new Date(formDataDraft.birth_date) >= new Date() : {
+                throw new Error("Birth date cannot be in the future.");
+            }
+            // Terms
             case !termsAccepted || !policyAccepted: {
                 throw new Error(
                     "You must accept both our terms and privacy policy to continue."
                 );
             }
         }
-
-
     };
 
     const handleSubmit = async () => {
@@ -190,6 +197,18 @@ const SignUp = () => {
                                     },
                                 }} 
                             />
+                            
+                            <BasicForm.Separator />
+                            <BasicForm.Birthdate 
+                                inputProps={{ 
+                                    onChange: (e) => {
+                                        setFormDataDraft(prev => ({
+                                            ...prev, birth_date: e.target.value
+                                        }))
+                                    }
+                                }} 
+                            />
+
                         </BasicForm.Border>
                         
                         {/* Terms and policy */}

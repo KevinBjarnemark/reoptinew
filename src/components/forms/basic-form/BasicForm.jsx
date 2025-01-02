@@ -116,6 +116,25 @@ const ErrorMessage = (props) => {
     );
 };
 
+const Birthdate = (props) => {
+    const {
+        title = "Birthdate", 
+        inputProps = {}
+    } = props; 
+
+    return (
+        <div className="flex-row-relative">
+            <label className={style["label-input"]}>{title}</label>
+            <div className={style["artificial-border"]}></div>
+            <input 
+                className={`${style.input}`}
+                type="date" 
+                {...inputProps}>
+            </input>
+        </div>
+    );
+};
+
 export const BasicForm = (props) => {
     const {
         children,
@@ -137,4 +156,4 @@ BasicForm.Image = Image;
 BasicForm.Border = Border;
 BasicForm.Checkbox = Checkbox;
 BasicForm.ErrorMessage = ErrorMessage;
-
+BasicForm.Birthdate = Birthdate;

@@ -87,6 +87,42 @@ input {
     border: none;
 }
 
+input[type="date"] {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    background-color: var(--color-background);
+    color: #ffffff;
+    padding: 0;
+    padding-right: 30px;
+}
+
+/* Custom calendar icon overlay */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-50%, 50%);
+    background-color: #bfc7ca;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Adjust input background when hovering the calendar picker icon */
+input[type="date"]::-webkit-calendar-picker-indicator:hover 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #ffffff;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: #ffffff;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:focus {
+    background-color: #ffffff;
+}
+
 label {
     color: #ffffff
 }
