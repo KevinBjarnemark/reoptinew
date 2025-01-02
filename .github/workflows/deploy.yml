@@ -1,0 +1,44 @@
+name: Test and Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'  # Run tests and deploy only on version tags
+  workflow_dispatch: 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Authenticate with Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo "machine api.heroku.com login $HEROKU_API_KEY password $HEROKU_API_KEY" > ~/.netrc
+          echo "machine git.heroku.com login $HEROKU_API_KEY password $HEROKU_API_KEY" >> ~/.netrc
+          chmod 600 ~/.netrc
+
+      - name: Add Heroku Remote
+        run: heroku git:remote -a reoptinew
+
+      - name: Deploy to Heroku
+        if: ${{ github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' }}
+        run: git push heroku HEAD:main -f
