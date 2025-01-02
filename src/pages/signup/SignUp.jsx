@@ -99,7 +99,7 @@ const SignUp = () => {
         const init = async () => {
             try {
                 const API_URL = import.meta.env.VITE_API_URL;
-                const response = await fetch(`${API_URL}/users/sign-up/`, {
+                const response = await fetch(`${API_URL}/users/signup/`, {
                     method: 'POST',
                     body: formData,
                 });
