@@ -90,7 +90,7 @@ const SignUp = () => {
 
         // Append from data from draft
         Object.entries(formDataDraft).forEach(([key, value]) => {
-            if (value !== null) {
+            if (key !== "image") {
                 formData.append(key, value);
             }
         });
@@ -103,7 +103,6 @@ const SignUp = () => {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'multipart/form-data',
                     },
                     body: formData,
                 });
