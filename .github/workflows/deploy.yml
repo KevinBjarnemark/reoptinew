@@ -41,4 +41,4 @@ jobs:
 
       - name: Deploy to Heroku
         if: ${{ github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' }}
-        run: git push heroku HEAD:main -f
+        run: git push heroku HEAD:refs/heads/main -f
