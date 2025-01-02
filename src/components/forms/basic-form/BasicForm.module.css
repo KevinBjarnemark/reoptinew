@@ -1,0 +1,58 @@
+
+.input {
+    padding: 20px 20px;
+    background-color: #2f3234;
+    text-align: center;
+    width: 200px;
+}
+
+.image-label {
+    background-color: #e9eff1;
+    color: #000000;
+    text-align: center;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    box-shadow: 0 0 5px 2px var(--color-dark-border);
+    margin-right: 15px;
+}
+
+.label-input {
+    padding: 20px 20px;
+    background-color: #484d4f;
+    text-align: center;
+    width: 200px;
+}
+
+.image {
+    width: 100%;
+    object-fit: contain;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.checkbox-container {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #ffffff;
+    margin-right: 10px; 
+    border-radius: 6px;
+}
+
+.checkbox {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+/* The middle 'border' separating the inputs */
+.artificial-border {
+    width: 3px;
+    background-color: var(--color-dark-border);
+}
+
+.error-message {
+    color: var(--color-error);
+    font-weight: 500;
+    line-height: 0; /* Avoid layout shift */
+}

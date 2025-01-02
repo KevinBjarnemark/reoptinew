@@ -76,6 +76,19 @@
     --sidebar-width: 50px;
     --color-background: #494D4F;
     --color-dark-background: #383d40;
+    --color-gray-component-background: #4f5354;
+    --color-dark-border: #232527;
+    --color-error: #e16c6c;
+    --color-image-background: #242424; /* e.g., behind profile image */
+}
+
+input {
+    color: #ffffff;
+    border: none;
+}
+
+label {
+    color: #ffffff
 }
 
 main {

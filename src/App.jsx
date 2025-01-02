@@ -11,10 +11,7 @@ const Header = () => {
     return (
       <header>
           <img 
-              style={{
-                  width: "80px",
-                  aspectRatio: "578 / 512",
-              }}
+              style={{width: "80px", aspectRatio: "578 / 512"}}
               src={imgLogo}>
           </img>
       </header>
