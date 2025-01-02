@@ -101,6 +101,10 @@ const SignUp = () => {
                 const API_URL = import.meta.env.VITE_API_URL;
                 const response = await fetch(`${API_URL}/users/signup/`, {
                     method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                    },
                     body: formData,
                 });
 
