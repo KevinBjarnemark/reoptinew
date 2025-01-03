@@ -80,6 +80,7 @@
     --color-dark-border: #232527;
     --color-error: #e16c6c;
     --color-image-background: #242424; /* e.g., behind profile image */
+    --color-input-background: #2f3234;
 }
 
 input {
@@ -91,7 +92,7 @@ input[type="date"] {
     display: flex;
     position: relative;
     justify-content: center;
-    background-color: var(--color-background);
+    background-color: var(--color-input-background);
     color: #ffffff;
     padding: 0;
     padding-right: 30px;

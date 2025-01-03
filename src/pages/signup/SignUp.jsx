@@ -22,6 +22,7 @@ const SignUp = () => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [policyAccepted, setPolicyAccepted] = useState(false);
     const [frontEndError, setFrontEndError] = useState("");
+    const [previewImage, setPreviewImage] = useState(null);
 
     /**
      * Validates the form in the frontend by throwing custom errors in order.
@@ -90,14 +91,13 @@ const SignUp = () => {
 
         // Append from data from draft
         Object.entries(formDataDraft).forEach(([key, value]) => {
-            if (key !== "image") {
-                formData.append(key, value);
-            }
+            debug(showDebuging, `Appending form data (${key})`, value);
+            formData.append(key, value);
         });
-        debug(showLogging, "Appended form data", formDataDraft);
 
         const init = async () => {
             try {
+                debug(showLogging, "Image about to be sent", formData.get('image'));
                 const API_URL = import.meta.env.VITE_API_URL;
                 const response = await fetch(`${API_URL}/users/signup/`, {
                     method: 'POST',
@@ -145,17 +145,16 @@ const SignUp = () => {
                             onChange: (e) => {
                                 const file = e.target.files[0];
                                 if (file) {
-                                    const previewUrl = URL.createObjectURL(file);
-                                    formData.append("image", file);
+                                    setPreviewImage(URL.createObjectURL(file));
                                     setFormDataDraft(prev => ({
                                         ...prev, 
-                                        image: previewUrl
+                                        image: file
                                     }));
                                 }
                             }
                         }} 
                         labelText="Click to add a profile image"
-                        previewImg={formDataDraft.image}
+                        previewImg={previewImage}
                     />
 
                     <div className='flex-column-relative'>

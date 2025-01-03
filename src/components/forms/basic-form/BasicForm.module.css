@@ -1,7 +1,7 @@
 
 .input {
     padding: 20px 20px;
-    background-color: #2f3234;
+    background-color: var(--color-input-background);
     text-align: center;
     width: 200px;
 }
