@@ -2,6 +2,7 @@ import './App.css'
 import { lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import imgLogo from "./assets/images/brand/logo.webp";
+import { UserProvider } from './context/UserContext'; 
 
 // Load pages lazily
 const SignUp = lazy(() => import('./pages/signup/SignUp'));
@@ -10,10 +11,7 @@ const SignUp = lazy(() => import('./pages/signup/SignUp'));
 const Header = () => {
     return (
       <header>
-          <img 
-              style={{width: "80px", aspectRatio: "578 / 512"}}
-              src={imgLogo}>
-          </img>
+          <img className='logo' src={imgLogo} alt="Logo" />
       </header>
     );
 }
@@ -27,19 +25,19 @@ const Navigation = () => {
 
 function App() {
     return (
-        <>
-            <Header />
-            <main>
-                <article>
-                    <Router>
+        <Router>
+            <UserProvider>
+                <Header />
+                <main>
+                    <article>
                         <Routes>
                             <Route path="/signup" element={<SignUp />}></Route>
                         </Routes>
-                    </Router>
-                </article>
-            </main>
-            <Navigation />
-        </>
+                    </article>
+                </main>
+                <Navigation />
+            </UserProvider>
+        </Router>
     )
 }
 

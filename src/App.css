@@ -15,3 +15,7 @@
     width: fit-content;
 }
 
+.logo {
+    width: 80px; 
+    aspect-ratio: 578 / 512
+}

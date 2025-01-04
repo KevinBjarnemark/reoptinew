@@ -1,9 +1,9 @@
 
-import {useState} from 'react';
-import {BasicForm} from '../../components/forms/basic-form/BasicForm';
+import { useState } from 'react';
+import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
-import {debug} from '../../utils/log';
-import {backendError} from '../../utils/error-handling';
+import { debug } from '../../utils/log';
+import { backendError } from '../../utils/errorHandling';
   
 const SignUp = () => {
     // Toggle dev logs & debugging
@@ -89,7 +89,7 @@ const SignUp = () => {
             return;
         }
 
-        // Append from data from draft
+        // Append form data from draft
         Object.entries(formDataDraft).forEach(([key, value]) => {
             debug(showDebuging, `Appending form data (${key})`, value);
             formData.append(key, value);
@@ -109,7 +109,11 @@ const SignUp = () => {
 
                 const jsonResponse = await response.json();
                 if (response.ok) {
-                    debug(showDebuging, "Sign up successful", jsonResponse)
+                    debug(showDebuging, "Sign up successful", jsonResponse);
+                    // Save tokens
+                    localStorage.setItem("access_token", jsonResponse.access);
+                    localStorage.setItem("refresh_token", jsonResponse.refresh);
+                    window.location.href = "/"; 
                     return;
                 }else {
                     debug(
@@ -117,6 +121,7 @@ const SignUp = () => {
                         "Sign up failed (backend)", 
                         backendError(response, jsonResponse)
                     );
+                    return;
                     // TODO --> Display backend error alert
                 }
             } catch (error) {
