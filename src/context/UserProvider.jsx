@@ -1,28 +1,39 @@
-import { createContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getAccessToken, refreshAccessToken } from '../functions/authentication/accessToken';
 import { backendError } from '../utils/errorHandling';
 import { debug } from '../utils/log';
+import { fetchAPI } from '../utils/fetch';
+import UserContext from './UserContext';
 
-
-export const UserContext = createContext()
- 
-export const UserProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
     const [profile, setProfile] = useState(null);
-    const [loadingProfile, setLoadingProfile] = useState(false);
-    
+    // This is null when the user is loading
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
+        
+    /**
+     * Loads the user's profile and updates authentication state.
+     * 
+     * This function attempts to retrieve the authenticated user's profile 
+     * from the backend. It first ensures that a valid access token is available. 
+     * If no valid token is found, the user is marked as unauthenticated. 
+     * If the profile fetch is successful, the user's profile is stored in state 
+     * and the user is marked as authenticated.
+     * 
+     * @returns {Promise<void>} Resolves after updating the profile and 
+     * authentication state.
+     */
     const loadProfile = async () => {
         const showDebugging = true; 
-        setLoadingProfile(true);
         try {
             const accessToken = await getAccessToken();
             if (!accessToken) {
                 debug(true, "No valid access token available.", "");
+                setIsAuthenticated(false);
                 return;
             }
 
-            debug(showDebugging, "Getting the user profile", "");
-            const API_URL = import.meta.env.VITE_API_URL;
-            const response = await fetch(`${API_URL}/users/profile/`, {
+            debug(showDebugging, "Fetching the user profile", "");
+            const response = await fetchAPI("/users/profile/", {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
@@ -33,20 +44,22 @@ export const UserProvider = ({ children }) => {
             if (response.ok) {
                 debug(showDebugging, "Fetched user profile", jsonResponse);
                 setProfile(jsonResponse);
+                setIsAuthenticated(true);
             }else {
                 debug(
                     showDebugging, 
                     "Failed fetching user profile (backend)", 
                     backendError(response, jsonResponse)
                 );
+                
+                setIsAuthenticated(false);
                 // TODO --> Backend error alert
-                return null;
+                return;
             }
         } catch (error) {
             debug(showDebugging, "Error fetching user profile (frontend)", error.message);
+            setIsAuthenticated(false);
             // TODO --> Frontend error alert
-        } finally {
-            setLoadingProfile(false);
         }
     };
 
@@ -56,23 +69,28 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         // Load profile
-        if (profile === null && !loadingProfile) {
+        if (isAuthenticated !== false) {
             loadProfile();
         }
 
         // Refresh the access token before expiration
         const timeId = setInterval(() => {
-            initRefreshAccessToken();
+            if (isAuthenticated) {
+                debug(true, "Refreshing the access token before expiring.", "");
+                initRefreshAccessToken();
+            }
         }, 14 * 60 * 1000); // Refresh every 14 minutes
 
         return () => {
             clearInterval(timeId);
         };
-    }, [profile]);
+    }, [isAuthenticated]);
 
     return(
-      <UserContext.Provider value={{ profile, loadProfile, loadingProfile }}>
+      <UserContext.Provider value={{ profile, isAuthenticated, setIsAuthenticated }}>
         {children}
       </UserContext.Provider>
   );
 }; 
+
+export default UserProvider;

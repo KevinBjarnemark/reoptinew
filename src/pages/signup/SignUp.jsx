@@ -4,10 +4,11 @@ import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
 import { backendError } from '../../utils/errorHandling';
-  
-const SignUp = () => {
+import { fetchAPI } from '../../utils/fetch';
+
+const Signup = () => {
     // Toggle dev logs & debugging
-    const showDebuging = true;
+    const showDebugging = true;
     const showLogging = true; 
 
     // Form data
@@ -85,50 +86,47 @@ const SignUp = () => {
             validateForm()
         }catch (error){
             setFrontEndError(error.message);
-            debug(showDebuging, "Frontend validation failed", error.message);
+            debug(showDebugging, "Frontend validation failed", error.message);
             return;
         }
+        // Handle submission
+        try {
+            // Append form data from draft
+            Object.entries(formDataDraft).forEach(([key, value]) => {
+                debug(showDebugging, `Appending form data (${key})`, value);
+                formData.append(key, value);
+            });
+            // Send form data to backend
+            debug(showLogging, "Sending form data to backend", "");
+            const response = await fetchAPI("/users/signup/", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
 
-        // Append form data from draft
-        Object.entries(formDataDraft).forEach(([key, value]) => {
-            debug(showDebuging, `Appending form data (${key})`, value);
-            formData.append(key, value);
-        });
-
-        const init = async () => {
-            try {
-                debug(showLogging, "Image about to be sent", formData.get('image'));
-                const API_URL = import.meta.env.VITE_API_URL;
-                const response = await fetch(`${API_URL}/users/signup/`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                });
-
-                const jsonResponse = await response.json();
-                if (response.ok) {
-                    debug(showDebuging, "Sign up successful", jsonResponse);
-                    // Save tokens
-                    localStorage.setItem("access_token", jsonResponse.access);
-                    localStorage.setItem("refresh_token", jsonResponse.refresh);
-                    window.location.href = "/"; 
-                    return;
-                }else {
-                    debug(
-                        showDebuging, 
-                        "Sign up failed (backend)", 
-                        backendError(response, jsonResponse)
-                    );
-                    return;
-                    // TODO --> Display backend error alert
-                }
-            } catch (error) {
-                debug(showDebuging, "Sign up failed (frontend)", error);
+            const jsonResponse = await response.json();
+            if (response.ok) {
+                // Save tokens
+                localStorage.setItem("access_token", jsonResponse.access);
+                localStorage.setItem("refresh_token", jsonResponse.refresh);
+                debug(showDebugging, "Sign up successful", jsonResponse);
+                // Ensure the function stops here
+                return;
+            }else {
+                debug(
+                    showDebugging, 
+                    "Sign up failed (backend)", 
+                    backendError(response, jsonResponse)
+                );
+                // Ensure the function stops here
+                return;
+                // TODO --> Display backend error alert
             }
-        };
-        await init();
+        } catch (error) {
+            debug(showDebugging, "Sign up failed (frontend)", error);
+        }
     };
 
     return (
@@ -136,7 +134,6 @@ const SignUp = () => {
             <BasicForm
                 submitButtonProps={{
                     text: "Sign up",
-                    type: "submit",
                     onClick: (e) => {
                         e.preventDefault();
                         handleSubmit();
@@ -266,4 +263,4 @@ const SignUp = () => {
     );
 }
 
-export default SignUp;
+export default Signup;

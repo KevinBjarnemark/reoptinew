@@ -1,5 +1,7 @@
 # Reoptinew
 
+**Navigate to the live app** [here](https://reoptinew-09d333f23d8e.herokuapp.com/) 🔥
+
 ## Table of Contents
 
 - 🌐 [API and GitHub Projects](#api)
@@ -8,6 +10,7 @@
 - 🛠️ [Technologies](#technologies)
 - 🌌 [Philosophy](#philosophy)
 - 🖊️ [References](#references)
+
 
 ## API
 
@@ -116,6 +119,28 @@ Bootstrap provides a collection of CSS utilities, components, and a responsive g
 
 </details>
 
+<details>
+    <summary>
+        Jest
+    </summary>
+
+**A JavaScript testing framework.** 
+
+Jest is commonly used for testing JavaScript and TypeScript code. It includes features for mocking, snapshot testing, and generating coverage reports. It is compatible with a variety of libraries and frameworks and supports both unit and integration tests.
+
+</details>
+
+<details>
+    <summary>
+        jwtDecode
+    </summary>
+
+**A utility for decoding JSON Web Tokens.**
+
+jwtDecode is a lightweight library used to decode the payload of a JSON Web Token (JWT) without validating its signature. It can be used to extract claims or information embedded within the token.
+
+</details>
+
 ## Philosophy
 
 ### Bootstrap Usage Philosophy
@@ -141,4 +166,6 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
 
 ## References
 
-- [Bootstrap](https://www.npmjs.com/package/bootstrap)  
+- [Bootstrap](https://www.npmjs.com/package/bootstrap)
+- [Django REST Framework (GitHub docs)](https://github.com/encode/django-rest-framework/tree/master/docs/api-guide)
+- [JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html)

@@ -1,0 +1,40 @@
+
+.container {
+    bottom: 0;
+    right: 0;
+    width: 280px;
+    height: 80px;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.log-out-button {
+    bottom: 80px;
+    right: 0;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 2px;
+    border: none;
+    padding: 3px 20px;
+}
+
+.top-bar {
+    background-color: #393e40;
+    width: 100%;
+    padding: 3px 10px;
+    color: #ffffff;
+    font-size: 14px;
+    align-items: center;
+    border-radius: 2px;
+}
+
+.auth-status-indicator {
+    border-radius: 50%;
+    background-color: #ffffff;
+    width: 12px;
+    height: 12px;
+    margin: 0 10px
+}

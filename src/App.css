@@ -15,6 +15,14 @@
     width: fit-content;
 }
 
+.flex-column-fixed {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: fit-content;
+    width: fit-content;
+}
+
 .logo {
     width: 80px; 
     aspect-ratio: 578 / 512
