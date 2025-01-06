@@ -7,7 +7,7 @@ import UserProvider from './context/UserProvider';
 import { UserCard } from './components/user/user-card/UserCard'; 
 
 // Load pages lazily
-const Signup = lazy(() => import('./pages/signup/Signup'));
+const Signup = lazy(() => import('./pages/signup/SignupTemporary'));
 const Login = lazy(() => import('./pages/login/Login'));
 
 // Header
