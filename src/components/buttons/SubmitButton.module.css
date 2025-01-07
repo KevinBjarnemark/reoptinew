@@ -3,7 +3,7 @@
     padding: 10px;
     min-width: 125px;
     border-radius: 100px;
-    border: none;
+    background-color: #ffffff;
 }
 .button:hover {
     box-shadow: 0 0 9px 4px #ffffff;

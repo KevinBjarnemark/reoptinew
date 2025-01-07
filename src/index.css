@@ -79,6 +79,8 @@
     --color-gray-component-background: #4f5354;
     --color-dark-border: #232527;
     --color-error: #e16c6c;
+    --color-success: #76e16c;
+    --color-info: #ffb06f;
     --color-image-background: #242424; /* e.g., behind profile image */
     --color-input-background: #2f3234;
 }
@@ -126,6 +128,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus {
 
 label {
     color: #ffffff
+}
+
+button {
+    border: none;
+    background-color: transparent;
 }
 
 main {

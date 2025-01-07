@@ -6,9 +6,11 @@ import { debug } from '../../utils/log';
 import { backendError } from '../../utils/errorHandling';
 import { fetchAPI } from '../../utils/fetch';
 import UserContext from '../../context/UserContext';
+import AlertContext from '../../context/alert-context/AlertContext'; 
 
 const Login = () => {
     const {setIsAuthenticated} = useContext(UserContext);
+    const {addAlert} = useContext(AlertContext);
     const showDebugging = true;
 
     // Form data
@@ -72,6 +74,7 @@ const Login = () => {
         }catch (error){
             setFrontEndError(error.message);
             debug(showDebugging, "Frontend validation failed", error.message);
+            addAlert(error.message, "Error");
             return;
         }
         // Handle submission
@@ -98,20 +101,19 @@ const Login = () => {
                 localStorage.setItem("refresh_token", jsonResponse.refresh);
                 // Mark the user as authenticated
                 setIsAuthenticated(true);
-                // Ensure the function stops here
-                return;
+                return; // Ensure the function stops here
             }else {
                 debug(
                     showDebugging, 
                     "Sign up failed (backend)", 
                     backendError(response, jsonResponse)
                 );
-                // Ensure the function stops here
-                return;
-                // TODO --> Display backend error alert
+                addAlert(jsonResponse.error_message, "Server Error");
+                return; // Ensure the function stops here
             }
         } catch (error) {
             debug(showDebugging, "Sign up failed (frontend)", error);
+            addAlert("Unexpected error.", "Error");
         }
     };
 
@@ -159,7 +161,6 @@ const Login = () => {
                         </BasicForm.Border>
                     </div>
                 </div>
-                <BasicForm.ErrorMessage text={frontEndError} />
             </BasicForm>
         </PageSection>
     );

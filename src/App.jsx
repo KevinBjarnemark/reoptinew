@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import imgLogo from "./assets/images/brand/logo.webp";
 import UserContext from './context/UserContext'; 
 import UserProvider from './context/UserProvider'; 
+import AlertProvider from './context/alert-context/AlertProvider'; 
+import AlertWindow from './components/alerts/alert-window/AlertWindow'; 
 import { UserCard } from './components/user/user-card/UserCard'; 
 
 // Load pages lazily
-const Signup = lazy(() => import('./pages/signup/SignupTemporary'));
+const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
 
 // Header
@@ -60,6 +62,7 @@ const AppBody = () => {
                     <UserCard />
                 </main>
                 <Navigation />
+                <AlertWindow />
             </>
         );
     }else {
@@ -73,7 +76,9 @@ function App() {
     return (
         <Router>
             <UserProvider>
-                <AppBody />
+                <AlertProvider>
+                    <AppBody />
+                </AlertProvider>
             </UserProvider>
         </Router>
     );
