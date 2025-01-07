@@ -48,7 +48,7 @@ const ToggleButtons = (props) => {
     }
 }
 
-const TopBar = ({messageIndex, ...restProps}) => {
+const TopBar = ({messageIndex, setMessageIndex, ...restProps}) => {
     const {setTransformTranslate, clearAlerts} = useContext(AlertContext);
 
     const handleClose = () => {
@@ -56,14 +56,13 @@ const TopBar = ({messageIndex, ...restProps}) => {
         setTransformTranslate("translate(-110%, 0)");
         // Clear alerts
         clearAlerts(); 
+        setMessageIndex(0);
     };
-
-
   
     return (
         <div className={`flex-row-relative ${style["top-bar"]}`}>
             <AlertType {...{messageIndex}} />
-            <ToggleButtons {...{messageIndex, ...restProps}} />
+            <ToggleButtons {...{messageIndex, setMessageIndex, ...restProps}} />
 
             <div className="flex-row-absolute" style={{right: 0, top: 0}}>
                 <button
