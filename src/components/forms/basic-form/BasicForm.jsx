@@ -6,14 +6,19 @@ import {SubmitButton} from '../../buttons/SubmitButton';
 const Input = (props) => {
     const {
         title = "", 
-        inputProps = {}
+        inputProps = {},
+        highlighted = false,
     } = props; 
 
     return (
         <div className="flex-row-relative">
             <label className={style["label-input"]}>{title}</label>
             <div className={style["artificial-border"]}></div>
-            <input className={`${style.input}`} {...inputProps}>
+            <input 
+                className={`${style.input}`}  
+                style={{border: highlighted ? "2px solid var(--color-error)" : "none"}}
+                {...inputProps}                
+            >
             </input>
         </div>
     );

@@ -8,9 +8,10 @@ import { fetchAPI } from '../../utils/fetch';
 import UserContext from '../../context/UserContext';
 import AlertContext from '../../context/alert-context/AlertContext'; 
 
+
 const Login = () => {
     const {setIsAuthenticated} = useContext(UserContext);
-    const {addAlert} = useContext(AlertContext);
+    const {addAlert, formatErrorCode} = useContext(AlertContext);
     const showDebugging = true;
 
     // Form data
@@ -108,7 +109,17 @@ const Login = () => {
                     "Sign up failed (backend)", 
                     backendError(response, jsonResponse)
                 );
-                addAlert(jsonResponse.error_message, "Server Error");
+
+                if (jsonResponse.error_details) {
+                    Object.entries(jsonResponse.error_details).forEach(([field, value]) => {
+                        value.forEach(errorMessage => {
+                            addAlert(
+                                `${formatErrorCode(field)} ${errorMessage}`, 
+                                "Server Error"
+                            );
+                        });
+                    });
+                }
                 return; // Ensure the function stops here
             }
         } catch (error) {

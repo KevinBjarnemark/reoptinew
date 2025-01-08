@@ -7,6 +7,7 @@
 - 🌐 [API and GitHub Projects](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
+- ❌ [Error handling](#error-handling)
 - 🛠️ [Technologies](#technologies)
 - 🌌 [Philosophy](#philosophy)
 - 🖊️ [References](#references)
@@ -93,6 +94,22 @@ Features, such as the "Logged in as Joe" indicator, keep the user informed about
 
 The Reoptinew project has been developed using an **Agile methodology** with only a single iteration so far. In-depth documentation for the first iteration, its sprints, diagrams, and more can be found [here](docs/iteration_1).
 
+## Error handling
+
+> ❕ **Note**  
+> The error-handling system in Reoptinew seamlessly handles both frontend and backend errors. For a detailed overview of backend error handling, refer to the [**backend repository**](https://github.com/KevinBjarnemark/reoptinew-api).
+
+Reoptinew gracefully manages errors across the application by wrapping critical functions in try-catch blocks at multiple levels. This ensures errors, whether expected or unexpected, are captured and handled consistently. Unexpected errors are displayed as `Something went wrong`, preventing confusing or technical error messages from disrupting the user experience. All error messages are carefully reviewed, approved, and tailored to improve clarity and usability.
+ 
+### Alert window
+
+All types of errors and notifications are displayed in the [Alert Window](src/components/alerts/alert-window/AlertWindow.jsx). The strongest feauture of this component is that it allows errors to be thrown across the app without overwhelming the user, or erasing previous data. The user is fully informed about the **status of the app** and is able to toggle between the fired alerts/errors in the order they were thrown. All alerts/errors will be removed from memory when the user closes the alert window, this improves the user experience, increases performance, and provides control.   
+
+> ⛔️ **Known issue**   
+> Alerts may occasionally appear out of chronological order due to how React processes rendering queues. Although this can be resolved with useRef, the issue is minor and currently not prioritized.  
+
+Moreover, the alert system follows a modern, non-intrusive design with engaging animations and intruiging colors to further enhance the UX. When an alert/error is executed or toggled, a strong color that matches the alert/error-type will flash to gain the user's attention.
+
 ## Technologies
 
 Read more about the programming languages, frameworks, and tools used to build **Reoptinew** in this section.
@@ -167,5 +184,3 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
 ## References
 
 - [Bootstrap](https://www.npmjs.com/package/bootstrap)
-- [Django REST Framework (GitHub docs)](https://github.com/encode/django-rest-framework/tree/master/docs/api-guide)
-- [JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html)
