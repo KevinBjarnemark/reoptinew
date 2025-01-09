@@ -1,15 +1,25 @@
-import { useState, useEffect } from 'react';
-import { getAccessToken, refreshAccessToken } from '../functions/authentication/accessToken';
-import { backendError } from '../utils/errorHandling';
+import { useState, useEffect, useContext } from 'react';
 import { debug } from '../utils/log';
-import { fetchAPI } from '../utils/fetch';
 import UserContext from './UserContext';
+import useSubmit from '../hooks/forms/useSubmit';
+import useTokens from '../hooks/authentication/useTokens';
+import AlertContext from './alert-context/AlertContext';
+import {ACCESS_TOKEN_LIFETIME} from '../utils/constants';
 
 const UserProvider = ({ children }) => {
+    // Config
+    const showDebugging = true;
+
+    // Contexts
+    const {addAlert} = useContext(AlertContext);
+    const {submitData} = useSubmit(showDebugging);
+    const {refreshAccessToken, getAccessToken} = useTokens(showDebugging);
+
+    // States
     const [profile, setProfile] = useState(null);
     // This is null when the user is loading
     const [isAuthenticated, setIsAuthenticated] = useState(null);
-        
+
     /**
      * Loads the user's profile and updates authentication state.
      * 
@@ -23,54 +33,57 @@ const UserProvider = ({ children }) => {
      * authentication state.
      */
     const loadProfile = async () => {
-        const showDebugging = true; 
-        try {
-            const accessToken = await getAccessToken();
-            if (!accessToken) {
-                debug(true, "No valid access token available.", "");
-                setIsAuthenticated(false);
-                return;
-            }
-
-            debug(showDebugging, "Fetching the user profile", "");
-            const response = await fetchAPI("/users/profile/", {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
-                },
-            });
-
-            const jsonResponse = await response.json();
-            if (response.ok) {
-                debug(showDebugging, "Fetched user profile", jsonResponse);
-                setProfile(jsonResponse);
-                setIsAuthenticated(true);
-            }else {
-                debug(
-                    showDebugging, 
-                    "Failed fetching user profile (backend)", 
-                    backendError(response, jsonResponse)
-                );
-                
-                setIsAuthenticated(false);
-                // TODO --> Backend error alert
-                return;
-            }
-        } catch (error) {
-            debug(showDebugging, "Error fetching user profile (frontend)", error.message);
+        const accessToken = await getAccessToken();
+        if (!accessToken) {
+            debug(true, "No valid access token available user is not authenticated.", "");
             setIsAuthenticated(false);
-            // TODO --> Frontend error alert
+            return null;
         }
+        // Fetch the user profile
+        debug(showDebugging, "Fetching the user profile", "");
+        const response = await submitData (
+            {
+                relativeURL: "/users/profile/",
+                fetchObject: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                    },
+                },
+                debugMessages: {
+                    backendError: "Failed fetching user profile (backend)",
+                    frontendError: "Failed fetching user profile (frontend)",
+                    successfulBackEndResponse: "Fetched user profile successfully", 
+                },
+            }
+        );
+        if (response) {
+            debug(showDebugging, "Fetched user profile", response);
+            setProfile(response);
+            setIsAuthenticated(true);
+        }else {
+            setIsAuthenticated(false);
+        }
+    }
+
+    const initLoadProfile = async () => {
+        await loadProfile()
     };
 
     const initRefreshAccessToken = async () => {
-        await refreshAccessToken();
+        const refreshToken = await refreshAccessToken(showDebugging);
+        if (!refreshToken) {
+            addAlert(
+                "An unexpected error occurred, when trying to keep you authenticated" + 
+                "try refreshing the browser.", 
+                "Error");
+        }
     };
 
     useEffect(() => {
         // Load profile
         if (isAuthenticated !== false) {
-            loadProfile();
+            initLoadProfile();
         }
 
         // Refresh the access token before expiration
@@ -79,7 +92,8 @@ const UserProvider = ({ children }) => {
                 debug(true, "Refreshing the access token before expiring.", "");
                 initRefreshAccessToken();
             }
-        }, 14 * 60 * 1000); // Refresh every 14 minutes
+            // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
+        }, (ACCESS_TOKEN_LIFETIME-1) * 60 * 1000); 
 
         return () => {
             clearInterval(timeId);

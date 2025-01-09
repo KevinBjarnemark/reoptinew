@@ -2,25 +2,19 @@
 import { useState, useContext } from 'react';
 import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
-import { debug } from '../../utils/log';
-import { backendError } from '../../utils/errorHandling';
-import { fetchAPI } from '../../utils/fetch';
 import UserContext from '../../context/UserContext';
-import AlertContext from '../../context/alert-context/AlertContext'; 
-
+import useSubmit from '../../hooks/forms/useSubmit';
 
 const Login = () => {
+    const showDebugging = true; 
     const {setIsAuthenticated} = useContext(UserContext);
-    const {addAlert, formatErrorCode} = useContext(AlertContext);
-    const showDebugging = true;
+    const { submitForm } = useSubmit(showDebugging);
 
     // Form data
-    const formData = new FormData();
     const [formDataDraft, setFormDataDraft] = useState({
         username: "",
         password: "",
     });
-    const [frontEndError, setFrontEndError] = useState("");
 
     /**
      * Validates the form in the frontend by throwing custom errors in order.
@@ -28,7 +22,6 @@ const Login = () => {
      * @throws Errors must be handled by the caller.
      */
     const validateForm = () => {
-        setFrontEndError("");
         // Unicode regex
         const usernameRegex = /^[\w.@+-]+$/;
 
@@ -63,70 +56,29 @@ const Login = () => {
     /**
      * Submits the login form data to the backend. 
      * 
-     * This function 
-     * 
      * This function also validates the fields before sending
      * to the backend. 
      */
     const handleSubmit = async () => {
-        // Validate form before sending to the backend 
-        try {
-            validateForm()
-        }catch (error){
-            setFrontEndError(error.message);
-            debug(showDebugging, "Frontend validation failed", error.message);
-            addAlert(error.message, "Error");
-            return;
-        }
-        // Handle submission
-        try {
-            // Append form data from draft
-            Object.entries(formDataDraft).forEach(([key, value]) => {
-                debug(showDebugging, `Appending form data (${key})`, value);
-                formData.append(key, value);
-            });
-            // Send form data to backend
-            const response = await fetchAPI("/users/login/", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
+        const response = await submitForm (
+            {
+                validateForm, formDataDraft, 
+                relativeURL: "/users/login/",
+                debugMessages: {
+                    backendError: "Log in failed (backend)",
+                    frontendError: "Log in failed (frontend)",
+                    successfulBackEndResponse: "Log in successful", 
                 },
-                body: formData,
-            });
-
-            const jsonResponse = await response.json();
-            if (response.ok) {
-                debug(showDebugging, "Log in successful", jsonResponse);
-                // Save tokens
-                localStorage.setItem("access_token", jsonResponse.access);
-                localStorage.setItem("refresh_token", jsonResponse.refresh);
-                // Mark the user as authenticated
-                setIsAuthenticated(true);
-                return; // Ensure the function stops here
-            }else {
-                debug(
-                    showDebugging, 
-                    "Sign up failed (backend)", 
-                    backendError(response, jsonResponse)
-                );
-
-                if (jsonResponse.error_details) {
-                    Object.entries(jsonResponse.error_details).forEach(([field, value]) => {
-                        value.forEach(errorMessage => {
-                            addAlert(
-                                `${formatErrorCode(field)} ${errorMessage}`, 
-                                "Server Error"
-                            );
-                        });
-                    });
-                }
-                return; // Ensure the function stops here
             }
-        } catch (error) {
-            debug(showDebugging, "Sign up failed (frontend)", error);
-            addAlert("Unexpected error.", "Error");
+        );
+        if (response) {
+            // Save tokens
+            localStorage.setItem("access_token", response.access);
+            localStorage.setItem("refresh_token", response.refresh);
+            // Mark the user as authenticated
+            setIsAuthenticated(true);
         }
-    };
+    }
 
     return (
         <PageSection title="Log in">

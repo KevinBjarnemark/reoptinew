@@ -123,7 +123,7 @@ const ErrorMessage = (props) => {
 
 const Birthdate = (props) => {
     const {
-        title = "Birthdate", 
+        title = "Birth date", 
         inputProps = {}
     } = props; 
 

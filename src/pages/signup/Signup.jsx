@@ -3,16 +3,17 @@ import { useState } from 'react';
 import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
-import { backendError } from '../../utils/errorHandling';
-import { fetchAPI } from '../../utils/fetch';
+import useSubmit from '../../hooks/forms/useSubmit';
 
 const Signup = () => {
     // Toggle dev logs & debugging
     const showDebugging = true;
-    const showLogging = true; 
-
-    // Form data
-    const formData = new FormData();
+    // Hooks
+    const { submitForm } = useSubmit(showDebugging);
+    // UseStates
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const [policyAccepted, setPolicyAccepted] = useState(false);
+    const [previewImage, setPreviewImage] = useState(null);
     const [formDataDraft, setFormDataDraft] = useState({
         username: "",
         password1: "",
@@ -20,17 +21,13 @@ const Signup = () => {
         birth_date: "",
         image: null,
     });
-    const [termsAccepted, setTermsAccepted] = useState(false);
-    const [policyAccepted, setPolicyAccepted] = useState(false);
-    const [frontEndError, setFrontEndError] = useState("");
-    const [previewImage, setPreviewImage] = useState(null);
 
     /**
      * Validates the form in the frontend by throwing custom errors in order.
      * 
+     * @throws Errors must be handled by the caller.
      */
     const validateForm = () => {
-        setFrontEndError("");
         // Unicode regex
         const usernameRegex = /^[\w.@+-]+$/;
 
@@ -80,54 +77,29 @@ const Signup = () => {
         }
     };
 
+    /**
+     * Uses the onSubmit hook to submit the login form data to the 
+     * backend.
+     */
     const handleSubmit = async () => {
-        // Validate form (frontend)
-        try {
-            validateForm()
-        }catch (error){
-            setFrontEndError(error.message);
-            debug(showDebugging, "Frontend validation failed", error.message);
-            return;
-        }
-        // Handle submission
-        try {
-            // Append form data from draft
-            Object.entries(formDataDraft).forEach(([key, value]) => {
-                debug(showDebugging, `Appending form data (${key})`, value);
-                formData.append(key, value);
-            });
-            // Send form data to backend
-            debug(showLogging, "Sending form data to backend", "");
-            const response = await fetchAPI("/users/signup/", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
+        const response = await submitForm (
+            {
+                validateForm, formDataDraft, 
+                relativeURL: "/users/signup/",
+                debugMessages: {
+                    backendError: "Sign up failed (backend)",
+                    frontendError: "Sign up failed (frontend)",
+                    successfulBackEndResponse: "Sign up successful", 
                 },
-                body: formData,
-            });
-
-            const jsonResponse = await response.json();
-            if (response.ok) {
-                // Save tokens
-                localStorage.setItem("access_token", jsonResponse.access);
-                localStorage.setItem("refresh_token", jsonResponse.refresh);
-                debug(showDebugging, "Sign up successful", jsonResponse);
-                // Ensure the function stops here
-                return;
-            }else {
-                debug(
-                    showDebugging, 
-                    "Sign up failed (backend)", 
-                    backendError(response, jsonResponse)
-                );
-                // Ensure the function stops here
-                return;
-                // TODO --> Display backend error alert
             }
-        } catch (error) {
-            debug(showDebugging, "Sign up failed (frontend)", error);
+        );
+        if (response) {
+            // Save tokens
+            localStorage.setItem("access_token", response.access);
+            localStorage.setItem("refresh_token", response.refresh);
+            debug(showDebugging, "Sign up successful", response);
         }
-    };
+    }
 
     return (
         <PageSection title="Sign Up">
@@ -257,7 +229,6 @@ const Signup = () => {
                         />
                     </div>
                 </div>
-                <BasicForm.ErrorMessage text={frontEndError} />
             </BasicForm>
         </PageSection>
     );

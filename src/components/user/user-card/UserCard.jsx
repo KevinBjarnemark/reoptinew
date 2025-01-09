@@ -2,53 +2,58 @@ import { useContext } from 'react';
 import UserContext from '../../../context/UserContext'; 
 import { getRefreshToken, clearAuthTokens } from '../../../functions/authentication/accessToken'; 
 import { debug } from '../../../utils/log'; 
-import { backendError } from '../../../utils/errorHandling';
-import { fetchAPI } from '../../../utils/fetch';
 import style from './UserCard.module.css';
+import useSubmit from '../../../hooks/forms/useSubmit';
+import AlertContext from '../../../context/alert-context/AlertContext';
 
 export const UserCard = () => {
+    const showDebugging = true;
     const {profile, isAuthenticated, setIsAuthenticated} = useContext(UserContext);
+    const {addAlert} = useContext(AlertContext);
+    const {submitData} = useSubmit(showDebugging);
 
+    /**
+     * Uses the onSubmit hook to submit the logout data to the 
+     * backend.
+     */
     const handlelogOut = async () => {
-        const showDebugging = true;
-        try {
-            // Get the refresh token if it exists
-            const refreshToken = getRefreshToken();
-            if (!refreshToken) {
-                debug(showDebugging, "Refresh token is missing", refreshToken);
-                return null;
-            }
-
-            debug(showDebugging, "Refresh token found: ", refreshToken);
-            const response = await fetchAPI("/users/logout/", {
-                method: 'POST',
-                headers: { 
-                    'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refresh: refreshToken }),
-            });
-
-            const jsonResponse = await response.json();
-            if (response.ok) {
-                debug(showDebugging, "Logout successful", jsonResponse);
-                clearAuthTokens();
-                debug(showDebugging, "Removed auth tokens from local storage", "");
-                setIsAuthenticated(false);
-                return;
-            }else {
-                debug(
-                    showDebugging, 
-                    "Logout failed (backend)", 
-                    backendError(response, jsonResponse)
-                );
-                return;
-                // TODO --> Display backend error alert
-            }
-        } catch (error) {
-            debug(showDebugging, "Logout failed (frontend)", error);
+        // Get the refresh token if it exists
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) {
+            debug(showDebugging, "Refresh token is missing", refreshToken);
+            addAlert(
+                "Unexpected error, when trying to log you " + 
+                "out. Try refreshing the browser.", 
+                "Error");
+            return null;
         }
-    };
+
+        const response = await submitData (
+            {
+                relativeURL: "/users/logout/",
+                fetchObject: {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ refresh: refreshToken }),
+                },
+                debugMessages: {
+                    backendError: "Log out failed (backend)",
+                    frontendError: "Log out failed (frontend)",
+                    successfulBackEndResponse: "Log out successful", 
+                },
+                
+            }
+        );
+        if (response) {
+            debug(showDebugging, "Logout successful", response);
+            clearAuthTokens();
+            debug(showDebugging, "Removed auth tokens from local storage", "");
+            setIsAuthenticated(false);
+        }
+    }
 
     return (
         <>

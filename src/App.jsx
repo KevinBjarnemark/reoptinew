@@ -75,11 +75,11 @@ const AppBody = () => {
 function App() {
     return (
         <Router>
-            <UserProvider>
-                <AlertProvider>
+            <AlertProvider>
+                <UserProvider>
                     <AppBody />
-                </AlertProvider>
-            </UserProvider>
+                </UserProvider>
+            </AlertProvider>
         </Router>
     );
 }
