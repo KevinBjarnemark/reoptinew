@@ -5,32 +5,32 @@
     font-style: normal;
     font-display: swap;
 }
-  
-  @font-face {
+
+@font-face {
     font-family: 'Niramit';
     src: url('/fonts/Niramit/Niramit-ExtraLight.woff2') format('woff2');
     font-weight: 200;
     font-style: normal;
     font-display: swap;
 }
-  
-  @font-face {
+
+@font-face {
     font-family: 'Niramit';
     src: url('/fonts/Niramit/Niramit-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
-  
-  @font-face {
+
+@font-face {
     font-family: 'Niramit';
     src: url('/fonts/Niramit/Niramit-Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
-  
-  @font-face {
+
+@font-face {
     font-family: 'Niramit';
     src: url('/fonts/Niramit/Niramit-SemiBold.woff2') format('woff2');
     font-weight: 600;
@@ -47,26 +47,29 @@
 }
 
 * {
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Niramit', Arial, sans-serif;
     font-size: 16px;
 }
 
 /* Scrollbars */
 ::-webkit-scrollbar {
-    width: 8px; 
+    width: 8px;
     background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-    background: #5a6063; 
+    background: #5a6063;
     border-radius: 6px;
 }
+
 ::-webkit-scrollbar-corner {
-    background-color: #555a5f; 
+    background-color: #555a5f;
     border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #787c7e;
 }
@@ -81,7 +84,8 @@
     --color-error: #e16c6c;
     --color-success: #76e16c;
     --color-info: #ffb06f;
-    --color-image-background: #242424; /* e.g., behind profile image */
+    --color-image-background: #242424;
+    /* e.g., behind profile image */
     --color-input-background: #2f3234;
 }
 
@@ -115,13 +119,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* Adjust input background when hovering the calendar picker icon */
-input[type="date"]::-webkit-calendar-picker-indicator:hover 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator:hover input[type="date"]::-webkit-calendar-picker-indicator {
     background-color: #ffffff;
 }
+
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background-color: #ffffff;
 }
+
 input[type="date"]::-webkit-calendar-picker-indicator:focus {
     background-color: #ffffff;
 }
@@ -145,7 +150,7 @@ main {
     justify-content: flex-start;
     align-items: flex-end;
     background-color: var(--color-background);
-    padding-bottom: 100px  
+    padding-bottom: 100px
 }
 
 /* Basic page class */
@@ -161,7 +166,7 @@ article {
     /* Center relative to the page content */
     min-width: calc(100% - var(--sidebar-width));
     padding-bottom: 100px
-} 
+}
 
 header {
     display: flex;

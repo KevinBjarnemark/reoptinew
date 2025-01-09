@@ -1,8 +1,12 @@
 export default {
-    testEnvironment: "jest-environment-jsdom",
-    testMatch: ["**/tests/**/*.test.js"],
-    moduleFileExtensions: ["js", "jsx"],
+    testEnvironment: 'jest-environment-jsdom',
+    testMatch: ['**/tests/**/*.test.js'],
+    moduleFileExtensions: ['js', 'jsx'],
     transform: {
-      "^.+\\.jsx?$": "babel-jest",
+        '^.+\\.jsx?$': 'babel-jest',
     },
-  };
+    moduleNameMapper: {
+        // Mock CSS imports
+        '^.+\\.css$': 'identity-obj-proxy', 
+    },
+};

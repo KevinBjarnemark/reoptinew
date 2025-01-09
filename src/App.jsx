@@ -1,12 +1,12 @@
-import './App.css'
+import './App.css';
 import { lazy, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import imgLogo from "./assets/images/brand/logo.webp";
-import UserContext from './context/UserContext'; 
-import UserProvider from './context/UserProvider'; 
-import AlertProvider from './context/alert-context/AlertProvider'; 
-import AlertWindow from './components/alerts/alert-window/AlertWindow'; 
-import { UserCard } from './components/user/user-card/UserCard'; 
+import imgLogo from './assets/images/brand/logo.webp';
+import UserContext from './context/UserContext';
+import UserProvider from './context/UserProvider';
+import AlertProvider from './context/alert-context/AlertProvider';
+import AlertWindow from './components/alerts/alert-window/AlertWindow';
+import { UserCard } from './components/user/user-card/UserCard';
 
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
@@ -15,19 +15,19 @@ const Login = lazy(() => import('./pages/login/Login'));
 // Header
 const Header = () => {
     return (
-      <header>
-          <img className='logo' src={imgLogo} alt="Logo" />
-      </header>
+        <header>
+            <img className="logo" src={imgLogo} alt="Logo" />
+        </header>
     );
-}
+};
 
 // Navigation
 const Navigation = () => {
-    return (<nav></nav>);
-}
+    return <nav></nav>;
+};
 
 const AppRoutes = () => {
-    const {isAuthenticated} = useContext(UserContext);
+    const { isAuthenticated } = useContext(UserContext);
 
     // User routes
     if (isAuthenticated) {
@@ -36,7 +36,7 @@ const AppRoutes = () => {
                 <Route path="/*" element={<></>}></Route>
             </Routes>
         );
-    }else {
+    } else {
         // Guest routes
         return (
             <Routes>
@@ -46,10 +46,10 @@ const AppRoutes = () => {
             </Routes>
         );
     }
-}
+};
 
 const AppBody = () => {
-    const {isAuthenticated} = useContext(UserContext);
+    const { isAuthenticated } = useContext(UserContext);
 
     if (isAuthenticated !== null) {
         return (
@@ -65,12 +65,10 @@ const AppBody = () => {
                 <AlertWindow />
             </>
         );
-    }else {
-        return (
-            <div>LOADING....</div>
-        )
+    } else {
+        return <div>LOADING....</div>;
     }
-}
+};
 
 function App() {
     return (
@@ -84,4 +82,4 @@ function App() {
     );
 }
 
-export default App
+export default App;

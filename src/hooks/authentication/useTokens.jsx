@@ -1,36 +1,46 @@
-import { debug } from "../../utils/log";
-import useSubmit from "../../hooks/forms/useSubmit";
-import {getRefreshToken} from "../../functions/authentication/accessToken";
+import { debug } from '../../utils/log';
+import useSubmit from '../../hooks/forms/useSubmit';
+import { getRefreshToken } from '../../functions/authentication/accessToken';
 
 const useTokens = (showDebugging = true) => {
     const { submitData } = useSubmit(showDebugging);
 
     /**
-     * Retrieves the access token from local storage or refreshes it if unavailable.
-     * 
-     * This function checks for an existing access token in local storage. If 
+     * Retrieves the access token from local storage or refreshes it
+     * if unavailable.
+     *
+     * This function checks for an existing access token in local storage. If
      * no access token is found, it attempts to refresh the token.
-     * 
-     * @returns {Promise<string|null>} The access token, either from local storage 
-     * or refreshed, or null if no valid token is available.
+     *
+     * @returns {Promise<string|null>} The access token, either from
+     * local storage or refreshed, or null if no valid token is available.
      */
     const getAccessToken = async () => {
         const showDebugging = true;
-        debug(showDebugging, "Getting the access token, if it exists.", "");
-        let accessToken = localStorage.getItem("access_token");
+        debug(showDebugging, 'Getting the access token, if it exists.', '');
+        let accessToken = localStorage.getItem('access_token');
 
         if (accessToken) {
-            debug(showDebugging, "Found the access token (local storage).", accessToken);
-            return accessToken;
-        }else {
             debug(
-                showDebugging, 
-                "Couldn't find the access token (local storage), refreshing it now.", 
-                accessToken
+                showDebugging,
+                'Found the access token (local storage).',
+                accessToken,
+            );
+            return accessToken;
+        } else {
+            debug(
+                showDebugging,
+                "Couldn't find the access token (local storage)" +
+                    ', refreshing it now.',
+                accessToken,
             );
             const refreshedAccessToken = await refreshAccessToken();
             if (refreshedAccessToken) {
-                debug(showDebugging, "Refreshed access token.", refreshedAccessToken);
+                debug(
+                    showDebugging,
+                    'Refreshed access token.',
+                    refreshedAccessToken,
+                );
                 return refreshedAccessToken;
             }
         }
@@ -39,56 +49,55 @@ const useTokens = (showDebugging = true) => {
 
     /**
      * Refreshes the access token using the stored refresh token.
-     * 
-     * This function attempts to retrieve a new access token by making a POST 
-     * request with the refresh token. If successful, the new access token is 
+     *
+     * This function attempts to retrieve a new access token by making a POST
+     * request with the refresh token. If successful, the new access token is
      * stored in localStorage.
-     * 
-     * @returns {Promise<string|null>} The refreshed access token if successful, 
-     * or null if the refresh token is missing, invalid, or the request fails.
+     *
+     * @returns {Promise<string|null>} The refreshed access token if
+     * successful, or null if the refresh token is missing, invalid, or the
+     * request fails.
      */
     const refreshAccessToken = async () => {
         // Get the refresh token if it exists
         const refreshToken = getRefreshToken();
         if (!refreshToken) {
-            debug(showDebugging, "Refresh token is missing", refreshToken);
+            debug(showDebugging, 'Refresh token is missing', refreshToken);
             return null;
         }
 
         // Fetch a new access token
-        debug(showDebugging, "Attempting to fetch a new access token", "");
-        const response = await submitData (
-            {
-                relativeURL: "/users/api/token/refresh/",
-                fetchObject: {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ refresh: refreshToken }),
-                },
-                debugMessages: {
-                    backendError: "Failed fetching access token (backend)",
-                    frontendError: "Failed fetching access token (frontend)",
-                    successfulBackEndResponse: "Fetched access token successfully", 
-                },
-            }
-        );
+        debug(showDebugging, 'Attempting to fetch a new access token', '');
+        const response = await submitData({
+            relativeURL: '/users/api/token/refresh/',
+            fetchObject: {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refresh: refreshToken }),
+            },
+            debugMessages: {
+                backendError: 'Failed fetching access token (backend)',
+                frontendError: 'Failed fetching access token (frontend)',
+                successfulBackEndResponse: 'Fetched access token successfully',
+            },
+        });
         if (response) {
             // Update access token (local storage)
             const accessToken = response.access;
             const refreshToken = response.refresh;
-            localStorage.setItem("access_token", accessToken);
-            localStorage.setItem("refresh_token", refreshToken);
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('refresh_token', refreshToken);
             debug(
-                showDebugging, 
-                "Refreshed both the access and refresh token (local storage)", 
-                ""
+                showDebugging,
+                'Refreshed both the access and refresh token (local storage)',
+                '',
             );
             return response.access;
-        }else {
+        } else {
             debug(showDebugging, "Couldn't refresh access token", response);
             return null;
         }
-    }
+    };
 
     return { refreshAccessToken, getAccessToken };
 };
