@@ -1,4 +1,5 @@
 import { debug } from './log';
+import { NON_FIELD_ERRORS_STRING } from './constants';
 
 /**
  * Creates a structured error object to streamline backend error handling.
@@ -35,11 +36,15 @@ export const backendError = (response, jsonResponse) => {
  * first letter. 
  */
 export const formatErrorIdentifier = (text = "") => {
-    return text.split("_").map((word, index) => 
+    const snakeCaseToNormal = text.split("_").map((word, index) => 
         index === 0 
             ? word.charAt(0).toUpperCase() + word.slice(1)
             : word
         ).join(" ");
+        if (text !== NON_FIELD_ERRORS_STRING) {
+            return snakeCaseToNormal;
+        }
+        return "";
 };
 
 /**
@@ -73,7 +78,7 @@ export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
             Object.entries(errorDetails).forEach(([field, value]) => {
                 value.forEach(errorMessage => {
                     addAlert(
-                        `${formatErrorIdentifier(field) + ":"} ${errorMessage}`, "Server Error"
+                        `${formatErrorIdentifier(field + ":")} ${errorMessage}`, "Server Error"
                     );
                 });
             });

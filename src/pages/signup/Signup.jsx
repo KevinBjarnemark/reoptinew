@@ -4,6 +4,7 @@ import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
 import useSubmit from '../../hooks/forms/useSubmit';
+import {VALIDATION_RULES} from '../../utils/constants';
 
 const Signup = () => {
     // Toggle dev logs & debugging
@@ -16,8 +17,8 @@ const Signup = () => {
     const [previewImage, setPreviewImage] = useState(null);
     const [formDataDraft, setFormDataDraft] = useState({
         username: "",
-        password1: "",
-        password2: "",
+        password: "",
+        confirm_password: "",
         birth_date: "",
         image: null,
     });
@@ -28,9 +29,6 @@ const Signup = () => {
      * @throws Errors must be handled by the caller.
      */
     const validateForm = () => {
-        // Unicode regex
-        const usernameRegex = /^[\w.@+-]+$/;
-
         // Validate fields (frontend)
         switch(true){
             default: break
@@ -39,25 +37,31 @@ const Signup = () => {
                 throw new Error("Username is missing");
             }
             // Username length
-            case formDataDraft.username.length > 150: {
+            case formDataDraft.username.length > VALIDATION_RULES.USERNAME.MAX_LENGTH: {
                 throw new Error("Username is too long.");
             }
             // Username unicode restrictions (e.g. @)
-            case !usernameRegex.test(formDataDraft.username): {
+            case !VALIDATION_RULES.USERNAME.REGEX.test(formDataDraft.username): {
                 throw new Error(
                     "Special characters like @, +, and others are not allowed."
                 );
             }
             // Password is missing
-            case formDataDraft.password1.length < 1: {
+            case formDataDraft.password.length < 1: {
                 throw new Error("Password is missing.");
             }
+            // Password is too short
+            case formDataDraft.password.length < VALIDATION_RULES.PASSWORD.MIN_LENGTH: {
+                throw new Error("Password is too short.");
+            }
             // Password must be a certain length
-            case formDataDraft.password1.length < 8: {
-                throw new Error("Password must be at least 8 characters.");
+            case formDataDraft.password.length > VALIDATION_RULES.PASSWORD.MAX_LENGTH: {
+                throw new Error(
+                    `Password must be at least ${VALIDATION_RULES.PASSWORD.MAX_LENGTH} characters.`
+                );
             }
             // Passwords must be identical
-            case formDataDraft.password1 !== formDataDraft.password2: {
+            case formDataDraft.password !== formDataDraft.confirm_password: {
                 throw new Error("Passwords must be identical.");
             }
             // Birth date is missing
@@ -133,7 +137,7 @@ const Signup = () => {
 
                     <div className='flex-column-relative'>
                         <BasicForm.Border>
-                            <BasicForm.Input 
+                            <BasicForm.Input  
                                 title="Username"
                                 inputProps={{
                                     placeholder: "Eg,. Joe",
@@ -155,7 +159,7 @@ const Signup = () => {
 
                                     onChange: (e) => {
                                         setFormDataDraft(prev => ({
-                                            ...prev, password1: e.target.value
+                                            ...prev, password: e.target.value
                                         }))
                                     },
                                 }} 
@@ -168,7 +172,7 @@ const Signup = () => {
                                     type: "password",
                                     onChange: (e) => {
                                         setFormDataDraft(prev => ({
-                                            ...prev, password2: e.target.value
+                                            ...prev, confirm_password: e.target.value
                                         }))
                                     },
                                 }} 

@@ -7,16 +7,14 @@ const Input = (props) => {
     const {
         title = "", 
         inputProps = {},
-        highlighted = false,
-    } = props; 
+    } = props;  
 
     return (
         <div className="flex-row-relative">
             <label className={style["label-input"]}>{title}</label>
             <div className={style["artificial-border"]}></div>
             <input 
-                className={`${style.input}`}  
-                style={{border: highlighted ? "2px solid var(--color-error)" : "none"}}
+                className={`${style.input}`}
                 {...inputProps}                
             >
             </input>
