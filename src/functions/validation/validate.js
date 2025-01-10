@@ -14,7 +14,7 @@ import { any } from '../../utils/helpers';
  * @param {bool}  formDataDraft An object with
  * @param {str}   fieldArray An array of strings, storing the fields
  * that should be validated.
- * @returns {any} ....
+ * @returns {void} ....
  * @throws Errors are thrown when a field is invalid.
  * 
  * Limitations: 

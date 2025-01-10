@@ -10,8 +10,9 @@
 - ❌ [Error handling](#error-handling)
 - 🛠️ [Technologies](#technologies)
 - 🌌 [Philosophy](#philosophy)
+- 🖥️ [Code Documentation](#code-documentation)
+- ✨ [Credits](#credits)
 - 🖊️ [References](#references)
-
 
 ## API
 
@@ -158,9 +159,22 @@ jwtDecode is a lightweight library used to decode the payload of a JSON Web Toke
 
 </details>
 
+</details>
+
+<details>
+    <summary>
+        Prettier
+    </summary>
+
+**Code formatter** 
+
+Prettier ensures consistent code formatting by parsing the code with default and customized formatting rules. It supports a wide range of languages, including JavaScript, TypeScript, HTML, CSS, JSON, and more. Prettier integrates seamlessly with editors. Here's this project's configuration file for it [Configuration file](.prettierrc).
+
+</details>
+
 ## Philosophy
 
-### Bootstrap Usage Philosophy
+### Bootstrap
 
 This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities as a foundation for responsive and consistent design, while deliberately avoiding [React-Bootstrap](https://www.npmjs.com/package/react-bootstrap) and its prebuilt components. This approach ensures a design that is uniquely tailored to Reoptinew. **Here's why:**
 
@@ -179,7 +193,97 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
 
     By focusing on custom implementations, this approach opens the door for **long-term flexibility**. As needs evolve, these components can be iteratively improved or expanded without the constraints of prebuilt structures. This philosophy prioritizes flexibility and scalability, allowing the design and functionality to grow naturally over time.
 
-    The goal is to achieve a more distinctive design and enhances brand awareness by emphasizing elements unique to Reoptinew.
+    The goal is to achieve a more distinctive design that enhances brand awareness by emphasizing elements unique to Reoptinew.
+
+### Testing
+
+#### [Jest](https://jestjs.io/) vs [Vitest](https://vitest.dev/)
+
+I choose to work with Jest in this project due to its maturity and widespread adoption. The list of big and successful companies that use Jest is massive. Jest is trusted by a large number of big and successful companies, making it a well-established and reliable choice. 
+
+That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
+
+## Code Documentation
+
+### Error handling
+
+Many functions are wrapped in try-catch blocks, but some aren't. This is a technique for improving readability and clarity. 
+
+Here's an example, look at the **size difference** and **readability** of `A` vs `B`
+
+### ❌ A
+
+```javascript
+const someFunction = () => {
+    try {
+        const obj = {value: "Hello"}
+        return obj.value.nested.nonExistingValue; // This will throw an error
+    } catch (error) {
+        alert("Something went wrong");
+    }
+};
+
+const someOtherFunction = () => {
+    try {
+        const someFunctionValue = someFunction();
+        if (someFunctionValue === undefined){
+            throw new Error("someFunction() threw an error!");
+        }
+    } catch (error) {
+        alert(error);
+    }
+};
+```
+
+### ✔️ B 
+```javascript
+const someFunction = () => {
+    const obj = {value: "Hello"}
+    return obj.value.nested.nonExistingValue; // This will throw an error
+};
+
+const someOtherFunction = () => {
+    try {
+        someFunction();
+    } catch (error) {
+        alert(error);
+    }
+};
+```
+
+This project has been developed using this approach to:
+
+- Avoid **silent errors** thrown in nested functions
+- Reduce repetition
+- Increase code-base clarity
+- Mitigate error-handling confusion
+
+Keep an eye out for this (example below) in doc strings. These are added to the functions that are expected to already be placed in a try block.
+
+``` javascript
+/**
+ *
+ * @throws Errors must be handled by the caller
+ */
+```
+
+### Reusability and Repetition
+
+Many techniques have been used to centralize functionality, avoid repetition, and streamline the code base as a whole. Best practices have been followed thoroughly throughout the development with:
+
+- [Global constants](src/utils/constants.js) 
+- Conditional environment variables (Vite)
+- [Global utilizers](src/utils)
+- Functional components
+- Hooks
+- Contexts
+- [Global functions](src/functions)
+
+## Credits
+
+### Fonts
+
+- [Niramit](https://fonts.google.com/specimen/Niramit)
 
 ## References
 

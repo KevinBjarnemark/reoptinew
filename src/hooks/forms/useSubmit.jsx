@@ -43,22 +43,22 @@ const useSubmit = (showDebugging = true) => {
      * Note, that formDataDraft fields containing the value null, will be
      * skipped.
      *
-     * @param {Object} data An object containing submission configuration and
+     * @param {object} data An object containing submission configuration and
      * form data.
-     * @param {Function} data.validateForm A function to validate form fields.
+     * @param {function} data.validateForm A function to validate form fields.
      * Should throw errors for invalid fields.
-     * @param {Object} data.formDataDraft An object representing the draft form
+     * @param {object} data.formDataDraft An object representing the draft form
      * data to be submitted.
      * @param {string} data.relativeURL The relative URL for the backend
      * endpoint where the form data should be sent.
-     * @param {Object} [data.debugMessages] Messages for debugging.
+     * @param {object} [data.debugMessages] Messages for debugging.
      * @param {string} [data.debugMessages.backendError] Message to log when
      * errors are thrown in the backend.
      * @param {string} [data.debugMessages.frontendError] Message to log when
      * errors are thrown in the frontend.
      * @param {string} [data.debugMessages.successfulBackEndResponse] Message
      * to log when the back end response was successful.
-     * @returns {Object|null} Returns the successful backend response object on
+     * @returns {object|null} Returns the successful backend response object on
      * success, or `null` if validation or backend submission fails.
      *
      * Example Usage:

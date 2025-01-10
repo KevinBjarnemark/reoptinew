@@ -7,7 +7,7 @@ import { NON_FIELD_ERRORS_STRING } from './constants';
  *
  * @param {bool}  response The initial request
  * @param {str}   jsonResponse The awaited JSON response from the API.
- * @returns {any} A structured error object containing status details
+ * @returns {void} A structured error object containing status details
  * and API error information.
  *
  */
@@ -30,8 +30,8 @@ export const backendError = (response, jsonResponse) => {
  * snake_case string into a normal sentence with spaces,
  * capitalizing the first letter.
  *
- * @param {str}   text
- * @returns {any} Empty string if the text is equal to
+ * @param {string}   text
+ * @returns {string} Empty string if the text is equal to
  * non_field_errors, otherwise the text with a capitalized
  * first letter.
  */
