@@ -3,7 +3,7 @@ import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
 import useSubmit from '../../hooks/forms/useSubmit';
-import {validateCommon} from '../../functions/validation/validate';
+import { validateCommon } from '../../functions/validation/validate';
 
 const Login = () => {
     const showDebugging = true;

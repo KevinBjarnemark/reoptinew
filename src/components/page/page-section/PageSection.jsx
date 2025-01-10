@@ -15,16 +15,16 @@ const PageSection = (props) => {
 
     return (
         <section
-            className="flex-column-relative align-items-center"
+            className="flex-column-relative align-items-center w-100"
             style={{
                 backgroundColor: 'var(--color-dark-background)',
-                width: '80%',
                 padding: '1% 0',
             }}
         >
             <div
-                className="flex-column-relative w-75 align-items-center"
+                className="flex-column-relative align-items-center"
                 style={{
+                    width: '94%',
                     backgroundColor: 'var(--color-gray-component-background)',
                     borderRadius: '15px',
                 }}

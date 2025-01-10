@@ -4,9 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import imgLogo from './assets/images/brand/logo.webp';
 import UserContext from './context/UserContext';
 import UserProvider from './context/UserProvider';
+import LoadingContext from './context/LoadingContext';
+import LoadingProvider from './context/LoadingProvider';
 import AlertProvider from './context/alert-context/AlertProvider';
 import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
+import AppLoading from './components/loading/AppLoading';
 
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
@@ -49,25 +52,22 @@ const AppRoutes = () => {
 };
 
 const AppBody = () => {
-    const { isAuthenticated } = useContext(UserContext);
+    const { appLoading } = useContext(LoadingContext);
 
-    if (isAuthenticated !== null) {
-        return (
-            <>
-                <Header />
-                <main>
-                    <article>
-                        <AppRoutes />
-                    </article>
-                    <UserCard />
-                </main>
-                <Navigation />
-                <AlertWindow />
-            </>
-        );
-    } else {
-        return <div>LOADING....</div>;
-    }
+    return (
+        <>
+            <Header />
+            <main>
+                <article>
+                    <AppRoutes />
+                </article>
+                <UserCard />
+            </main>
+            <Navigation />
+            <AlertWindow />
+            {appLoading ? <AppLoading /> : null}
+        </>
+    );
 };
 
 function App() {
@@ -75,7 +75,9 @@ function App() {
         <Router>
             <AlertProvider>
                 <UserProvider>
-                    <AppBody />
+                    <LoadingProvider>
+                        <AppBody />
+                    </LoadingProvider>
                 </UserProvider>
             </AlertProvider>
         </Router>

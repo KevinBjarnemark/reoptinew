@@ -89,6 +89,10 @@
     --color-input-background: #2f3234;
 }
 
+p {
+    margin: 0;
+}
+
 input {
     color: #ffffff;
     border: none;

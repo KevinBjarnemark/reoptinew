@@ -1,0 +1,15 @@
+
+:root {
+    --orange: #f0cb93;
+}
+
+.container {
+    top: 0;
+    left: 0; 
+    width: 100%;
+    height: 100vh;
+    padding-top: 33vh;
+    align-items: center;
+    background-color: #343b3edd;
+    backdrop-filter: blur(6px);
+}
