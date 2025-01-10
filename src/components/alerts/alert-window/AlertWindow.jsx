@@ -27,7 +27,7 @@ const ToggleButtons = (props) => {
             >
                 <p
                     className={
-                        'flex-row-absolute' + `${style['toggle-alert-page']}`
+                        'flex-row-absolute' + ` ${style['toggle-alert-page']}`
                     }
                     style={{ color: '#ffffff' }}
                 >

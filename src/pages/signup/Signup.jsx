@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
+import { validateCommon } from '../../functions/validation/validate';
 import useSubmit from '../../hooks/forms/useSubmit';
-import { VALIDATION_RULES } from '../../utils/constants';
 
 const Signup = () => {
     // Toggle dev logs & debugging
@@ -23,69 +23,20 @@ const Signup = () => {
     });
 
     /**
-     * Validates the form in the frontend by throwing custom errors in order.
+     * Validates common fields and checks if the user agrees to all 
+     * terms and policies.
      *
      * @throws Errors must be handled by the caller.
      */
     const validateForm = () => {
-        // Validate fields (frontend)
-        switch (true) {
-            default:
-                break;
-            // Username is missing
-            case formDataDraft.username.length < 1: {
-                throw new Error('Username is missing');
-            }
-            // Username length
-            case formDataDraft.username.length >
-                VALIDATION_RULES.USERNAME.MAX_LENGTH: {
-                throw new Error('Username is too long.');
-            }
-            // Username unicode restrictions (e.g. @)
-            case !VALIDATION_RULES.USERNAME.REGEX.test(
-                formDataDraft.username,
-            ): {
-                throw new Error(
-                    'Special characters like @, +, and ' +
-                        'others are not allowed.',
-                );
-            }
-            // Password is missing
-            case formDataDraft.password.length < 1: {
-                throw new Error('Password is missing.');
-            }
-            // Password is too short
-            case formDataDraft.password.length <
-                VALIDATION_RULES.PASSWORD.MIN_LENGTH: {
-                throw new Error('Password is too short.');
-            }
-            // Password must be a certain length
-            case formDataDraft.password.length >
-                VALIDATION_RULES.PASSWORD.MAX_LENGTH: {
-                throw new Error(
-                    'Password must be at least ' +
-                        `${VALIDATION_RULES.PASSWORD.MAX_LENGTH} characters.`,
-                );
-            }
-            // Passwords must be identical
-            case formDataDraft.password !== formDataDraft.confirm_password: {
-                throw new Error('Passwords must be identical.');
-            }
-            // Birth date is missing
-            case !formDataDraft.birth_date: {
-                throw new Error('Birth date is missing.');
-            }
-            // Birth date cannot be in the future
-            case new Date(formDataDraft.birth_date) >= new Date(): {
-                throw new Error('Birth date cannot be in the future.');
-            }
-            // Terms
-            case !termsAccepted || !policyAccepted: {
-                throw new Error(
-                    'You must accept both our terms and privacy ' +
-                        'policy to continue.',
-                );
-            }
+        // Common fields
+        validateCommon(formDataDraft);
+        // Terms
+        if (!termsAccepted || !policyAccepted) {
+            throw new Error(
+                'You must accept both our terms and privacy ' +
+                    'policy to continue.',
+            );
         }
     };
 
