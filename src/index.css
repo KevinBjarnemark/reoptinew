@@ -77,7 +77,8 @@
 /* Variables */
 :root {
     --sidebar-width: 50px;
-    --color-background: #494D4F;
+    --header-height: 120px;
+    --color-background: #43484b;
     --color-dark-background: #383d40;
     --color-gray-component-background: #4f5354;
     --color-dark-border: #232527;
@@ -169,21 +170,24 @@ article {
     min-height: 100vh;
     /* Center relative to the page content */
     min-width: calc(100% - var(--sidebar-width));
-    padding-bottom: 100px
+    padding-bottom: 100px;
+    margin-top: var(--header-height);
 }
 
 header {
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: fixed;
     justify-content: flex-start;
     align-items: center;
-    height: fit-content;
-    min-height: 120px;
+    min-height: var(--header-height);
     /* Center relative to the page content */
     width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
-    padding-top: 10px;
+    padding-top: 12px;
+    background-color: var(--color-background);
+    border-bottom: 3px solid #292c2e49;
 }
 
 nav {

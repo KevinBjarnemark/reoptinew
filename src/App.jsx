@@ -1,7 +1,6 @@
 import './App.css';
-import { lazy, useContext } from 'react';
+import { lazy, useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import imgLogo from './assets/images/brand/logo.webp';
 import UserContext from './context/UserContext';
 import UserProvider from './context/UserProvider';
 import LoadingContext from './context/LoadingContext';
@@ -10,6 +9,7 @@ import AlertProvider from './context/alert-context/AlertProvider';
 import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
 import AppLoading from './components/loading/AppLoading';
+import Logo from './components/logo/Logo';
 
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
@@ -19,7 +19,9 @@ const Login = lazy(() => import('./pages/login/Login'));
 const Header = () => {
     return (
         <header>
-            <img className="logo" src={imgLogo} alt="Logo" />
+            <section className='header-container'>
+                <Logo loading={false}/>
+            </section>
         </header>
     );
 };

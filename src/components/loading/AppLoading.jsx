@@ -1,11 +1,14 @@
+import {useContext} from 'react';
 import style from './AppLoading.module.css';
-import LoadingSpinner from './loading-spinner/LoadingSpinner';
+import Logo from '../logo/Logo';
+import LoadingContext from '../../context/LoadingContext';
 
 
 const AppLoading = () => {
+    const { appLoading } = useContext(LoadingContext);
     return (
         <div className={'flex-column-fixed ' + `${style.container}`}>
-            <LoadingSpinner />
+            <Logo loading={appLoading}/>
         </div>
     );
 };
