@@ -1,18 +1,19 @@
 import style from './Logo.module.css';
 
-const Logo = ({ loading = false }) => {
+const Logo = ({ loading = false, hide = false }) => {
     const animationCSS = {
         'outer-circle': loading ? style['outer-circle-animation'] : '',
         'loading-text-container-animation': loading
             ? style['loading-text-container-animation']
             : '',
         'tilted-bar-animation': loading ? style['tilted-bar-animation'] : '',
-        "brand-name-animation": loading ? style['brand-name-animation'] : '',
+        'brand-name-animation': loading ? style['brand-name-animation'] : '',
     };
 
     return (
         <div
-            className={'flex-column-relative ' + `${style['logo-container']}`}
+            className={'flex-column-relative ' + `${style['container']}`}
+            style={{ transform: `scale(${hide ? 0 : 1})` }}
         >
             <div className="flex-column-relative">
                 <div

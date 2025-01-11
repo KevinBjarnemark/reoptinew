@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
 import { validateCommon } from '../../functions/validation/validate';
 import useSubmit from '../../hooks/forms/useSubmit';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
+import NotificationContext from '@notification-context';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     // Toggle dev logs & debugging
     const showDebugging = true;
+    // Contexts
+    const { addNotification } = useContext(NotificationContext);
     // Hooks
     const { submitForm } = useSubmit(showDebugging);
     const { simulateLoading } = useSimulateLoading(showDebugging);
+    const navigate = useNavigate();
     // UseStates
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [policyAccepted, setPolicyAccepted] = useState(false);
@@ -63,6 +68,10 @@ const Signup = () => {
             localStorage.setItem('access_token', response.access);
             localStorage.setItem('refresh_token', response.refresh);
             debug(showDebugging, 'Sign up successful', response);
+            await addNotification(true, 'Welcome!');
+            navigate('/home');
+        } else {
+            await addNotification(false, "Couldn't sign you up :(");
         }
     };
 

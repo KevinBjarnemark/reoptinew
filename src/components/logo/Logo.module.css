@@ -8,8 +8,9 @@
     aspect-ratio: 578 / 512;
 }
 
-.logo-container {
+.container {
     justify-content: center;
+    transition: transform 0.2s;
 }
 
 .outer-circle {

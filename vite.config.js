@@ -41,6 +41,16 @@ export default defineConfig({
                 __dirname,
                 './src/context/loading/general-loading/GeneralLoadingProvider',
             ),
+            // Notification provider
+            '@notification-provider': path.resolve(
+                __dirname,
+                './src/context/notification/NotificationProvider',
+            ),
+            // Notification provider
+            '@notification-context': path.resolve(
+                __dirname,
+                './src/context/notification/NotificationContext',
+            ),
         },
     },
 });

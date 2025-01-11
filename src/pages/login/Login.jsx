@@ -5,10 +5,12 @@ import UserContext from '../../context/UserContext';
 import useSubmit from '../../hooks/forms/useSubmit';
 import { validateCommon } from '../../functions/validation/validate';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
+import NotificationContext from '@notification-context';
 
 const Login = () => {
     const showDebugging = true;
     const { setIsAuthenticated } = useContext(UserContext);
+    const { addNotification } = useContext(NotificationContext);
     const { submitForm } = useSubmit(showDebugging);
     const { simulateLoading } = useSimulateLoading();
 
@@ -49,6 +51,9 @@ const Login = () => {
             localStorage.setItem('refresh_token', response.refresh);
             // Mark the user as authenticated
             setIsAuthenticated(true);
+            await addNotification(true, 'Authenticated!');
+        } else {
+            await addNotification(false, "Couldn't authenticate");
         }
     };
 

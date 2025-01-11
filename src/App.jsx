@@ -5,30 +5,17 @@ import UserContext from './context/UserContext';
 import UserProvider from './context/UserProvider';
 import AppLoadingContext from '@app-loading-context';
 import AppLoadingProvider from '@app-loading-provider';
-import GeneralLoadingContext from '@general-loading-context';
 import GeneralLoadingProvider from '@general-loading-provider';
 import AlertProvider from './context/alert-context/AlertProvider';
 import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
 import AppLoading from './components/loading/AppLoading';
-import Logo from './components/logo/Logo';
+import Header from './components/page/header/Header';
+import NotificationProvider from '@notification-provider';
 
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
-
-// Header
-const Header = () => {
-    const { generalLoading } = useContext(GeneralLoadingContext);
-
-    return (
-        <header>
-            <section className="header-container">
-                <Logo loading={generalLoading} />
-            </section>
-        </header>
-    );
-};
 
 // Navigation
 const Navigation = () => {
@@ -81,11 +68,13 @@ function App() {
         <Router>
             <GeneralLoadingProvider>
                 <AlertProvider>
-                    <UserProvider>
-                        <AppLoadingProvider>
-                            <AppBody />
-                        </AppLoadingProvider>
-                    </UserProvider>
+                    <NotificationProvider>
+                        <UserProvider>
+                            <AppLoadingProvider>
+                                <AppBody />
+                            </AppLoadingProvider>
+                        </UserProvider>
+                    </NotificationProvider>
                 </AlertProvider>
             </GeneralLoadingProvider>
         </Router>
