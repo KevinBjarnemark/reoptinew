@@ -7,6 +7,7 @@ import useSubmit from '../../hooks/forms/useSubmit';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import { useNavigate } from 'react-router-dom';
+import { BorderSeparator } from '@border-separator';
 
 const Signup = () => {
     // Toggle dev logs & debugging
@@ -121,7 +122,7 @@ const Signup = () => {
                                     },
                                 }}
                             />
-                            <BasicForm.Separator />
+                            <BorderSeparator />
                             <BasicForm.Input
                                 title="Password"
                                 inputProps={{
@@ -136,7 +137,7 @@ const Signup = () => {
                                     },
                                 }}
                             />
-                            <BasicForm.Separator />
+                            <BorderSeparator />
                             <BasicForm.Input
                                 title="Confirm password"
                                 inputProps={{
@@ -151,7 +152,7 @@ const Signup = () => {
                                 }}
                             />
 
-                            <BasicForm.Separator />
+                            <BorderSeparator />
                             <BasicForm.Birthdate
                                 inputProps={{
                                     onChange: (e) => {

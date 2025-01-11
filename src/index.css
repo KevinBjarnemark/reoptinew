@@ -76,12 +76,13 @@
 
 /* Variables */
 :root {
-    --sidebar-width: 50px;
+    --sidebar-width: 58px;
+    --sidebar-border-size: 2px;
     --header-height: 120px;
     --color-background: #43484b;
     --color-dark-background: #383d40;
     --color-gray-component-background: #4f5354;
-    --color-dark-border: #232527;
+    --color-dark-border: #272b2c;
     --color-error: #e16c6c;
     --color-success: #76e16c;
     --color-info: #ffb06f;
@@ -191,6 +192,7 @@ header {
 }
 
 nav {
+    z-index: 1;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -198,9 +200,9 @@ nav {
     left: 0;
     justify-content: flex-start;
     align-items: flex-start;
-    background-color: #53575A;
+    background-color: #505457;
     height: fit-content;
-    width: fit-content;
-    min-height: 100vh;
-    min-width: var(--sidebar-width);
+    width: var(--sidebar-width);
+    height: 100vh;
+    border-right: var(--sidebar-border-size) solid #3d4244
 }

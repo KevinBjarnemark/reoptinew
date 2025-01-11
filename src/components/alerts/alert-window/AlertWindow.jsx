@@ -131,7 +131,7 @@ const AlertWindow = () => {
     }, [alerts, messageIndex]);
 
     return (
-        <>
+        <section className="alert-window">
             {/* Simulate the existence of other cards */}
             {alerts?.length > 1 ? (
                 <section
@@ -160,7 +160,7 @@ const AlertWindow = () => {
                     {alerts ? <p>{alerts[messageIndex]?.message}</p> : null}
                 </div>
             </section>
-        </>
+        </section>
     );
 };
 

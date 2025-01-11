@@ -11,16 +11,12 @@ import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
 import AppLoading from './components/loading/AppLoading';
 import Header from './components/page/header/Header';
+import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
-
-// Navigation
-const Navigation = () => {
-    return <nav></nav>;
-};
 
 const AppRoutes = () => {
     const { isAuthenticated } = useContext(UserContext);

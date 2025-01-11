@@ -6,6 +6,7 @@ import useSubmit from '../../hooks/forms/useSubmit';
 import { validateCommon } from '../../functions/validation/validate';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
+import BorderSeparator from '@border-separator';
 
 const Login = () => {
     const showDebugging = true;
@@ -85,7 +86,7 @@ const Login = () => {
                                     },
                                 }}
                             />
-                            <BasicForm.Separator />
+                            <BorderSeparator />
                             <BasicForm.Input
                                 title="Password"
                                 inputProps={{

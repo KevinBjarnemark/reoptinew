@@ -43,18 +43,6 @@ const Image = (props) => {
     );
 };
 
-const Separator = () => {
-    return (
-        <div
-            style={{
-                height: '3px',
-                width: '100%',
-                backgroundColor: 'var(--color-dark-border)',
-            }}
-        ></div>
-    );
-};
-
 const Border = ({ children }) => {
     return (
         <div
@@ -136,7 +124,6 @@ export const BasicForm = (props) => {
 
 // Attach subcomponents
 BasicForm.Input = Input;
-BasicForm.Separator = Separator;
 BasicForm.Image = Image;
 BasicForm.Border = Border;
 BasicForm.Checkbox = Checkbox;

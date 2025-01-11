@@ -51,6 +51,11 @@ export default defineConfig({
                 __dirname,
                 './src/context/notification/NotificationContext',
             ),
+            // @BorderSeparator
+            '@border-separator': path.resolve(
+                __dirname,
+                './src/components//separators/border-separator/BorderSeparator',
+            ),
         },
     },
 });
