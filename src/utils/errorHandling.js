@@ -42,10 +42,11 @@ export const formatErrorIdentifier = (text = '') => {
             index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word,
         )
         .join(' ');
-    if (text !== NON_FIELD_ERRORS_STRING) {
+    if (text !== NON_FIELD_ERRORS_STRING + ':') {
         return snakeCaseToNormal;
+    } else {
+        return snakeCaseToNormal.split(':')[1];
     }
-    return '';
 };
 
 /**
