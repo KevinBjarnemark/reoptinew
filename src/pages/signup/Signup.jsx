@@ -4,12 +4,14 @@ import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '../../utils/log';
 import { validateCommon } from '../../functions/validation/validate';
 import useSubmit from '../../hooks/forms/useSubmit';
+import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 
 const Signup = () => {
     // Toggle dev logs & debugging
     const showDebugging = true;
     // Hooks
     const { submitForm } = useSubmit(showDebugging);
+    const { simulateLoading } = useSimulateLoading(showDebugging);
     // UseStates
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [policyAccepted, setPolicyAccepted] = useState(false);
@@ -23,7 +25,7 @@ const Signup = () => {
     });
 
     /**
-     * Validates common fields and checks if the user agrees to all 
+     * Validates common fields and checks if the user agrees to all
      * terms and policies.
      *
      * @throws Errors must be handled by the caller.
@@ -45,6 +47,7 @@ const Signup = () => {
      * backend.
      */
     const handleSubmit = async () => {
+        await simulateLoading();
         const response = await submitForm({
             validateForm,
             formDataDraft,

@@ -1,10 +1,12 @@
 import './App.css';
-import { lazy, useContext, useEffect, useState } from 'react';
+import { lazy, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserContext from './context/UserContext';
 import UserProvider from './context/UserProvider';
-import LoadingContext from './context/LoadingContext';
-import LoadingProvider from './context/LoadingProvider';
+import AppLoadingContext from '@app-loading-context';
+import AppLoadingProvider from '@app-loading-provider';
+import GeneralLoadingContext from '@general-loading-context';
+import GeneralLoadingProvider from '@general-loading-provider';
 import AlertProvider from './context/alert-context/AlertProvider';
 import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
@@ -17,10 +19,12 @@ const Login = lazy(() => import('./pages/login/Login'));
 
 // Header
 const Header = () => {
+    const { generalLoading } = useContext(GeneralLoadingContext);
+
     return (
         <header>
-            <section className='header-container'>
-                <Logo loading={false}/>
+            <section className="header-container">
+                <Logo loading={generalLoading} />
             </section>
         </header>
     );
@@ -54,7 +58,7 @@ const AppRoutes = () => {
 };
 
 const AppBody = () => {
-    const { appLoading } = useContext(LoadingContext);
+    const { appLoading } = useContext(AppLoadingContext);
 
     return (
         <>
@@ -75,13 +79,15 @@ const AppBody = () => {
 function App() {
     return (
         <Router>
-            <AlertProvider>
-                <UserProvider>
-                    <LoadingProvider>
-                        <AppBody />
-                    </LoadingProvider>
-                </UserProvider>
-            </AlertProvider>
+            <GeneralLoadingProvider>
+                <AlertProvider>
+                    <UserProvider>
+                        <AppLoadingProvider>
+                            <AppBody />
+                        </AppLoadingProvider>
+                    </UserProvider>
+                </AlertProvider>
+            </GeneralLoadingProvider>
         </Router>
     );
 }

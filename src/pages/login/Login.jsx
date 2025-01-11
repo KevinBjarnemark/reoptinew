@@ -4,11 +4,13 @@ import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
 import useSubmit from '../../hooks/forms/useSubmit';
 import { validateCommon } from '../../functions/validation/validate';
+import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 
 const Login = () => {
     const showDebugging = true;
     const { setIsAuthenticated } = useContext(UserContext);
     const { submitForm } = useSubmit(showDebugging);
+    const { simulateLoading } = useSimulateLoading();
 
     // Form data
     const [formDataDraft, setFormDataDraft] = useState({
@@ -30,6 +32,7 @@ const Login = () => {
      * to the backend.
      */
     const handleSubmit = async () => {
+        await simulateLoading();
         const response = await submitForm({
             validateForm,
             formDataDraft,

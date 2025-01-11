@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { debug } from '../../utils/log';
 import AlertContext from '../../context/alert-context/AlertContext';
+import GeneralLoadingContext from '@general-loading-context';
 import { fetchAPI } from '../../utils/fetch';
 import { handleErrors } from '../../utils/errorHandling';
 
@@ -29,6 +30,9 @@ import { handleErrors } from '../../utils/errorHandling';
  */
 const useSubmit = (showDebugging = true) => {
     const { addAlert } = useContext(AlertContext);
+    const { addLoadingPoint, removeLoadingPoint } = useContext(
+        GeneralLoadingContext,
+    );
 
     /**
      * Handles form submission by validating data, sending it to the backend,
@@ -99,6 +103,7 @@ const useSubmit = (showDebugging = true) => {
         } = data;
 
         // Validate form before sending to the backend
+        addLoadingPoint();
         try {
             validateForm(); // Should throw custom errors
         } catch (error) {
@@ -112,8 +117,11 @@ const useSubmit = (showDebugging = true) => {
             debug(showDebugging, 'Frontend validation failed', errorMessage);
             addAlert(errorMessage, 'Error');
             return;
+        } finally {
+            removeLoadingPoint();
         }
         // Handle submission
+        addLoadingPoint();
         try {
             // Convert form data draft into FormData
             const formData = new FormData();
@@ -153,6 +161,8 @@ const useSubmit = (showDebugging = true) => {
         } catch (error) {
             debug(showDebugging, debugMessages?.frontendError, error);
             addAlert('Unexpected error.', 'Error');
+        } finally {
+            removeLoadingPoint();
         }
 
         return null; // Indicate failure
@@ -162,6 +172,7 @@ const useSubmit = (showDebugging = true) => {
         const { relativeURL, debugMessages = {}, fetchObject } = data;
 
         // Handle submission
+        addLoadingPoint();
         try {
             // Send form data to backend
             const response = await fetchAPI(relativeURL, fetchObject);
@@ -181,6 +192,8 @@ const useSubmit = (showDebugging = true) => {
         } catch (error) {
             debug(showDebugging, debugMessages?.frontendError, error);
             addAlert('Unexpected error.', 'Error');
+        } finally {
+            removeLoadingPoint();
         }
 
         return null; // Indicate failure

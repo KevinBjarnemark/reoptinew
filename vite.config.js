@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import legacy from '@vitejs/plugin-legacy';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// https://vite.dev/config/
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig({
     plugins: [
         react(),
@@ -16,4 +19,28 @@ export default defineConfig({
             ],
         }),
     ],
+    resolve: {
+        alias: {
+            // App loading context
+            '@app-loading-context': path.resolve(
+                __dirname,
+                './src/context/loading/app-loading/AppLoadingContext',
+            ),
+            // App loading provider
+            '@app-loading-provider': path.resolve(
+                __dirname,
+                './src/context/loading/app-loading/AppLoadingProvider',
+            ),
+            // General loading context
+            '@general-loading-context': path.resolve(
+                __dirname,
+                './src/context/loading/general-loading/GeneralLoadingContext',
+            ),
+            // General loading provider
+            '@general-loading-provider': path.resolve(
+                __dirname,
+                './src/context/loading/general-loading/GeneralLoadingProvider',
+            ),
+        },
+    },
 });

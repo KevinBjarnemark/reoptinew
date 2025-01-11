@@ -1,14 +1,13 @@
-import {useContext} from 'react';
+import { useContext } from 'react';
 import style from './AppLoading.module.css';
 import Logo from '../logo/Logo';
-import LoadingContext from '../../context/LoadingContext';
-
+import AppLoadingContext from '@app-loading-context';
 
 const AppLoading = () => {
-    const { appLoading } = useContext(LoadingContext);
+    const { appLoading } = useContext(AppLoadingContext);
     return (
         <div className={'flex-column-fixed ' + `${style.container}`}>
-            <Logo loading={appLoading}/>
+            <Logo loading={appLoading} />
         </div>
     );
 };
