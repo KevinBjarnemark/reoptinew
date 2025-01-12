@@ -1,4 +1,4 @@
-import { debug } from './log';
+import { debug } from '@debug';
 import { NON_FIELD_ERRORS_STRING } from './constants';
 
 /**

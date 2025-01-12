@@ -1,9 +1,36 @@
+:root {
+    --item-width: 200px;
+    --item-padding: 20px 0px;
+    --item-height: 67px;
+    --item-font-size: 65%;
+}
+
+.input-container {
+    width: 100%;
+    justify-content: center;
+}
 
 .input {
-    padding: 20px 20px;
+    height: var(--item-height);
+    padding: var(--item-padding);
     background-color: var(--color-input-background);
     text-align: center;
-    width: 200px;
+    width: var(--item-width);
+    font-size: var(--font-size);
+}
+
+.label-input {
+    height: var(--item-height);
+    padding: var(--item-padding);
+    background-color: #484d4f;
+    text-align: center;
+    width: var(--item-width);
+    font-size: var(--font-size);
+}
+
+.image-container {
+    width: 100%;
+    align-items: center;
 }
 
 .image-label {
@@ -17,13 +44,6 @@
     margin-right: 15px;
 }
 
-.label-input {
-    padding: 20px 20px;
-    background-color: #484d4f;
-    text-align: center;
-    width: 200px;
-}
-
 .image {
     width: 100%;
     object-fit: contain;
@@ -35,7 +55,7 @@
     width: 30px;
     height: 30px;
     border: 3px solid #ffffff;
-    margin-right: 10px; 
+    margin-right: 10px;
     border-radius: 6px;
 }
 
@@ -43,6 +63,18 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+}
+
+.checkbox-link-container {
+    font-size: 100%;
+    line-height: 0;
+}
+
+.checkbox-link {
+    color: #ffffff;
+    margin-left: 8px;
+    font-size: 100%;
+    line-height: 0;
 }
 
 /* The middle 'border' separating the inputs */
@@ -55,4 +87,68 @@
     color: var(--color-error);
     font-weight: 500;
     line-height: 0; /* Avoid layout shift */
+}
+
+/* When screens are larger than 850px */
+@media (min-width: 850px) {
+    .image-container {
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+/* When screens are smaller than 590px */
+@media (max-width: 590px) {
+    .input {
+        height: 67px;
+        width: 160px;
+        font-size: 80%;
+    }
+
+    .label-input {
+        height: 67px;
+        width: 160px;
+        font-size: 80%;
+    }
+}
+
+/* When screens are smaller than 490px */
+@media (max-width: 490px) {
+    .input {
+        height: 67px;
+        width: 150px;
+        font-size: 70%;
+    }
+
+    .label-input {
+        height: 67px;
+        width: 150px;
+        font-size: 70%;
+    }
+
+    .checkbox-link-container {
+        font-size: 80%;
+    }
+}
+
+/* When screens are smaller than 410px */
+@media (max-width: 410px) {
+    .checkbox-container {
+        margin-left: 20px;
+    }
+
+    .input {
+        height: 67px;
+        width: 130px;
+        font-size: 60%;
+    }
+
+    .label-input {
+        height: 67px;
+        width: 130px;
+        font-size: 60%;
+    }
+    .checkbox-link-container {
+        font-size: 60%;
+    }
 }

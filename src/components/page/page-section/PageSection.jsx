@@ -15,7 +15,7 @@ const PageSection = (props) => {
 
     return (
         <section
-            className="flex-column-relative align-items-center w-100"
+            className="flex-column-relative align-items-center w-100 pt-4"
             style={{
                 backgroundColor: 'var(--color-dark-background)',
                 padding: '1% 0',

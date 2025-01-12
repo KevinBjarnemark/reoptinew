@@ -100,7 +100,7 @@ input {
     border: none;
 }
 
-input[type="date"] {
+input[type='date'] {
     display: flex;
     position: relative;
     justify-content: center;
@@ -111,7 +111,7 @@ input[type="date"] {
 }
 
 /* Custom calendar icon overlay */
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator {
     display: flex;
     position: absolute;
     top: 0;
@@ -125,20 +125,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* Adjust input background when hovering the calendar picker icon */
-input[type="date"]::-webkit-calendar-picker-indicator:hover input[type="date"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator:hover
+    input[type='date']::-webkit-calendar-picker-indicator {
     background-color: #ffffff;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+input[type='date']::-webkit-calendar-picker-indicator:hover {
     background-color: #ffffff;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:focus {
+input[type='date']::-webkit-calendar-picker-indicator:focus {
     background-color: #ffffff;
 }
 
 label {
-    color: #ffffff
+    color: #ffffff;
 }
 
 button {
@@ -156,7 +157,7 @@ main {
     justify-content: flex-start;
     align-items: flex-end;
     background-color: var(--color-background);
-    padding-bottom: 100px
+    padding-bottom: 100px;
 }
 
 /* Basic page class */
@@ -204,5 +205,12 @@ nav {
     height: fit-content;
     width: var(--sidebar-width);
     height: 100vh;
-    border-right: var(--sidebar-border-size) solid #3d4244
+    border-right: var(--sidebar-border-size) solid #3d4244;
+}
+
+/* When screens are smaller than 410px */
+@media (max-width: 410px) {
+    :root {
+        --sidebar-width: 47px;
+    }
 }

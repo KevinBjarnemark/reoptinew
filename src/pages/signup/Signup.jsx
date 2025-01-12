@@ -1,13 +1,14 @@
 import { useState, useContext } from 'react';
+import style from './Signup.module.css';
 import { BasicForm } from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
-import { debug } from '../../utils/log';
+import { debug } from '@debug';
 import { validateCommon } from '../../functions/validation/validate';
 import useSubmit from '../../hooks/forms/useSubmit';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import { useNavigate } from 'react-router-dom';
-import { BorderSeparator } from '@border-separator';
+import BorderSeparator from '@border-separator';
 
 const Signup = () => {
     // Toggle dev logs & debugging
@@ -87,7 +88,7 @@ const Signup = () => {
                     },
                 }}
             >
-                <div className="flex-row-relative align-items-start">
+                <div className={style['form-container']}>
                     <BasicForm.Image
                         inputProps={{
                             id: 'profile-image',
@@ -153,8 +154,9 @@ const Signup = () => {
                             />
 
                             <BorderSeparator />
-                            <BasicForm.Birthdate
+                            <BasicForm.Input
                                 inputProps={{
+                                    type: 'date',
                                     onChange: (e) => {
                                         setFormDataDraft((prev) => ({
                                             ...prev,
@@ -172,20 +174,13 @@ const Signup = () => {
                                 onChange: (e) =>
                                     setTermsAccepted(e.target.checked),
                             }}
-                            labelHtml={
-                                <>
-                                    I accept this website&apos;s
-                                    <a
-                                        style={{
-                                            color: '#ffffff',
-                                            marginLeft: '10px',
-                                        }}
-                                        href="/terms-of-service"
-                                    >
-                                        Terms of Service
-                                    </a>
-                                </>
-                            }
+                            label={{
+                                text: "I accept this website's",
+                                link: {
+                                    name: 'Terms of Service',
+                                    url: '/terms-of-service',
+                                },
+                            }}
                         />
                         <BasicForm.Checkbox
                             id="privacy-policy"
@@ -193,20 +188,13 @@ const Signup = () => {
                                 onChange: (e) =>
                                     setPolicyAccepted(e.target.checked),
                             }}
-                            labelHtml={
-                                <>
-                                    I accept this website&apos;s
-                                    <a
-                                        style={{
-                                            color: '#ffffff',
-                                            marginLeft: '10px',
-                                        }}
-                                        href="/privacy-policy"
-                                    >
-                                        Privacy Policy
-                                    </a>
-                                </>
-                            }
+                            label={{
+                                text: "I accept this website's",
+                                link: {
+                                    name: 'Privacy Policy',
+                                    url: '/privacy-policy',
+                                },
+                            }}
                         />
                     </div>
                 </div>

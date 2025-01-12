@@ -1,0 +1,16 @@
+/* 
+This starts out as a column (for mobile-first development) and 
+transforms into a row on larger screens with media queries.
+*/
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* When screens are larger than 850px */
+@media (min-width: 850px) {
+    .form-container {
+        flex-direction: row;
+    }
+}
