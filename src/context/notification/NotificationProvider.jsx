@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import NotificationContext from './NotificationContext';
-import { debug } from '../../utils/log';
+import { debug } from '@debug';
 
 const NotificationProvider = ({ children }) => {
     const showDebugging = true;

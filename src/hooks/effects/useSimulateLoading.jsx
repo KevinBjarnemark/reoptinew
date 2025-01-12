@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import GeneralLoadingContext from '@general-loading-context';
-import { debug } from '../../utils/log';
+import { debug } from '@debug';
 
 const useSimulateLoading = (showDebugging = true) => {
     const { addLoadingPoint, removeLoadingPoint } = useContext(

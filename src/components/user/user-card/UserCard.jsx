@@ -4,7 +4,7 @@ import {
     getRefreshToken,
     clearAuthTokens,
 } from '../../../functions/authentication/accessToken';
-import { debug } from '../../../utils/log';
+import { debug } from '@debug';
 import style from './UserCard.module.css';
 import useSubmit from '../../../hooks/forms/useSubmit';
 import AlertContext from '../../../context/alert-context/AlertContext';

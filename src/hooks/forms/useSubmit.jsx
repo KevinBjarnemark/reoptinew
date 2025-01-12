@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { debug } from '../../utils/log';
+import { debug } from '@debug';
 import AlertContext from '../../context/alert-context/AlertContext';
 import GeneralLoadingContext from '@general-loading-context';
 import { fetchAPI } from '../../utils/fetch';

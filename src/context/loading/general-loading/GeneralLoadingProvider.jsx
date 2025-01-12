@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import GeneralLoadingContext from './GeneralLoadingContext';
-import { debug } from '../../../utils/log';
+import { debug } from '@debug';
 
 const AppLoadingProvider = ({ children }) => {
     // Config

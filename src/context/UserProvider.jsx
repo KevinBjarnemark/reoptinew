@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { debug } from '../utils/log';
+import { debug } from '@debug';
 import UserContext from './UserContext';
 import useSubmit from '../hooks/forms/useSubmit';
 import useTokens from '../hooks/authentication/useTokens';

@@ -1,4 +1,4 @@
-import { debug } from '../../utils/log';
+import { debug } from '@debug';
 import useSubmit from '../../hooks/forms/useSubmit';
 import { getRefreshToken } from '../../functions/authentication/accessToken';
 
