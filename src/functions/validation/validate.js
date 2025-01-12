@@ -16,11 +16,11 @@ import { any } from '../../utils/helpers';
  * that should be validated.
  * @returns {void} ....
  * @throws Errors are thrown when a field is invalid.
- * 
- * Limitations: 
- * 
- * If this function trows a non-cusom error, it will be returned as a 
- * validation error.   
+ *
+ * Limitations:
+ *
+ * If this function trows a non-cusom error, it will be returned as a
+ * validation error.
  */
 export const validateCommon = (formDataDraft) => {
     const fields = Object.keys(formDataDraft);

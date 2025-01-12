@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { BasicForm } from '../../components/forms/basic-form/BasicForm';
+import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
 import useSubmit from '../../hooks/forms/useSubmit';
@@ -7,6 +7,7 @@ import { validateCommon } from '../../functions/validation/validate';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import BorderSeparator from '@border-separator';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const showDebugging = true;
@@ -14,6 +15,7 @@ const Login = () => {
     const { addNotification } = useContext(NotificationContext);
     const { submitForm } = useSubmit(showDebugging);
     const { simulateLoading } = useSimulateLoading();
+    const navigate = useNavigate();
 
     // Form data
     const [formDataDraft, setFormDataDraft] = useState({
@@ -52,6 +54,7 @@ const Login = () => {
             localStorage.setItem('refresh_token', response.refresh);
             // Mark the user as authenticated
             setIsAuthenticated(true);
+            navigate('/home');
             await addNotification(true, 'Authenticated!');
         } else {
             await addNotification(false, "Couldn't authenticate");

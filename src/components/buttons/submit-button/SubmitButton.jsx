@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import style from './SubmitButton.module.css';
 import GeneralLoadingContext from '@general-loading-context';
 
-export const SubmitButton = (props) => {
+const SubmitButton = (props) => {
     const { generalLoading } = useContext(GeneralLoadingContext);
 
     return (
@@ -22,3 +22,5 @@ export const SubmitButton = (props) => {
         </button>
     );
 };
+
+export default SubmitButton;

@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import style from './Signup.module.css';
-import { BasicForm } from '../../components/forms/basic-form/BasicForm';
+import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '@debug';
 import { validateCommon } from '../../functions/validation/validate';
@@ -9,11 +9,13 @@ import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import { useNavigate } from 'react-router-dom';
 import BorderSeparator from '@border-separator';
+import UserContext from '../../context/UserContext';
 
 const Signup = () => {
     // Toggle dev logs & debugging
     const showDebugging = true;
     // Contexts
+    const { setIsAuthenticated } = useContext(UserContext);
     const { addNotification } = useContext(NotificationContext);
     // Hooks
     const { submitForm } = useSubmit(showDebugging);
@@ -71,7 +73,8 @@ const Signup = () => {
             localStorage.setItem('refresh_token', response.refresh);
             debug(showDebugging, 'Sign up successful', response);
             await addNotification(true, 'Welcome!');
-            navigate('/home');
+            setIsAuthenticated(true);
+            navigate('/profile');
         } else {
             await addNotification(false, "Couldn't sign you up :(");
         }

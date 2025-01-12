@@ -51,13 +51,18 @@ export default defineConfig({
                 __dirname,
                 './src/context/notification/NotificationContext',
             ),
-            // @BorderSeparator
+            // BorderSeparator
             '@border-separator': path.resolve(
                 __dirname,
                 './src/components/separators/border-separator/BorderSeparator',
             ),
             // Debug
             '@debug': path.resolve(__dirname, './src/utils/log'),
+            // BasicButton
+            '@basic-button': path.resolve(
+                __dirname,
+                './src/components/buttons/basic-button/BasicButton',
+            ),
         },
     },
 });

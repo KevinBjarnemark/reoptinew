@@ -79,7 +79,7 @@ export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
             Object.entries(errorDetails).forEach(([field, value]) => {
                 value.forEach((errorMessage) => {
                     addAlert(
-                        `${formatErrorIdentifier(field + ':')}` +
+                        `${formatErrorIdentifier(field + ': ')}` +
                             `${errorMessage}`,
                         'Server Error',
                     );

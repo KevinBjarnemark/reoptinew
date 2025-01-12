@@ -1,5 +1,5 @@
 import style from './BasicForm.module.css';
-import { SubmitButton } from '../../buttons/SubmitButton';
+import SubmitButton from '../../buttons/submit-button/SubmitButton';
 import { Link } from 'react-router-dom';
 
 const Input = (props) => {
@@ -129,7 +129,7 @@ const ErrorMessage = (props) => {
     return <p className={`${style['error-message']} mt-5`}>{text}</p>;
 };
 
-export const BasicForm = (props) => {
+const BasicForm = (props) => {
     const { children, submitButtonProps = {} } = props;
 
     return (
@@ -149,3 +149,5 @@ BasicForm.Image = Image;
 BasicForm.Border = Border;
 BasicForm.Checkbox = Checkbox;
 BasicForm.ErrorMessage = ErrorMessage;
+
+export default BasicForm;

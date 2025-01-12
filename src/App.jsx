@@ -17,6 +17,7 @@ import NotificationProvider from '@notification-provider';
 // Load pages lazily
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
+const Profile = lazy(() => import('./pages/profile/Profile'));
 
 const AppRoutes = () => {
     const { isAuthenticated } = useContext(UserContext);
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         return (
             <Routes>
                 <Route path="/*" element={<></>}></Route>
+                <Route path="/profile" element={<Profile />}></Route>
             </Routes>
         );
     } else {

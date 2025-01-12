@@ -35,6 +35,26 @@ const useSubmit = (showDebugging = true) => {
     );
 
     /**
+     * Builds the final form data, referencing the formDataDraft.
+     *
+     * @param {object}  formDataDraft Any fields that are relevant for
+     * the backend.
+     * @returns {FormData}
+     * @throws Errors must be handled by the caller
+     */
+    const buildFormData = (formDataDraft) => {
+        const formData = new FormData();
+        Object.entries(formDataDraft).forEach(([key, value]) => {
+            if (value !== null) {
+                debug(showDebugging, `Appending form data (${key})`, value);
+                formData.append(key, value);
+            }
+        });
+
+        return formData;
+    };
+
+    /**
      * Handles form submission by validating data, sending it to the backend,
      * and managing responses.
      *
@@ -102,16 +122,11 @@ const useSubmit = (showDebugging = true) => {
             debugMessages = {},
         } = data;
 
-        // Validate form before sending to the backend
         addLoadingPoint();
         try {
+            // Validate form before sending to the backend
             validateForm(); // Should throw custom errors
         } catch (error) {
-            /* 
-                TODO! (UX PROBLEM)
-                If validateForm throws an unexpected error it 
-                will be displayed to the client! 
-            */
             const errorMessage =
                 error.message || 'Validation failed. Please try again.';
             debug(showDebugging, 'Frontend validation failed', errorMessage);
@@ -124,17 +139,7 @@ const useSubmit = (showDebugging = true) => {
         addLoadingPoint();
         try {
             // Convert form data draft into FormData
-            const formData = new FormData();
-            Object.entries(formDataDraft).forEach(([key, value]) => {
-                if (value !== null) {
-                    debug(
-                        showDebugging,
-                        `Appending form data (${key})`,
-                        value,
-                    );
-                    formData.append(key, value);
-                }
-            });
+            const formData = buildFormData(formDataDraft);
 
             // Send form data to backend
             const response = await fetchAPI(relativeURL, {

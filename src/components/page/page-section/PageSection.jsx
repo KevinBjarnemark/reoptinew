@@ -29,7 +29,9 @@ const PageSection = (props) => {
                     borderRadius: '15px',
                 }}
             >
-                <h5 className={`${style['title']} mt-3`}>{title}</h5>
+                {title ? (
+                    <h5 className={`${style['title']} mt-3`}>{title}</h5>
+                ) : null}
                 {children}
             </div>
         </section>
