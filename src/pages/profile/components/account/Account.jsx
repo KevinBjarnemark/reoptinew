@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import style from './Account.module.css';
 import UserContext from '../../../../context/UserContext';
-import defaultAvatarImage from '../../../../assets/images/user/default-avatar.webp';
+import defaultAvatarImage from '@default-avatar-image';
 import DeleteAccount from '../delete-account/DeleteAccount';
 
 const ProfileImage = ({ src }) => {
@@ -9,7 +9,8 @@ const ProfileImage = ({ src }) => {
         <div className={`flex-column-relative ${style['image-container']}`}>
             <img
                 className={`flex-column-relative ${style['image']}`}
-                src={src ? src : defaultAvatarImage} // Fallback to default image
+                // Fallback to default image
+                src={src ? src : defaultAvatarImage}
                 alt="Profile image"
             />
         </div>

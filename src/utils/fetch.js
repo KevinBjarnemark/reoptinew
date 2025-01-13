@@ -1,3 +1,5 @@
+import { env } from '../../env.js';
+
 /**
  * Makes an API call by appending a relative path to the base API URL.
  *
@@ -10,7 +12,7 @@
  * @throws Errors must be handled by the caller
  */
 export const fetchAPI = async (relativePath, fetchObject = {}) => {
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = env.VITE_API_URL;
     const response = await fetch(`${API_URL}${relativePath}`, fetchObject);
     return response;
 };

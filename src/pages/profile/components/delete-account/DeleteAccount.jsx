@@ -12,7 +12,7 @@ import useSubmit from '../../../../hooks/forms/useSubmit';
 import { debug } from '@debug';
 import PopUp from '../../../../components/pop-ups/pop-up/PopUp';
 import BasicButton from '@basic-button';
-import { clearAuthTokens } from '../../../../functions/authentication/accessToken';
+import { clearAuthTokens } from '@authentication/accessToken';
 import { useNavigate } from 'react-router-dom';
 
 const FormContent = () => {
@@ -177,7 +177,8 @@ const DeleteAccount = () => {
             <BasicButton
                 text={'Delete account'}
                 buttonProps={{
-                    className: `flex-column-absolute ${style['delete-button']}`,
+                    className:
+                        'flex-column-absolute ' + `${style['delete-button']}`,
                     onClick: () => {
                         setShowPasswordConfirm(true);
                     },

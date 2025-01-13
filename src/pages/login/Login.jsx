@@ -8,6 +8,7 @@ import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import BorderSeparator from '@border-separator';
 import { useNavigate } from 'react-router-dom';
+import { debug } from '@debug';
 
 const Login = () => {
     const showDebugging = true;
@@ -37,6 +38,9 @@ const Login = () => {
      * to the backend.
      */
     const handleSubmit = async () => {
+        // Used in tests
+        debug(showDebugging, 'Clicked the log in button', formDataDraft);
+        // Simulated loading effect
         await simulateLoading();
         const response = await submitForm({
             validateForm,

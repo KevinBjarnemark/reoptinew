@@ -1,9 +1,6 @@
 import { useContext } from 'react';
 import UserContext from '../../../context/UserContext';
-import {
-    getRefreshToken,
-    clearAuthTokens,
-} from '../../../functions/authentication/accessToken';
+import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';
 import useSubmit from '../../../hooks/forms/useSubmit';

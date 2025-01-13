@@ -1,6 +1,6 @@
 import { debug } from '@debug';
 import useSubmit from '../../hooks/forms/useSubmit';
-import { getRefreshToken } from '../../functions/authentication/accessToken';
+import { getRefreshToken } from '@authentication/accessToken';
 
 const useTokens = (showDebugging = true) => {
     const { submitData } = useSubmit(showDebugging);

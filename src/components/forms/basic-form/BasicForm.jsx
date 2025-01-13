@@ -136,6 +136,7 @@ const BasicForm = (props) => {
         <form
             className="flex-column-relative align-items-center 
             mt-4 mb-5 w-100"
+            role="form"
         >
             {children}
             <SubmitButton {...submitButtonProps} />
