@@ -1,10 +1,36 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import legacy from '@vitejs/plugin-legacy';
+import { resolve } from 'path';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { PATH_ALIASES } from './constants';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * This function reduces repetition by using a single source of
+ * truth, PATH_ALIASES in (constants.js) to generate Vite-compatible
+ * module map.
+ *
+ * Example:
+ *
+ * Turns:
+ * 'custom-name: '<current-directory>/relative-path',
+ * Into this:
+ * '@custom-name': '<current-directory>/relative-path',
+ *
+ * @returns {object}
+ * @throws Errors can be handled by the caller.
+ */
+const getPathAliasesViteFormat = () => {
+    let result = {};
+    Object.entries(PATH_ALIASES).forEach(([alias, relativePath]) => {
+        result[`@${alias}`] = resolve(__dirname, `${relativePath}`);
+    });
+    return result;
+};
+const pathAliasesViteFormat = getPathAliasesViteFormat();
 
 export default defineConfig({
     plugins: [
@@ -20,49 +46,6 @@ export default defineConfig({
         }),
     ],
     resolve: {
-        alias: {
-            // App loading context
-            '@app-loading-context': path.resolve(
-                __dirname,
-                './src/context/loading/app-loading/AppLoadingContext',
-            ),
-            // App loading provider
-            '@app-loading-provider': path.resolve(
-                __dirname,
-                './src/context/loading/app-loading/AppLoadingProvider',
-            ),
-            // General loading context
-            '@general-loading-context': path.resolve(
-                __dirname,
-                './src/context/loading/general-loading/GeneralLoadingContext',
-            ),
-            // General loading provider
-            '@general-loading-provider': path.resolve(
-                __dirname,
-                './src/context/loading/general-loading/GeneralLoadingProvider',
-            ),
-            // Notification provider
-            '@notification-provider': path.resolve(
-                __dirname,
-                './src/context/notification/NotificationProvider',
-            ),
-            // Notification provider
-            '@notification-context': path.resolve(
-                __dirname,
-                './src/context/notification/NotificationContext',
-            ),
-            // BorderSeparator
-            '@border-separator': path.resolve(
-                __dirname,
-                './src/components/separators/border-separator/BorderSeparator',
-            ),
-            // Debug
-            '@debug': path.resolve(__dirname, './src/utils/log'),
-            // BasicButton
-            '@basic-button': path.resolve(
-                __dirname,
-                './src/components/buttons/basic-button/BasicButton',
-            ),
-        },
+        alias: { ...pathAliasesViteFormat },
     },
 });
