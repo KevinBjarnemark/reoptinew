@@ -7,11 +7,11 @@ import {
     within,
     fireEvent,
 } from '@testing-library/react';
-import { testLogs } from '../../../src/utils/log';
-import App from '../../../src/App';
+import { testLogs } from '../src/utils/log';
+import App from '../src/App';
 
 // Mock the environment
-jest.mock('../../../env.js', () => ({
+jest.mock('../env.js', () => ({
     env: {
         VITE_API_URL: 'http://127.0.0.1:8000',
         MODE: 'development',
@@ -31,10 +31,8 @@ describe('App', () => {
     // 2. Submits the form and checks if the formdata state was
     // updated by validating the debug logs.
     test('login page form', async () => {
-        let container;
         await act(async () => {
-            const renderedApp = render(<App />);
-            container = renderedApp.container;
+            render(<App />);
         });
 
         // Simulate user input for username and password

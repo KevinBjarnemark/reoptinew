@@ -1,6 +1,3 @@
-// Handles `import.meta.env` in tests with Jest, as Jest doesn't
-// natively support Vite's `import.meta` syntax. It also facilitates
-// mocking in tests with Jest.
-export let env = {
-    ...import.meta.env,
-};
+// Since Jest doesn't natively support Vite's `import.meta` syntax,
+// this file is centralized and expected to be mocked with Jest.
+export const env = { ...import.meta.env };

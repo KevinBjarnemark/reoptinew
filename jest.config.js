@@ -35,7 +35,6 @@ const pathAliasesJestFormat = getPathAliasesJestFormat();
 
 export default {
     testEnvironment: 'jest-environment-jsdom',
-
     testMatch: ['**/tests/**/*.test.js'],
     moduleFileExtensions: ['js', 'jsx'],
     setupFiles: [`${__dirname}/jest.setup.js`],
@@ -46,7 +45,8 @@ export default {
         // Mock all CSS files
         '^.+\\.css$': 'identity-obj-proxy',
         // Mock specified file types
-        '^.+\\.(jpg|jpeg|png|gif|webp|svg)$': `${__dirname}\\__mocks__\\fileMock.js`,
+        '^.+\\.(jpg|jpeg|png|gif|webp|svg)$':
+            __dirname + `\\__mocks__\\fileMock.js`,
         // All path aliases (from env.js)
         ...pathAliasesJestFormat,
     },
