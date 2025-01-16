@@ -1,9 +1,8 @@
 # Reoptinew
 
-**Navigate to the live app** [here](https://reoptinew-09d333f23d8e.herokuapp.com/) 🔥
-
 ## Table of Contents
 
+- 🗺️ [Project Map](#map)
 - 🌐 [API and GitHub Projects](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
@@ -13,6 +12,21 @@
 - 🖥️ [Code Documentation](#code-documentation)
 - ✨ [Credits](#credits)
 - 🖊️ [References](#references)
+
+## Project Map 
+
+The "map" below provides an overview of key resources in this project. 
+
+#### External resources
+
+- 🖥️ [Live web app](https://reoptinew-09d333f23d8e.herokuapp.com/)  
+- 🌐 [API Repository (with documentation)](https://github.com/KevinBjarnemark/reoptinew-api)  
+
+#### Documentation
+
+- 📉 [First iteration](docs/iteration_1/README.md)  
+- 📉 [Sprints](docs/iteration_1/sprints)  
+- 📃 [GitHub Projects (Kanban)](https://github.com/users/KevinBjarnemark/projects/10).
 
 ## API
 
@@ -172,6 +186,28 @@ Prettier ensures consistent code formatting by parsing the code with default and
 
 </details>
 
+<details>
+    <summary>
+        React Testing Library
+    </summary>
+
+**A lightweight library for testing React components** 
+
+React Testing Library focuses on testing components as users interact with them, rather than testing implementation details. It encourages best practices by querying the DOM in ways that simulate real user actions and accessibility standards.
+
+</details>
+
+<details>
+    <summary>
+         Identity Obj Proxy
+    </summary>
+
+**A Jest utility for mocking CSS Modules in JavaScript tests.**
+
+This library simplifies testing components that rely on CSS Modules by mapping class names to their string equivalents. This ensures CSS imports in your tests don’t break and allows you to verify that the correct class names are applied without worrying about the actual CSS.
+
+</details>
+
 ## Philosophy
 
 ### Bootstrap
@@ -204,6 +240,23 @@ I choose to work with Jest in this project due to its maturity and widespread ad
 That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
 
 ## Code Documentation
+
+### Debugging
+
+Debugging functions have been moderately sprinkled throughout the project. These custom functions are designed to write logs to the console **only in development mode**, using `import.meta.env.MODE` to detect the environment. As a result they are automatically stripped out during a Vite production build.
+
+**Example:**  
+```javascript
+debug(showDebugging, 'Sign up successful', response);
+```
+
+The benefits of this approach include: 
+
+- Simplifying troubleshooting
+- Offering global overview for advanced development needs. 
+- Assisting with asserting tests in complex scenarios. For example, these logs can capture `useState` values or other internal states when interacting with deeply nested components that rely on hooks and contexts.
+- Saving time by avoiding repetative console.log statements that need to be written and manually removed.
+
 
 ### Error handling
 
@@ -271,15 +324,23 @@ Keep an eye out for this (example below) in doc strings. These are added to the 
 
 Many techniques have been used to centralize functionality, avoid repetition, and streamline the code base as a whole. Best practices have been followed thoroughly throughout the development with:
 
-- [Global constants](src/utils/constants.js) 
-- Conditional environment variables (Vite)
-- [Global utilizers](src/utils)
-- Functional components
-- Hooks
+- [Global Constants](src/utils/constants.js) 
+- Conditional Environment Variables (Vite)
+- [Global Utilities](src/utils)
+- Functional Components
+- Custom Hooks
 - Contexts
-- [Global functions](src/functions)
+- [Global Functions](src/functions)
 
 ## Credits
+
+### Code
+
+- **Common Imports for Tests**
+    - [raquelhortab](https://stackoverflow.com/users/6878997/raquelhortab) in [this thread](https://stackoverflow.com/questions/71378709/is-there-a-way-to-predefine-common-imports-for-all-test-files-in-jest) showcased how to predefine common imports for all tests. In [this file](jest.setup.js) I've utilized this solution but using `globalThis` instead of the `global` object, which isn't supported in ES Modules.  
+
+- **Conditional Environment Variables with Seamless Mocking**
+    - [fuhrmanator](https://stackoverflow.com/users/1168342/fuhrmanator) in [this thread](https://stackoverflow.com/questions/72128718/test-suite-failed-to-run-import-meta-env-vite) inspired me to avoid importing environment variables with with `import.meta.env`. The approach is to only import it once and then mock that file in Jest. I didn't use his solution exactly, but his approach inspired me. Instead of directly importing with Vite, environment variables are imported only once in [env.js](env.js).
 
 ### Fonts
 
