@@ -17,7 +17,8 @@ Relevant files:
 - [Sign up page](../../../../src/pages/signup/Signup.jsx)
 
 
-![Submit forms and data](/reoptinew/docs/assets/development_process/diagrams/submit-forms-and-data.webp "A flowchart explaining the event flow of submitting data and forms.")
+![Submit forms and data](../../../assets/development-process/diagrams/submit-forms-and-data.webp "A flowchart explaining the event flow of submitting data and forms.")
+
 
 ## Navigation
 

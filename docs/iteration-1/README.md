@@ -16,11 +16,11 @@ The goal for this iteration is to build a working web application from the groun
 
 The project has been divided into **3 sprints** and these have been organized with GitHub Projects. The user stories have been labled with MoSCoW labels to better prioritize them. 
 
-![Github Projects and MoSCoW labels](../assets/iteration_1/sprints_and_moscow.webp "A screenshot of GitHUb Projects and GitHub issues.")
+![Github Projects and MoSCoW labels](../assets/iteration-1/sprints-and-moscow.webp "A screenshot of GitHUb Projects and GitHub issues.")
 
 The initial product backlog (Google Sheets) can be found [here](https://docs.google.com/spreadsheets/d/1lR2MrSBqiQ_LjI35rekJWUB742Dfsd-08KdnPGidZPU/edit?usp=sharing). 
 
-![Product backlog](../assets/iteration_1/product_backlog.webp "A screenshot of a spreadsheet containing the product backlog.")
+![Product backlog](../assets/iteration-1/product-backlog.webp "A screenshot of a spreadsheet containing the product backlog.")
 
 ## Summary
 
@@ -37,5 +37,4 @@ Let's dig into the results of this interation.
 Below you can find completion notes for all sprints.
 
 #### Sprint 1
-
-![Sprint 1 completion notes](/reoptinew/docs/assets/iteration_1/sprints/sprint_1/sprint-1-completion-notes.webp "An illustration with calculations from the first sprint.")
+![Sprint 1 completion notes](../assets/iteration-1/sprints/sprint-1/sprint-1-completion-notes.webp "An illustration with calculations from the first sprint.")

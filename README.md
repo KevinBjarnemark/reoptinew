@@ -24,8 +24,8 @@ The "map" below provides an overview of key resources in this project.
 
 #### Documentation
 
-- 📉 [First iteration](docs/iteration_1/README.md)  
-- 📉 [Sprints](docs/iteration_1/sprints)  
+- 📉 [First iteration](docs/iteration-1/README.md)  
+- 📉 [Sprints](docs/iteration-1/sprints)  
 - 📃 [GitHub Projects (Kanban)](https://github.com/users/KevinBjarnemark/projects/10).
 
 ## API
@@ -38,7 +38,7 @@ The Reoptinew web app uses a decoupled architecture, separating the frontend and
 
 The design of this app was originally crafted using illustrations and vector editing tools to explore how the components could coexist.
 
-![Screenshot](docs/assets/development_process/initial_design.gif "A GIF-video of multiple vector illustrations.")
+![Screenshot](docs/assets/development-process/initial-design.gif "A GIF-video of multiple vector illustrations.")
 
 ### Logo and brand name
 
@@ -107,7 +107,7 @@ Features, such as the "Logged in as Joe" indicator, keep the user informed about
 
 ## Agile
 
-The Reoptinew project has been developed using an **Agile methodology** with only a single iteration so far. In-depth documentation for the first iteration, its sprints, diagrams, and more can be found [here](docs/iteration_1).
+The Reoptinew project has been developed using an **Agile methodology** with only a single iteration so far. In-depth documentation for the first iteration, its sprints, diagrams, and more can be found [here](docs/iteration-1).
 
 ## Error handling
 
