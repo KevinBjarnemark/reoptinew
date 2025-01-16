@@ -85,29 +85,43 @@ const UserProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        let timeId;
+
         // Load profile
         if (isAuthenticated !== false) {
             initLoadProfile();
         }
 
-        // Refresh the access token before expiration
-        const timeId = setInterval(
-            () => {
-                if (isAuthenticated) {
-                    debug(
-                        true,
-                        'Refreshing the access token before expiring.',
-                        '',
-                    );
-                    initRefreshAccessToken();
-                }
-                // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
-            },
-            (ACCESS_TOKEN_LIFETIME - 1) * 60 * 1000,
-        );
+        /**
+         * Refreshes the access token before expiration
+         *
+         * @returns {void}
+         * @throws Errors must be handled by the caller
+         */
+        const refreshTokenPeriodically = () => {
+            timeId = setTimeout(
+                () => {
+                    if (isAuthenticated) {
+                        debug(
+                            true,
+                            'Refreshing the access token before expiring.',
+                            '',
+                        );
+                        initRefreshAccessToken();
+                        // Re-execute the interval
+                        refreshTokenPeriodically();
+                    }
+                    // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
+                },
+                (ACCESS_TOKEN_LIFETIME - 1) * 60 * 1000,
+            );
+        };
+        if (isAuthenticated) {
+            refreshTokenPeriodically();
+        }
 
         return () => {
-            clearInterval(timeId);
+            clearTimeout(timeId);
         };
 
         // initLoadProfile is a stable function that doesn't need to be
