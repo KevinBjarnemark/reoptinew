@@ -32,17 +32,23 @@ const FormContent = () => {
         confirm_password: '',
     });
 
+    const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
+
     /* Submit button props */
     const submitButtonProps = {
         text: 'Delete account',
         className: style['delete-button'],
         style: {
             backgroundColor: '#fe5a5a',
+            cursor: deleteButtonDisabled ? 'not-allowed' : 'pointer',
         },
         onClick: (e) => {
             e.preventDefault();
-            handleSubmit();
+            if (deleteButtonDisabled) {
+                handleSubmit();
+            }
         },
+        disabled: deleteButtonDisabled,
     };
 
     /**
@@ -90,6 +96,7 @@ const FormContent = () => {
      * backend.
      */
     const handleSubmit = async () => {
+        setDeleteButtonDisabled(true);
         const formIsReady = await prepareForm();
         const formIsValidated = validateForm();
 
@@ -130,6 +137,7 @@ const FormContent = () => {
         } else {
             await addNotification(false, "Couldn't delete your account.");
         }
+        setDeleteButtonDisabled(false);
     };
 
     return (
