@@ -8,7 +8,9 @@ import {
     fireEvent,
 } from '@testing-library/react';
 import { testLogs } from '../src/utils/log';
-import App from '../src/App';
+import { TestApp } from '../src/App';
+import Home from '../src/pages/home/Home';
+import Login from '../src/pages/login/Login';
 
 // Mock the environment
 jest.mock('../env.js', () => ({
@@ -21,7 +23,11 @@ jest.mock('../env.js', () => ({
 describe('App', () => {
     test('ensure app loading screen is visible', async () => {
         await act(async () => {
-            render(<App />);
+            render(
+                <TestApp>
+                    <Home />
+                </TestApp>,
+            );
         });
         expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     });
@@ -32,7 +38,11 @@ describe('App', () => {
     // updated by validating the debug logs.
     test('login page form', async () => {
         await act(async () => {
-            render(<App />);
+            render(
+                <TestApp>
+                    <Login />
+                </TestApp>,
+            );
         });
 
         // Simulate user input for username and password

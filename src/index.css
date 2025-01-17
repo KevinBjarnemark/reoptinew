@@ -76,6 +76,7 @@
 
 /* Variables */
 :root {
+    --color-brand-orange: #f0cb93; /* Important color! (Logo and more) */
     --sidebar-width: 58px;
     --sidebar-border-size: 2px;
     --header-height: 120px;

@@ -1,7 +1,6 @@
 import './App.css';
 import { lazy, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import UserContext from './context/UserContext';
 import UserProvider from './context/UserProvider';
 import AppLoadingContext from '@app-loading-context';
 import AppLoadingProvider from '@app-loading-provider';
@@ -15,43 +14,31 @@ import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 
 // Load pages lazily
+const Home = lazy(() => import('./pages/home/Home'));
+const Post = lazy(() => import('./components/posts/post/Post'));
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 
 const AppRoutes = () => {
-    const { isAuthenticated } = useContext(UserContext);
-
-    // User routes
-    if (isAuthenticated) {
-        return (
-            <Routes>
-                <Route path="/*" element={<></>}></Route>
-                <Route path="/profile" element={<Profile />}></Route>
-            </Routes>
-        );
-    } else {
-        // Guest routes
-        return (
-            <Routes>
-                <Route path="/*" element={<Login />}></Route>
-                <Route path="/signup" element={<Signup />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-            </Routes>
-        );
-    }
+    return (
+        <Routes>
+            <Route path="/*" element={<Home />}></Route>
+            <Route path="/post/:postId" element={<Post />} />
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+        </Routes>
+    );
 };
 
-const AppBody = () => {
+const AppBody = ({ children }) => {
     const { appLoading } = useContext(AppLoadingContext);
-
     return (
         <>
             <Header />
             <main>
-                <article>
-                    <AppRoutes />
-                </article>
+                <article>{children}</article>
                 <UserCard />
             </main>
             <Navigation />
@@ -61,16 +48,14 @@ const AppBody = () => {
     );
 };
 
-function App() {
+export function AppContextWrap({ children }) {
     return (
         <Router>
             <GeneralLoadingProvider>
                 <AlertProvider>
                     <NotificationProvider>
                         <UserProvider>
-                            <AppLoadingProvider>
-                                <AppBody />
-                            </AppLoadingProvider>
+                            <AppLoadingProvider>{children}</AppLoadingProvider>
                         </UserProvider>
                     </NotificationProvider>
                 </AlertProvider>
@@ -79,4 +64,20 @@ function App() {
     );
 }
 
-export default App;
+export const App = () => {
+    return (
+        <AppContextWrap>
+            <AppBody>
+                <AppRoutes />
+            </AppBody>
+        </AppContextWrap>
+    );
+};
+
+export const TestApp = ({ children }) => {
+    return (
+        <AppContextWrap>
+            <AppBody>{children}</AppBody>
+        </AppContextWrap>
+    );
+};

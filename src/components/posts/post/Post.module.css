@@ -1,0 +1,34 @@
+.post-under {
+    transform: rotate(-2deg);
+    width: 320px;
+    height: 180px;
+    background-color: #ffffff;
+    border: 3.5px solid #4c555a;
+    border-radius: 6px;
+    margin: 20px 10px;
+}
+.post {
+    left: 0;
+    top: 0;
+    transform: rotate(2deg);
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    background-color: #ffffff;
+    border: 3.5px solid #4c555a;
+    border-radius: 6px;
+    padding: 6px 15px;
+    transition: transform 0.07s;
+}
+.post:hover {
+    transform: rotate(-2deg) scale(1.05);
+    box-shadow: 0 0 6px 4px var(--color-brand-orange);
+}
+
+.image {
+    object-fit: contain;
+    aspect-ratio: 16 / 9;
+    border-radius: 7px;
+    width: 96%;
+    background-color: #3a3e41;
+}

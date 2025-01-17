@@ -41,11 +41,11 @@
     justify-content: center;
     align-items: center;
     border-radius: 6px;
-    background-color: #9a7b58;
+    background-color: #de6c6c;
     color: #ffffff;
 }
 .section-close:hover {
-    background-color: #a58560;
+    background-color: #ea6565;
 }
 
 .section-item h5 {
