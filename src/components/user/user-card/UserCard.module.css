@@ -1,4 +1,3 @@
-
 .container {
     bottom: 0;
     right: 0;
@@ -35,5 +34,27 @@
     background-color: #ffffff;
     width: 12px;
     height: 12px;
-    margin: 0 10px
+    margin: 0 10px;
+}
+
+.card-area {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-card-button {
+    width: 97%;
+    background-color: #c9d1d4;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
+    height: 85%;
+    border-radius: 2px;
+    font-weight: 300;
+}
+.user-card-button:hover {
+    background-color: #b7c3c6;
 }

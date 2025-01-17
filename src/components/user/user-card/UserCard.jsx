@@ -1,10 +1,57 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../../context/UserContext';
 import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';
 import useSubmit from '../../../hooks/forms/useSubmit';
 import AlertContext from '../../../context/alert-context/AlertContext';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router';
+
+const UserCardButton = () => {
+    const { isAuthenticated } = useContext(UserContext);
+
+    const url = useLocation();
+
+    const [buttonText, setButtonText] = useState('Log in/sign up');
+    const [buttonLink, setButtonLink] = useState('Log in/sign up');
+
+    useEffect(() => {
+        const handleButtonProps = () => {
+            if (!isAuthenticated) {
+                switch (url.pathname) {
+                    default: {
+                        setButtonText('Log in/sign up');
+                        setButtonLink('/signup');
+                        break;
+                    }
+                    case '/signup': {
+                        setButtonText('Log in');
+                        setButtonLink('/login');
+                        break;
+                    }
+                    case '/login': {
+                        setButtonText('Sign up');
+                        setButtonLink('/signup');
+                        break;
+                    }
+                }
+            } else {
+                setButtonText('Profile');
+                setButtonLink('/profile');
+            }
+        };
+        handleButtonProps();
+    }, [url, isAuthenticated]);
+    return (
+        <Link
+            to={buttonLink}
+            className={`flex-column-relative ${style['user-card-button']}`}
+        >
+            {buttonText}
+        </Link>
+    );
+};
 
 export const UserCard = () => {
     const showDebugging = true;
@@ -82,6 +129,10 @@ export const UserCard = () => {
                         ? 'Logged in as a ' +
                           `${profile?.username ? profile?.username : ''}`
                         : 'Viewing as a guest'}
+                </div>
+
+                <div className={`flex-column-relative ${style['card-area']}`}>
+                    <UserCardButton />
                 </div>
             </section>
         </>
