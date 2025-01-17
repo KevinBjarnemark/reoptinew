@@ -1,5 +1,6 @@
 import { debug } from '@debug';
 import { NON_FIELD_ERRORS_STRING } from './constants';
+import { isObject } from './helpers';
 
 /**
  * Creates a structured error object to streamline backend error handling.
@@ -47,18 +48,6 @@ export const formatErrorIdentifier = (text = '') => {
     } else {
         return snakeCaseToNormal.split(':')[1];
     }
-};
-
-/**
- * Check if the inputed value is an object.
- *
- */
-const isObject = (value, requireContent = false) => {
-    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-        return false; // Not an object
-    }
-
-    return requireContent ? Object.keys(value).length > 0 : true;
 };
 
 /**

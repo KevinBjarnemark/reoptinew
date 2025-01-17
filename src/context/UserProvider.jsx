@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { debug } from '@debug';
 import UserContext from './UserContext';
-import useSubmit from '../hooks/forms/useSubmit';
+import useAPI from '../hooks/forms/useAPI';
 import useTokens from '../hooks/authentication/useTokens';
 import AlertContext from './alert-context/AlertContext';
 import { ACCESS_TOKEN_LIFETIME } from '../utils/constants';
@@ -12,7 +12,7 @@ const UserProvider = ({ children }) => {
 
     // Contexts
     const { addAlert } = useContext(AlertContext);
-    const { submitData } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
     const { refreshAccessToken, getAccessToken } = useTokens(showDebugging);
 
     // States
@@ -45,15 +45,10 @@ const UserProvider = ({ children }) => {
         }
         // Fetch the user profile
         debug(showDebugging, 'Fetching the user profile', '');
-        const response = await submitData({
+        const response = await apiRequest({
             relativeURL: '/users/profile/',
-            fetchObject: {
-                method: 'GET',
-                headers: {
-                    // eslint-disable-next-line max-len
-                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-                },
-            },
+            authorizationHeader: true,
+            method: 'GET',
             debugMessages: {
                 backendError: 'Failed fetching user profile (backend)',
                 frontendError: 'Failed fetching user profile (frontend)',

@@ -62,33 +62,27 @@ const EngageButtons = ({ likes, comments }) => {
     );
 };
 
-const EngagementPanel = ({ engagementPanel, likes, comments }) => {
-    const { savesMoney, savesTime, isUseful } = engagementPanel;
-
-    if (engagementPanel) {
-        return (
-            <section className={`flex-column-relative ${style.container}`}>
-                <div className={style['horizontal-separator']}></div>
-                <RatingProgressBar
-                    icon="fa-solid fa-dollar-sign"
-                    value={savesMoney ? savesMoney : 0}
-                />
-                <RatingProgressBar
-                    icon="fa-regular fa-clock"
-                    value={savesTime ? savesTime : 0}
-                />
-                <RatingProgressBar
-                    icon="fa-solid fa-hand-fist"
-                    value={isUseful ? isUseful : 0}
-                />
-                <div className={style['horizontal-separator']}></div>
-                <EngageButtons {...{ likes, comments }} />
-                <div className={style['horizontal-separator']}></div>
-            </section>
-        );
-    }
-
-    return null;
+const EngagementPanel = ({
+    savesMoney = 0,
+    savesTime = 0,
+    isUseful = 0,
+    likes,
+    comments,
+}) => {
+    return (
+        <section className={`flex-column-relative ${style.container}`}>
+            <div className={style['horizontal-separator']}></div>
+            <RatingProgressBar
+                icon="fa-solid fa-dollar-sign"
+                value={savesMoney}
+            />
+            <RatingProgressBar icon="fa-regular fa-clock" value={savesTime} />
+            <RatingProgressBar icon="fa-solid fa-hand-fist" value={isUseful} />
+            <div className={style['horizontal-separator']}></div>
+            <EngageButtons {...{ likes, comments }} />
+            <div className={style['horizontal-separator']}></div>
+        </section>
+    );
 };
 
 export default EngagementPanel;

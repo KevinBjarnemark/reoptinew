@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
-import useSubmit from '../../hooks/forms/useSubmit';
+import useAPI from '../../hooks/forms/useAPI';
 import { validateCommon } from '../../functions/validation/validate';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
@@ -14,7 +14,7 @@ const Login = () => {
     const showDebugging = true;
     const { setIsAuthenticated } = useContext(UserContext);
     const { addNotification } = useContext(NotificationContext);
-    const { submitForm } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
     const { simulateLoading } = useSimulateLoading();
     const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ const Login = () => {
         debug(showDebugging, 'Clicked the log in button', formDataDraft);
         // Simulated loading effect
         await simulateLoading();
-        const response = await submitForm({
+        const response = await apiRequest({
             validateForm,
             formDataDraft,
             relativeURL: '/users/login/',

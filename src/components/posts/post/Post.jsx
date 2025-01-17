@@ -34,16 +34,18 @@ const Post = ({ post }) => {
             key={post.id}
         >
             <button
-                className={`flex-row-absolute ${style.post}`}
                 key={post.id}
+                className={`flex-row-absolute ${style.post}`}
             >
                 <div className={`flex-column-relative`} key={post.id}>
                     <h6>{post.title}</h6>
                     <Image image={{ src: post.image }} />
                 </div>
                 <EngagementPanel
-                    engagementPanel={post.engagementPanel}
-                    likes={post.likes}
+                    savesMoney={0}
+                    savesTime={0}
+                    isUseful={0}
+                    likes={post?.likes}
                     comments={post?.comments?.length}
                 />
             </button>

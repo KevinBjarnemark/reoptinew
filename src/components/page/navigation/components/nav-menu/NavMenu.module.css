@@ -13,6 +13,9 @@
     font-size: 230%;
     color: #a1acb1;
 }
+.icon-button:hover {
+    background-color: #3c4244;
+}
 
 .section-item {
     width: 100%;

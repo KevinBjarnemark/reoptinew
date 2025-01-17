@@ -3,7 +3,7 @@ import UserContext from '../../../context/UserContext';
 import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';
-import useSubmit from '../../../hooks/forms/useSubmit';
+import useAPI from '../../../hooks/forms/useAPI';
 import AlertContext from '../../../context/alert-context/AlertContext';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
@@ -58,7 +58,7 @@ export const UserCard = () => {
     const { profile, isAuthenticated, setIsAuthenticated } =
         useContext(UserContext);
     const { addAlert } = useContext(AlertContext);
-    const { submitData } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
 
     /**
      * Uses the onSubmit hook to submit the logout data to the
@@ -77,17 +77,10 @@ export const UserCard = () => {
             return null;
         }
 
-        const response = await submitData({
+        const response = await apiRequest({
             relativeURL: '/users/logout/',
-            fetchObject: {
-                method: 'POST',
-                headers: {
-                    // eslint-disable-next-line max-len
-                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refresh: refreshToken }),
-            },
+            authorizationHeader: true,
+            body: { refresh: refreshToken },
             debugMessages: {
                 backendError: 'Log out failed (backend)',
                 frontendError: 'Log out failed (frontend)',

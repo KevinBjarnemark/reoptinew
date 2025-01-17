@@ -8,7 +8,7 @@ import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
 import { validateCommon } from '../../../../functions/validation/validate';
 import useSimulateLoading from '../../../../hooks/effects/useSimulateLoading';
-import useSubmit from '../../../../hooks/forms/useSubmit';
+import useAPI from '../../../../hooks/forms/useAPI';
 import { debug } from '@debug';
 import PopUp from '../../../../components/pop-ups/pop-up/PopUp';
 import BasicButton from '@basic-button';
@@ -25,7 +25,7 @@ const FormContent = () => {
     const navigate = useNavigate();
     const { addAlert } = useContext(AlertContext);
     const { simulateLoading } = useSimulateLoading(showDebugging);
-    const { submitData } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
     const formDataDraft = useRef({
         username: '',
         password: '',
@@ -105,18 +105,12 @@ const FormContent = () => {
             return;
         }
         await simulateLoading();
-        const response = await submitData({
+        const response = await apiRequest({
             relativeURL: '/users/delete-account/',
-            fetchObject: {
-                method: 'DELETE',
-                headers: {
-                    // eslint-disable-next-line max-len
-                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    password: formDataDraft.current.password,
-                }),
+            method: 'DELETE',
+            authorizationHeader: true,
+            body: {
+                password: formDataDraft.current.password,
             },
             debugMessages: {
                 backendError: 'Account deletion failed (backend)',

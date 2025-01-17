@@ -22,4 +22,5 @@ export const PATH_ALIASES = {
     'basic-button': './src/components/buttons/basic-button/BasicButton',
     authentication: './src/functions/authentication',
     'default-avatar-image': './src/assets/images/user/default-avatar.webp',
+    useSimulateLoading: './src/hooks/effects/useSimulateLoading',
 };

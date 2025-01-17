@@ -13,7 +13,7 @@
 **Flowcharts** like the one below has been a part of the creation process. When the authentication system was developed, there was a desition of making a centralized system that handles errors and streamlines the process of submitting data to the backend. 
 
 Relevant files:
-- [Custom submit hook](../../../../src/hooks/forms/useSubmit.jsx) 
+- [Custom submit hook](../../../../src/hooks/forms/useAPI.jsx) 
 - [Sign up page](../../../../src/pages/signup/Signup.jsx)
 
 

@@ -1,9 +1,9 @@
-import Links from './components/links/Links';
+import SideBar from './components/side-bar/SideBar';
 
 const Navigation = () => {
     return (
         <nav>
-            <Links />
+            <SideBar />
         </nav>
     );
 };

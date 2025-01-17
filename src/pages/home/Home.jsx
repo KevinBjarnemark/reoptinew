@@ -1,66 +1,7 @@
+import { useState, useEffect } from 'react';
 import style from './Home.module.css';
 import Post from '../../components/posts/post/Post';
-
-const mockedData = [
-    {
-        id: 0,
-        title: 'Post 0',
-        image: null,
-        engagementPanel: {
-            savesMoney: 0,
-            savesTime: 50,
-            isUseful: 100,
-        },
-        comments: [
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-        ],
-        likes: 0,
-    },
-    {
-        id: 1,
-        title: 'Post 1',
-        image: null,
-        engagementPanel: {
-            savesMoney: 100,
-            savesTime: 50,
-            isUseful: 0,
-        },
-        comments: [
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-        ],
-        likes: 1,
-    },
-    {
-        id: 2,
-        title: 'Post 2',
-        image: null,
-        engagementPanel: {
-            savesMoney: 21,
-            savesTime: 66,
-            isUseful: 100,
-        },
-        comments: [],
-        likes: 3,
-    },
-    {
-        id: 3,
-        title: 'Post 3',
-        image: null,
-        engagementPanel: {
-            savesMoney: 1,
-            savesTime: 50,
-            isUseful: 99,
-        },
-        comments: [
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-            { createdAt: '2025-01-16 08:00', username: 'Joe', text: 'Hello' },
-        ],
-        likes: 5,
-    },
-];
+import useAPI from '../../hooks/forms/useAPI';
 
 const MappedPosts = ({ posts }) => {
     if (posts && Array.isArray(posts) && posts?.length > 0) {
@@ -75,9 +16,38 @@ const MappedPosts = ({ posts }) => {
 };
 
 const Home = () => {
+    const { apiRequest } = useAPI(true);
+    const [posts, setPosts] = useState(false);
+
+    const getAllPosts = async () => {
+        const init = async () => {
+            const response = await apiRequest({
+                relativeURL: '/posts/posts/',
+                debugMessages: {
+                    backendError: 'Post creation failed (backend)',
+                    frontendError: 'Post creation failed (frontend)',
+                    successfulBackEndResponse: 'Post creation successful',
+                },
+                method: 'GET',
+            });
+
+            if (response) {
+                console.log('Fetched posts successfully', response);
+                setPosts(response);
+            } else {
+                console.log("Couldn't fetch posts", response);
+            }
+        };
+        await init();
+    };
+
+    useEffect(() => {
+        getAllPosts();
+    }, []);
+
     return (
         <section className={`flex-column-relative ${style['page-container']}`}>
-            <MappedPosts posts={[...mockedData]} />
+            {posts?.length > 0 ? <MappedPosts posts={[...posts]} /> : null}
         </section>
     );
 };

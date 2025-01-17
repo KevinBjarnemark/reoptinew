@@ -4,7 +4,7 @@ import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '@debug';
 import { validateCommon } from '../../functions/validation/validate';
-import useSubmit from '../../hooks/forms/useSubmit';
+import useAPI from '../../hooks/forms/useAPI';
 import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
 import NotificationContext from '@notification-context';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ const Signup = () => {
     const { setIsAuthenticated } = useContext(UserContext);
     const { addNotification } = useContext(NotificationContext);
     // Hooks
-    const { submitForm } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
     const { simulateLoading } = useSimulateLoading(showDebugging);
     const navigate = useNavigate();
     // UseStates
@@ -57,7 +57,7 @@ const Signup = () => {
      */
     const handleSubmit = async () => {
         await simulateLoading();
-        const response = await submitForm({
+        const response = await apiRequest({
             validateForm,
             formDataDraft,
             relativeURL: '/users/signup/',

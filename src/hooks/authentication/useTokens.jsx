@@ -1,9 +1,9 @@
 import { debug } from '@debug';
-import useSubmit from '../../hooks/forms/useSubmit';
+import useAPI from '../../hooks/forms/useAPI';
 import { getRefreshToken } from '@authentication/accessToken';
 
 const useTokens = (showDebugging = true) => {
-    const { submitData } = useSubmit(showDebugging);
+    const { apiRequest } = useAPI(showDebugging);
 
     /**
      * Retrieves the access token from local storage or refreshes it
@@ -68,13 +68,10 @@ const useTokens = (showDebugging = true) => {
 
         // Fetch a new access token
         debug(showDebugging, 'Attempting to fetch a new access token', '');
-        const response = await submitData({
+        const response = await apiRequest({
             relativeURL: '/users/api/token/refresh/',
-            fetchObject: {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refresh: refreshToken }),
-            },
+            method: 'POST',
+            body: { refresh: refreshToken },
             debugMessages: {
                 backendError: 'Failed fetching access token (backend)',
                 frontendError: 'Failed fetching access token (frontend)',
