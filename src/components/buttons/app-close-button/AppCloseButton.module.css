@@ -1,0 +1,24 @@
+.button {
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 90px solid transparent;
+    border-right: 90px solid #484d4f;
+    border-bottom: 90px solid transparent;
+}
+.button:hover {
+    border-right: 90px solid var(--color-app-close-button);
+}
+.button:hover p {
+    color: #e4ebef;
+}
+
+.button p {
+    line-height: 0;
+    top: 30px;
+    right: 15px;
+    font-size: 170%;
+    color: #acb7be;
+}

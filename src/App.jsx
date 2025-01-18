@@ -5,6 +5,7 @@ import UserProvider from './context/UserProvider';
 import AppLoadingContext from '@app-loading-context';
 import AppLoadingProvider from '@app-loading-provider';
 import GeneralLoadingProvider from '@general-loading-provider';
+import PageDimProvider from './context/page-dim/PageDimProvider';
 import AlertProvider from './context/alert-context/AlertProvider';
 import AlertWindow from './components/alerts/alert-window/AlertWindow';
 import { UserCard } from './components/user/user-card/UserCard';
@@ -12,6 +13,9 @@ import AppLoading from './components/loading/AppLoading';
 import Header from './components/page/header/Header';
 import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
+import PageDim from './components/backgrounds/page-dim/PageDim';
+import AppCloseButton from './components/buttons/app-close-button/AppCloseButton';
+import AppCloseButtonProvider from './context/app-close-button/AppCloseButtonProvider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
@@ -45,6 +49,8 @@ const AppBody = ({ children }) => {
             </main>
             <Navigation />
             <AlertWindow />
+            <PageDim />
+            <AppCloseButton />
             {appLoading ? <AppLoading /> : null}
         </>
     );
@@ -54,13 +60,19 @@ export function AppContextWrap({ children }) {
     return (
         <Router>
             <GeneralLoadingProvider>
-                <AlertProvider>
-                    <NotificationProvider>
-                        <UserProvider>
-                            <AppLoadingProvider>{children}</AppLoadingProvider>
-                        </UserProvider>
-                    </NotificationProvider>
-                </AlertProvider>
+                <PageDimProvider>
+                    <AppCloseButtonProvider>
+                        <AlertProvider>
+                            <NotificationProvider>
+                                <UserProvider>
+                                    <AppLoadingProvider>
+                                        {children}
+                                    </AppLoadingProvider>
+                                </UserProvider>
+                            </NotificationProvider>
+                        </AlertProvider>
+                    </AppCloseButtonProvider>
+                </PageDimProvider>
             </GeneralLoadingProvider>
         </Router>
     );

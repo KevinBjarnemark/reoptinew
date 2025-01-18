@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import style from './Post.module.css';
 import EngagementPanel from './components/engagement-panel/EngagementPanel';
 import defaultImage1 from '../../../assets/images/post/default/1.webp';
 import defaultImage2 from '../../../assets/images/post/default/2.webp';
 import defaultImage3 from '../../../assets/images/post/default/3.webp';
 import defaultImage4 from '../../../assets/images/post/default/4.webp';
+import PageDimContext from '../../../context/page-dim/PageDimContext';
+import AppCloseButtonContext from '../../../context/app-close-button/AppCloseButtonContext';
 
 const defaultImages = [
     defaultImage1,
@@ -28,22 +30,34 @@ const Image = ({ image }) => {
 };
 
 const Post = ({ post, focusedPost, setFocusedPost, postsLength }) => {
+    const { setDim } = useContext(PageDimContext);
+    const { setShowAppCloseButton, appCloseButtonOnClickRef } = useContext(
+        AppCloseButtonContext,
+    );
     const focused = focusedPost ? focusedPost === post.id : false;
 
     const handleFocus = () => {
         setFocusedPost(post.id);
+        setDim(true);
+        setShowAppCloseButton(true);
+        appCloseButtonOnClickRef.current = handleClose;
     };
 
     const handleClose = () => {
         setFocusedPost(null);
+        setDim(false);
+        setShowAppCloseButton(false);
+        appCloseButtonOnClickRef.current = () => {};
     };
 
     const focusedStyle = focused
         ? {
-              width: '66vw',
+              width: '60%',
               zIndex: postsLength + 1,
               position: 'fixed',
-              top: 'var(--header-height)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
           }
         : {};
 
@@ -68,15 +82,6 @@ const Post = ({ post, focusedPost, setFocusedPost, postsLength }) => {
                     likes={post?.likes}
                     comments={post?.comments?.length}
                 />
-
-                {focused ? (
-                    <button
-                        className={`flex-row-absolute ${style['close-button']}`}
-                        onClick={handleClose}
-                    >
-                        X
-                    </button>
-                ) : null}
             </div>
         </section>
     );

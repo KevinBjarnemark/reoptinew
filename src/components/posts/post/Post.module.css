@@ -1,6 +1,7 @@
 .post-under {
     transform: rotate(-2deg);
     width: 280px;
+    max-height: 65vh;
     background-color: #ffffff;
     border: 3.5px solid #4c555a;
     border-radius: 6px;
@@ -18,6 +19,7 @@
     border: 3.5px solid #4c555a;
     border-radius: 6px;
     transition: transform 0.07s;
+    overflow: auto;
 }
 
 .image {
@@ -27,6 +29,7 @@
     border-radius: 7px;
     width: 96%;
     background-color: #3a3e41;
+    max-height: 40vh;
 }
 
 .card-button {
