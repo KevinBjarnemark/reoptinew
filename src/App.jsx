@@ -16,6 +16,7 @@ import NotificationProvider from '@notification-provider';
 import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from './components/buttons/app-close-button/AppCloseButton';
 import AppCloseButtonProvider from './context/app-close-button/AppCloseButtonProvider';
+import PostProvider from './context/post/PostProvider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
@@ -66,7 +67,7 @@ export function AppContextWrap({ children }) {
                             <NotificationProvider>
                                 <UserProvider>
                                     <AppLoadingProvider>
-                                        {children}
+                                        <PostProvider>{children}</PostProvider>
                                     </AppLoadingProvider>
                                 </UserProvider>
                             </NotificationProvider>

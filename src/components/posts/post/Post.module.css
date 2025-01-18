@@ -42,21 +42,32 @@
     box-shadow: 0 0 12px 10px #939b9f;
 }
 
-.close-button {
-    top: 0;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    background-color: #c9d6db;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #60696b;
+.next-button {
+    top: 50%;
+    right: -110px;
+    width: 0;
+    height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid #c0c9cc;
+    border-bottom: 70px solid transparent;
+    transform: rotate(45deg) translate(-50%, -50%);
 }
-.close-button:hover {
-    background-color: #f3b37b;
+.next-button:hover {
+    border-right: 70px solid #a6b0b3;
+}
+
+.previous-button {
+    top: 50%;
+    left: -12px;
+    width: 0;
+    height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid #c0c9cc;
+    border-bottom: 70px solid transparent;
+    transform: rotate(225deg) translate(50%, -50%);
+}
+.previous-button:hover {
+    border-right: 70px solid #a6b0b3;
 }
 
 /* When screens are larger than 400px */

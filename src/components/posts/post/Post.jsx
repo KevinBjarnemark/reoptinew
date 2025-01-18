@@ -1,13 +1,11 @@
-import { useMemo, useContext } from 'react';
+import { useMemo, useContext, useState } from 'react';
 import style from './Post.module.css';
 import EngagementPanel from './components/engagement-panel/EngagementPanel';
 import defaultImage1 from '../../../assets/images/post/default/1.webp';
 import defaultImage2 from '../../../assets/images/post/default/2.webp';
 import defaultImage3 from '../../../assets/images/post/default/3.webp';
 import defaultImage4 from '../../../assets/images/post/default/4.webp';
-import PageDimContext from '../../../context/page-dim/PageDimContext';
-import AppCloseButtonContext from '../../../context/app-close-button/AppCloseButtonContext';
-
+import PostContext from '../../../context/post/PostContext';
 const defaultImages = [
     defaultImage1,
     defaultImage2,
@@ -29,32 +27,90 @@ const Image = ({ image }) => {
     );
 };
 
-const Post = ({ post, focusedPost, setFocusedPost, postsLength }) => {
-    const { setDim } = useContext(PageDimContext);
-    const { setShowAppCloseButton, appCloseButtonOnClickRef } = useContext(
-        AppCloseButtonContext,
+const FirstCard = ({ post, handleFocus }) => {
+    return (
+        <>
+            <button
+                className={`flex-column-relative ${style['card-button']}`}
+                onClick={() => {
+                    handleFocus(post.id);
+                }}
+            >
+                <h6>{post.title}</h6>
+
+                <Image image={{ src: post.image }} />
+            </button>
+            <EngagementPanel
+                savesMoney={0}
+                savesTime={0}
+                isUseful={0}
+                likes={post?.likes}
+                comments={post?.comments?.length}
+            />
+        </>
     );
-    const focused = focusedPost ? focusedPost === post.id : false;
+};
 
-    const handleFocus = () => {
-        setFocusedPost(post.id);
-        setDim(true);
-        setShowAppCloseButton(true);
-        appCloseButtonOnClickRef.current = handleClose;
-    };
+const CardChoser = ({ cardIndex, post, handleFocus }) => {
+    switch (cardIndex) {
+        default: {
+            return <FirstCard post={post} handleFocus={handleFocus} />;
+        }
+        case 0: {
+            return <FirstCard post={post} handleFocus={handleFocus} />;
+        }
+        case 1: {
+            return <div>Second card</div>;
+        }
+        case 2: {
+            return <div>Third card</div>;
+        }
+        case 3: {
+            return <div>Fourth card</div>;
+        }
+        case 4: {
+            return <div>Fifth card</div>;
+        }
+    }
+};
 
-    const handleClose = () => {
-        setFocusedPost(null);
-        setDim(false);
-        setShowAppCloseButton(false);
-        appCloseButtonOnClickRef.current = () => {};
-    };
+const LeftAndRightButtons = ({ show, setCardIndex }) => {
+    const cardsAmount = 5;
 
+    if (show) {
+        return (
+            <>
+                <button
+                    className={`flex-column-fixed ${style['next-button']}`}
+                    onClick={() => {
+                        setCardIndex((prev) =>
+                            Math.min(prev + 1, cardsAmount - 1),
+                        );
+                    }}
+                ></button>
+                <button
+                    className={`flex-column-fixed ${style['previous-button']}`}
+                    onClick={() => {
+                        setCardIndex((prev) => Math.max(prev - 1, 0));
+                    }}
+                ></button>
+            </>
+        );
+    }
+};
+
+const Post = ({ standalone, post, postsLength }) => {
+    const { handleFocus } = useContext(PostContext);
+
+    const focused = standalone;
+    const [cardIndex, setCardIndex] = useState(0);
+
+    // Enlarge this component when focused
     const focusedStyle = focused
         ? {
-              width: '60%',
               zIndex: postsLength + 1,
               position: 'fixed',
+              width: '60%',
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -66,28 +122,17 @@ const Post = ({ post, focusedPost, setFocusedPost, postsLength }) => {
             className={`flex-row-relative ${style['post-under']}`}
             style={{ ...focusedStyle }}
         >
-            <div className={`flex-row-absolute ${style.post}`}>
-                <button
-                    className={`flex-column-relative ${style['card-button']}`}
-                    onClick={handleFocus}
-                >
-                    <h6>{post.title}</h6>
+            <LeftAndRightButtons show={focused} setCardIndex={setCardIndex} />
 
-                    <Image image={{ src: post.image }} />
-                </button>
-                <EngagementPanel
-                    savesMoney={0}
-                    savesTime={0}
-                    isUseful={0}
-                    likes={post?.likes}
-                    comments={post?.comments?.length}
+            <div className={`flex-row-absolute ${style.post}`}>
+                <CardChoser
+                    cardIndex={cardIndex}
+                    post={post}
+                    handleFocus={handleFocus}
                 />
             </div>
         </section>
     );
 };
-
-// Attach subcomponents
-Post.EngagementPanel = EngagementPanel;
 
 export default Post;
