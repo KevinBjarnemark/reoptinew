@@ -23,8 +23,10 @@ const Profile = lazy(() => import('./pages/profile/Profile'));
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/*" element={<Home />}></Route>
-            <Route path="/post/:postId" element={<Post />} />
+            <Route path="/" element={<Home />}>
+                {/* Nested route for focused post */}
+                <Route path="posts/post/:postId" element={<Post />} />
+            </Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

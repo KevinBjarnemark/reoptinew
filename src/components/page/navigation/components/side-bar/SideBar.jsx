@@ -26,7 +26,7 @@ const Links = (props) => {
                 <NavMenu.LinkItem
                     name="Home"
                     icon="fa-solid fa-house"
-                    link="/home"
+                    link="/"
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
@@ -70,7 +70,7 @@ const Create = (props) => {
 
     // TEMPORARY
     const formDataDraft = {
-        title: 'Test post',
+        title: 'Test post 1',
         description: 'Test description',
         instructions: 'Test instructions',
     };

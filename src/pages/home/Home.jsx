@@ -2,17 +2,58 @@ import { useState, useEffect } from 'react';
 import style from './Home.module.css';
 import Post from '../../components/posts/post/Post';
 import useAPI from '../../hooks/forms/useAPI';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const MappedPosts = ({ posts }) => {
+    const [focusedPost, setFocusedPost] = useState(0);
+    const { postId } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (postId) {
+            setFocusedPost(Number(postId));
+        } else {
+            setFocusedPost(null);
+        }
+    }, [postId]);
+
+    const handleFocusChange = (postId) => {
+        if (postId) {
+            navigate(`/posts/post/${postId}`);
+        } else {
+            navigate('/');
+        }
+    };
+
     if (posts && Array.isArray(posts) && posts?.length > 0) {
         return (
             <div className={`flex-row-relative ${style['posts-container']}`}>
                 {posts.map((post) => {
-                    return <Post key={post.id} post={{ ...post }} />;
+                    return (
+                        <Post
+                            key={post.id}
+                            post={{ ...post }}
+                            setFocusedPost={handleFocusChange}
+                            postsLength={posts.length}
+                        />
+                    );
                 })}
+
+                {focusedPost ? (
+                    <Post
+                        key={`focused-${focusedPost}`}
+                        post={posts.find((p) => p.id === focusedPost)}
+                        focusedPost={focusedPost}
+                        setFocusedPost={handleFocusChange}
+                        postsLength={posts.length}
+                        focused={true}
+                    />
+                ) : null}
             </div>
         );
     }
+
+    return null;
 };
 
 const Home = () => {

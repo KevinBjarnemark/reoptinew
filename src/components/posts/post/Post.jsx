@@ -27,20 +27,40 @@ const Image = ({ image }) => {
     );
 };
 
-const Post = ({ post }) => {
+const Post = ({ post, focusedPost, setFocusedPost, postsLength }) => {
+    const focused = focusedPost ? focusedPost === post.id : false;
+
+    const handleFocus = () => {
+        setFocusedPost(post.id);
+    };
+
+    const handleClose = () => {
+        setFocusedPost(null);
+    };
+
+    const focusedStyle = focused
+        ? {
+              width: '66vw',
+              zIndex: postsLength + 1,
+              position: 'fixed',
+              top: 'var(--header-height)',
+          }
+        : {};
+
     return (
         <section
             className={`flex-row-relative ${style['post-under']}`}
-            key={post.id}
+            style={{ ...focusedStyle }}
         >
-            <button
-                key={post.id}
-                className={`flex-row-absolute ${style.post}`}
-            >
-                <div className={`flex-column-relative`} key={post.id}>
+            <div className={`flex-row-absolute ${style.post}`}>
+                <button
+                    className={`flex-column-relative ${style['card-button']}`}
+                    onClick={handleFocus}
+                >
                     <h6>{post.title}</h6>
+
                     <Image image={{ src: post.image }} />
-                </div>
+                </button>
                 <EngagementPanel
                     savesMoney={0}
                     savesTime={0}
@@ -48,7 +68,16 @@ const Post = ({ post }) => {
                     likes={post?.likes}
                     comments={post?.comments?.length}
                 />
-            </button>
+
+                {focused ? (
+                    <button
+                        className={`flex-row-absolute ${style['close-button']}`}
+                        onClick={handleClose}
+                    >
+                        X
+                    </button>
+                ) : null}
+            </div>
         </section>
     );
 };

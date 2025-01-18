@@ -127,7 +127,7 @@ const FormContent = () => {
                 response,
             );
             setIsAuthenticated(false);
-            navigate('/home');
+            navigate('/');
         } else {
             await addNotification(false, "Couldn't delete your account.");
         }

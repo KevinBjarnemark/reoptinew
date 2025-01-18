@@ -66,11 +66,11 @@ const EngagementPanel = ({
     savesMoney = 0,
     savesTime = 0,
     isUseful = 0,
-    likes,
-    comments,
+    likes = 0,
+    comments = 0,
 }) => {
     return (
-        <section className={`flex-column-relative ${style.container}`}>
+        <button className={`flex-column-relative ${style.container}`}>
             <div className={style['horizontal-separator']}></div>
             <RatingProgressBar
                 icon="fa-solid fa-dollar-sign"
@@ -81,7 +81,7 @@ const EngagementPanel = ({
             <div className={style['horizontal-separator']}></div>
             <EngageButtons {...{ likes, comments }} />
             <div className={style['horizontal-separator']}></div>
-        </section>
+        </button>
     );
 };
 

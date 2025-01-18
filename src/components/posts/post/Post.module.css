@@ -1,11 +1,11 @@
 .post-under {
     transform: rotate(-2deg);
-    width: 320px;
-    height: 180px;
+    width: 280px;
     background-color: #ffffff;
     border: 3.5px solid #4c555a;
     border-radius: 6px;
     margin: 20px 10px;
+    aspect-ratio: 16 / 9;
 }
 .post {
     left: 0;
@@ -17,18 +17,48 @@
     background-color: #ffffff;
     border: 3.5px solid #4c555a;
     border-radius: 6px;
-    padding: 6px 15px;
     transition: transform 0.07s;
-}
-.post:hover {
-    transform: rotate(-2deg) scale(1.05);
-    box-shadow: 0 0 6px 4px var(--color-brand-orange);
 }
 
 .image {
+    z-index: 100;
     object-fit: contain;
     aspect-ratio: 16 / 9;
     border-radius: 7px;
     width: 96%;
     background-color: #3a3e41;
+}
+
+.card-button {
+    height: 100%;
+    width: 100%;
+    padding: 2% 1.5% 2% 4%;
+    border-radius: 5px;
+}
+.card-button:hover {
+    box-shadow: 0 0 12px 10px #939b9f;
+}
+
+.close-button {
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: #c9d6db;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #60696b;
+}
+.close-button:hover {
+    background-color: #f3b37b;
+}
+
+/* When screens are larger than 400px */
+@media (min-width: 400px) {
+    .post-under {
+        width: 320px;
+    }
 }

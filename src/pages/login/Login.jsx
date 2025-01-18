@@ -58,7 +58,7 @@ const Login = () => {
             localStorage.setItem('refresh_token', response.refresh);
             // Mark the user as authenticated
             setIsAuthenticated(true);
-            navigate('/home');
+            navigate('/');
             await addNotification(true, 'Authenticated!');
         } else {
             await addNotification(false, "Couldn't authenticate");
