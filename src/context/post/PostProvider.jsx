@@ -95,7 +95,6 @@ const PostProvider = ({ children }) => {
             getSinglePost(Number(currentPostId));
             handleFocus(Number(currentPostId));
         } else {
-            handleClose();
             setSinglePost(null);
         }
     }, [currentPostId]);
