@@ -163,6 +163,9 @@ const EllipsisMenuButton = ({ show }) => {
 };
 
 const ProfileImage = ({ src }) => {
+    // Insert the local API server in development
+    const imageUrl = `${env.VITE_DEV_MODE === 'true' ? `${env.VITE_API_URL}/` : ''}${src}`;
+
     return (
         <div
             className={
@@ -172,7 +175,7 @@ const ProfileImage = ({ src }) => {
             <img
                 className={`flex-column-relative ${style['profile-image']}`}
                 // Fallback to default image
-                src={src ? `${env.VITE_API_URL}/${src}` : defaultAvatarImage}
+                src={src ? imageUrl : defaultAvatarImage}
                 alt="Profile image"
             />
         </div>
