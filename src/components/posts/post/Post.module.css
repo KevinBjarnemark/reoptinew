@@ -5,7 +5,7 @@
     background-color: #ffffff;
     border: 3.5px solid #4c555a;
     border-radius: 6px;
-    margin: 20px 10px;
+    margin: 30px 10px;
     aspect-ratio: 16 / 9;
 }
 .post {
@@ -32,10 +32,23 @@
     max-height: 40vh;
 }
 
+.dot {
+    z-index: 100;
+    top: -20px;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #6ebdf9;
+    border-radius: 50%;
+}
+
+.card-padding {
+    padding: 2% 1.5% 2% 4%;
+}
+
 .card-button {
     height: 100%;
     width: 100%;
-    padding: 2% 1.5% 2% 4%;
     border-radius: 5px;
 }
 .card-button:hover {
@@ -68,6 +81,42 @@
 }
 .previous-button:hover {
     border-right: 70px solid #a6b0b3;
+}
+
+.text-section {
+    width: 90%;
+    min-height: 90%;
+}
+
+.user-badge {
+    top: -26%;
+    left: 0;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.user-badge:hover {
+    background-color: #3a3e41;
+}
+
+.user-badge p {
+    line-height: 0;
+    left: 30%;
+    bottom: 0%;
+    font-size: 100%;
+    color: #ffffff;
+}
+
+.profile-image-container {
+    width: 25%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 2px solid #3a3e41;
+}
+.profile-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
 }
 
 /* When screens are larger than 400px */

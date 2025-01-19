@@ -4,10 +4,3 @@
     justify-content: flex-start;
     padding: 50px 0;
 }
-
-.posts-container {
-    width: 100%;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-}

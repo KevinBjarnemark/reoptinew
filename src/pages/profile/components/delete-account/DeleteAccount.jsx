@@ -7,7 +7,7 @@ import AlertContext from '../../../../context/alert-context/AlertContext';
 import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
 import { validateCommon } from '../../../../functions/validation/validate';
-import useSimulateLoading from '../../../../hooks/effects/useSimulateLoading';
+import useSimulateLoading from '@useSimulateLoading';
 import useAPI from '../../../../hooks/forms/useAPI';
 import { debug } from '@debug';
 import PopUp from '../../../../components/pop-ups/pop-up/PopUp';

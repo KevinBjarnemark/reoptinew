@@ -5,9 +5,11 @@ import useSimulateLoading from '@useSimulateLoading';
 import NotificationContext from '@notification-context';
 import { debug } from '@debug';
 import NavMenu from '../nav-menu/NavMenu';
+import UserContext from '../../../../../context/UserContext';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
+    const { profile } = useContext(UserContext);
 
     const handleToggle = () => {
         setToggled((prev) => (prev === 'Navigation' ? '' : 'Navigation'));
@@ -37,12 +39,14 @@ const Links = (props) => {
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
-                <NavMenu.LinkItem
-                    name="Profile"
-                    icon="fa-solid fa-user"
-                    link="/profile"
-                    handleClose={handleToggle}
-                />
+                {profile?.username ? (
+                    <NavMenu.LinkItem
+                        name="Profile"
+                        icon="fa-solid fa-user"
+                        link={`/profile/${profile?.username}`}
+                        handleClose={handleToggle}
+                    />
+                ) : null}
             </NavMenu.Wrapper>
 
             <NavMenu.NavButton

@@ -14,7 +14,7 @@ import Header from './components/page/header/Header';
 import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 import PageDim from './components/backgrounds/page-dim/PageDim';
-import AppCloseButton from './components/buttons/app-close-button/AppCloseButton';
+import AppCloseButton from '@AppCloseButton';
 import AppCloseButtonProvider from './context/app-close-button/AppCloseButtonProvider';
 import PostProvider from './context/post/PostProvider';
 
@@ -32,7 +32,8 @@ const AppRoutes = () => {
                 {/* Nested route for focused post */}
                 <Route path="posts/post/:postId" element={<Post />} />
             </Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            {/* Profiles targeted by user id or username */}
+            <Route path="/profile/:identifier" element={<Profile />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
         </Routes>

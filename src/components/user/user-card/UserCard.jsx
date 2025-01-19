@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
 
 const UserCardButton = () => {
-    const { isAuthenticated } = useContext(UserContext);
+    const { isAuthenticated, profile } = useContext(UserContext);
 
     const url = useLocation();
 
@@ -38,11 +38,11 @@ const UserCardButton = () => {
                 }
             } else {
                 setButtonText('Profile');
-                setButtonLink('/profile');
+                setButtonLink(`/profile/${profile?.username}`);
             }
         };
         handleButtonProps();
-    }, [url, isAuthenticated]);
+    }, [url, isAuthenticated, profile]);
     return (
         <Link
             to={buttonLink}

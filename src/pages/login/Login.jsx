@@ -4,7 +4,7 @@ import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
 import useAPI from '../../hooks/forms/useAPI';
 import { validateCommon } from '../../functions/validation/validate';
-import useSimulateLoading from '../../hooks/effects/useSimulateLoading';
+import useSimulateLoading from '@useSimulateLoading';
 import NotificationContext from '@notification-context';
 import BorderSeparator from '@border-separator';
 import { useNavigate } from 'react-router-dom';
