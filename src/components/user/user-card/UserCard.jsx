@@ -3,7 +3,7 @@ import UserContext from '../../../context/UserContext';
 import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';
-import useAPI from '../../../hooks/forms/useAPI';
+import useAPI from '@use-api';
 import AlertContext from '../../../context/alert-context/AlertContext';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
@@ -46,6 +46,9 @@ const UserCardButton = () => {
     return (
         <Link
             to={buttonLink}
+            onClick={() => {
+                window.scrollTo(0, 0);
+            }}
             className={`flex-column-relative ${style['user-card-button']}`}
         >
             {buttonText}

@@ -4,7 +4,7 @@ import defaultAvatarImage from '@default-avatar-image';
 import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
 import { debug } from '@debug';
-import useAPI from '../../../../hooks/forms/useAPI';
+import useAPI from '@use-api';
 
 const ProfileImage = ({ src }) => {
     return (

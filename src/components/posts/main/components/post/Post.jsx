@@ -1,21 +1,22 @@
 import { useMemo, useContext, useState } from 'react';
 import style from './Post.module.css';
 import EngagementPanel from './components/engagement-panel/EngagementPanel';
-import defaultImage1 from '../../../assets/images/post/default/1.webp';
-import defaultImage2 from '../../../assets/images/post/default/2.webp';
-import defaultImage3 from '../../../assets/images/post/default/3.webp';
-import defaultImage4 from '../../../assets/images/post/default/4.webp';
-import PostContext from '../../../context/post/PostContext';
-import UserContext from '../../../context/UserContext';
-import defaultAvatarImage from '../../../assets/images/user/default-avatar.webp';
+import defaultImage1 from '../../../../../assets/images/post/default/1.webp';
+import defaultImage2 from '../../../../../assets/images/post/default/2.webp';
+import defaultImage3 from '../../../../../assets/images/post/default/3.webp';
+import defaultImage4 from '../../../../../assets/images/post/default/4.webp';
+import PostContext from '../../../../../context/post/PostContext';
+import UserContext from '../../../../../context/UserContext';
+import defaultAvatarImage from '../../../../../assets/images/user/default-avatar.webp';
 const defaultImages = [
     defaultImage1,
     defaultImage2,
     defaultImage3,
     defaultImage4,
 ];
-import { env } from '../../../../env';
+import { env } from '../../../../../../env';
 import { Link } from 'react-router-dom';
+import useNeutralizeApp from '@use-neutralize-app';
 
 const LeftAndRightButtons = ({ show, setCardIndex }) => {
     const cardsAmount = 5;
@@ -179,12 +180,12 @@ const ProfileImage = ({ src }) => {
 };
 
 const UserBadge = ({ image, username }) => {
+    const { neutralizeApp } = useNeutralizeApp();
+
     return (
         <Link
             className={`flex-row-absolute ${style['user-badge']}`}
-            onClick={() => {
-                window.scrollTo(0, 0);
-            }}
+            onClick={neutralizeApp}
             to={`/profile/${username}`}
         >
             <ProfileImage src={image} />

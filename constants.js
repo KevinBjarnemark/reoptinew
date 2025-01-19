@@ -22,6 +22,14 @@ export const PATH_ALIASES = {
     'basic-button': './src/components/buttons/basic-button/BasicButton',
     authentication: './src/functions/authentication',
     'default-avatar-image': './src/assets/images/user/default-avatar.webp',
-    useSimulateLoading: './src/hooks/effects/useSimulateLoading',
-    AppCloseButton: './src/components/buttons/app-close-button/AppCloseButton',
+    'use-simulate-loading': './src/hooks/effects/useSimulateLoading',
+    'app-close-button':
+        './src/components/buttons/app-close-button/AppCloseButton',
+    'app-close-button-context':
+        './src/context/app-close-button/AppCloseButtonContext',
+    'app-close-button-provider':
+        './src/context/app-close-button/AppCloseButtonProvider',
+    'use-api': './src/hooks/api/useAPI',
+
+    'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
 };

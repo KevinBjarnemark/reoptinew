@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import BorderSeparator from '@border-separator';
-import useAPI from '../../../../../hooks/forms/useAPI';
-import useSimulateLoading from '@useSimulateLoading';
+import useAPI from '@use-api';
+import useSimulateLoading from '@use-simulate-loading';
 import NotificationContext from '@notification-context';
 import { debug } from '@debug';
 import NavMenu from '../nav-menu/NavMenu';

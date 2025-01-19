@@ -37,7 +37,10 @@ const LinkItem = ({ name, icon, link, handleClose }) => {
     return (
         <Link
             to={link}
-            onClick={handleClose}
+            onClick={() => {
+                handleClose();
+                window.scrollTo(0, 0);
+            }}
             className={
                 `flex-row-relative ${style['section-item']} ` + 'no-decoration'
             }

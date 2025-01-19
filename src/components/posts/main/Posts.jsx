@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import style from './Posts.module.css';
-import Post from '../post/Post';
+import Post from './components/post/Post';
 import PostContext from '../../../context/post/PostContext';
 import { useParams } from 'react-router-dom';
 

@@ -2,9 +2,9 @@ import { useState, useContext } from 'react';
 import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import UserContext from '../../context/UserContext';
-import useAPI from '../../hooks/forms/useAPI';
+import useAPI from '@use-api';
 import { validateCommon } from '../../functions/validation/validate';
-import useSimulateLoading from '@useSimulateLoading';
+import useSimulateLoading from '@use-simulate-loading';
 import NotificationContext from '@notification-context';
 import BorderSeparator from '@border-separator';
 import { useNavigate } from 'react-router-dom';
@@ -59,6 +59,7 @@ const Login = () => {
             // Mark the user as authenticated
             setIsAuthenticated(true);
             navigate('/');
+            window.scrollTo(0, 0);
             await addNotification(true, 'Authenticated!');
         } else {
             await addNotification(false, "Couldn't authenticate");

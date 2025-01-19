@@ -2,8 +2,9 @@ import { useState, useContext, useEffect } from 'react';
 import PostContext from './PostContext';
 import { useNavigate } from 'react-router-dom';
 import PageDimContext from '../page-dim/PageDimContext';
-import AppCloseButtonContext from '../app-close-button/AppCloseButtonContext';
-import useAPI from '../../hooks/forms/useAPI';
+import AppCloseButtonContext from '@app-close-button-context';
+import useAPI from '@use-api';
+import useNeutralizeApp from '@use-neutralize-app';
 
 const PostProvider = ({ children }) => {
     // The current post focused, targeted by URL (parameter)
@@ -18,12 +19,11 @@ const PostProvider = ({ children }) => {
 
     // Custom hooks
     const { apiRequest } = useAPI(true);
-    const { setDim } = useContext(PageDimContext);
+    const { neutralizeApp } = useNeutralizeApp();
 
     // Contexts
-    const { setShowAppCloseButton, appCloseButtonOnClickRef } = useContext(
-        AppCloseButtonContext,
-    );
+    const { renderAppCloseButton } = useContext(AppCloseButtonContext);
+    const { setDim } = useContext(PageDimContext);
 
     const getSinglePost = async (id) => {
         const init = async () => {
@@ -72,10 +72,7 @@ const PostProvider = ({ children }) => {
     const handleClose = () => {
         navigate('/');
         setCurrentPostId(null);
-        // Dim the app background and hide the close button
-        setDim(false);
-        setShowAppCloseButton(false);
-        appCloseButtonOnClickRef.current = () => {};
+        neutralizeApp();
     };
 
     const handleFocus = (postId) => {
@@ -84,9 +81,7 @@ const PostProvider = ({ children }) => {
         setCurrentPostId(postId);
         // Dim the app background and show the close button
         setDim(true);
-        setShowAppCloseButton(true);
-        // Insert close function
-        appCloseButtonOnClickRef.current = handleClose;
+        renderAppCloseButton(handleClose);
     };
 
     // Single posts

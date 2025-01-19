@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { debug } from '@debug';
 import UserContext from './UserContext';
-import useAPI from '../hooks/forms/useAPI';
+import useAPI from '@use-api';
 import useTokens from '../hooks/authentication/useTokens';
 import AlertContext from './alert-context/AlertContext';
 import { ACCESS_TOKEN_LIFETIME } from '../utils/constants';

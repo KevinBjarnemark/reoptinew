@@ -14,13 +14,15 @@ import Header from './components/page/header/Header';
 import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 import PageDim from './components/backgrounds/page-dim/PageDim';
-import AppCloseButton from '@AppCloseButton';
-import AppCloseButtonProvider from './context/app-close-button/AppCloseButtonProvider';
+import AppCloseButton from '@app-close-button';
+import AppCloseButtonProvider from '@app-close-button-provider';
 import PostProvider from './context/post/PostProvider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
-const Post = lazy(() => import('./components/posts/post/Post'));
+const Post = lazy(
+    () => import('./components/posts/main/components/post/Post'),
+);
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
 const Profile = lazy(() => import('./pages/profile/Profile'));

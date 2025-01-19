@@ -1,5 +1,5 @@
 import style from './Home.module.css';
-import Posts from '../../components/posts/posts/Posts';
+import Posts from '../../components/posts/main/Posts';
 
 const Home = () => {
     return (

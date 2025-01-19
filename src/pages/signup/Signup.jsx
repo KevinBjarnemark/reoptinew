@@ -4,8 +4,8 @@ import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { debug } from '@debug';
 import { validateCommon } from '../../functions/validation/validate';
-import useAPI from '../../hooks/forms/useAPI';
-import useSimulateLoading from '@useSimulateLoading';
+import useAPI from '@use-api';
+import useSimulateLoading from '@use-simulate-loading';
 import NotificationContext from '@notification-context';
 import { useNavigate } from 'react-router-dom';
 import BorderSeparator from '@border-separator';
@@ -74,7 +74,8 @@ const Signup = () => {
             debug(showDebugging, 'Sign up successful', response);
             await addNotification(true, 'Welcome!');
             setIsAuthenticated(true);
-            navigate('/profile');
+            navigate(`/profile/${formDataDraft.username}`);
+            window.scrollTo(0, 0);
         } else {
             await addNotification(false, "Couldn't sign you up :(");
         }

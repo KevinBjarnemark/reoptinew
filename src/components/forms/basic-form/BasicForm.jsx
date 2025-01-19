@@ -76,7 +76,13 @@ const Border = ({ children }) => {
 const TextLink = ({ linkObj, className }) => {
     if (linkObj?.url && linkObj?.name) {
         return (
-            <Link to={linkObj.url} className={className}>
+            <Link
+                to={linkObj.url}
+                onClick={() => {
+                    window.scrollTo(0, 0);
+                }}
+                className={className}
+            >
                 {linkObj.name}
             </Link>
         );

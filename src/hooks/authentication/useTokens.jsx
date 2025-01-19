@@ -1,5 +1,5 @@
 import { debug } from '@debug';
-import useAPI from '../../hooks/forms/useAPI';
+import useAPI from '@use-api';
 import { getRefreshToken } from '@authentication/accessToken';
 
 const useTokens = (showDebugging = true) => {

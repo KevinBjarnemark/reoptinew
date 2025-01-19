@@ -7,8 +7,8 @@ import AlertContext from '../../../../context/alert-context/AlertContext';
 import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
 import { validateCommon } from '../../../../functions/validation/validate';
-import useSimulateLoading from '@useSimulateLoading';
-import useAPI from '../../../../hooks/forms/useAPI';
+import useSimulateLoading from '@use-simulate-loading';
+import useAPI from '@use-api';
 import { debug } from '@debug';
 import PopUp from '../../../../components/pop-ups/pop-up/PopUp';
 import BasicButton from '@basic-button';
@@ -128,6 +128,7 @@ const FormContent = () => {
             );
             setIsAuthenticated(false);
             navigate('/');
+            window.scrollTo(0, 0);
         } else {
             await addNotification(false, "Couldn't delete your account.");
         }
