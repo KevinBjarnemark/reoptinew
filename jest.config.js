@@ -27,7 +27,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const getPathAliasesJestFormat = () => {
     let result = {};
     Object.entries(PATH_ALIASES).forEach(([alias, relativePath]) => {
-        result[`^@${alias}(.*)$`] = resolve(__dirname, `${relativePath}$1`);
+        result[`^@${alias}(/.*)?$`] = resolve(__dirname, `${relativePath}$1`);
     });
     return result;
 };
