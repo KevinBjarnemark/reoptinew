@@ -3,7 +3,7 @@ import { debug } from '@debug';
 import UserContext from './UserContext';
 import useAPI from '@use-api';
 import useTokens from '../hooks/authentication/useTokens';
-import AlertContext from './alert-context/AlertContext';
+import AlertContext from '@alert-context';
 import { ACCESS_TOKEN_LIFETIME } from '../utils/constants';
 
 const UserProvider = ({ children }) => {
@@ -50,9 +50,13 @@ const UserProvider = ({ children }) => {
             authorizationHeader: true,
             method: 'GET',
             debugMessages: {
-                backendError: 'Failed fetching user profile (backend)',
-                frontendError: 'Failed fetching user profile (frontend)',
+                error: 'Error when fetching user profile.',
                 successfulBackEndResponse: 'Fetched user profile successfully',
+            },
+            uxMessages: {
+                error:
+                    "Couldn't load your profile. " +
+                    'Try refreshing your browser.',
             },
         });
         if (response) {

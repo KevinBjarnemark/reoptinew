@@ -3,7 +3,7 @@ import style from './DeleteAccount.module.css';
 import BasicForm from '../../../../components/forms/basic-form/BasicForm';
 import BorderSeparator from '@border-separator';
 import UserContext from '../../../../context/UserContext';
-import AlertContext from '../../../../context/alert-context/AlertContext';
+import AlertContext from '@alert-context';
 import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
 import { validateCommon } from '../../../../functions/validation/validate';
@@ -113,9 +113,13 @@ const FormContent = () => {
                 password: formDataDraft.current.password,
             },
             debugMessages: {
-                backendError: 'Account deletion failed (backend)',
-                frontendError: 'Account deletion (frontend)',
+                error: 'Error when deleting account',
                 successfulBackEndResponse: 'Account deletion successful',
+            },
+            uxMessages: {
+                error:
+                    'Something went wrong when attempting to delete your ' +
+                    'account. Try refreshing your browser.',
             },
         });
         if (response) {

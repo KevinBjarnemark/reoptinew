@@ -86,9 +86,11 @@ const Create = (props) => {
             formDataDraft,
             relativeURL: '/posts/posts/',
             debugMessages: {
-                backendError: 'Post creation failed (backend)',
-                frontendError: 'Post creation failed (frontend)',
-                successfulBackEndResponse: 'Post creation successful',
+                error: 'Error when creating a post',
+                successfulBackEndResponse: 'Created post successfully',
+            },
+            uxMessages: {
+                error: "Couldn't create post",
             },
             authorizationHeader: true,
         });

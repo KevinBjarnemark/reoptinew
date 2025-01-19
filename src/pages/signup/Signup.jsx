@@ -62,9 +62,11 @@ const Signup = () => {
             formDataDraft,
             relativeURL: '/users/signup/',
             debugMessages: {
-                backendError: 'Sign up failed (backend)',
-                frontendError: 'Sign up failed (frontend)',
+                error: 'Error when signing up',
                 successfulBackEndResponse: 'Sign up successful',
+            },
+            uxMessages: {
+                error: "Couldn't sign you up, try refreshing your browser. ",
             },
         });
         if (response) {

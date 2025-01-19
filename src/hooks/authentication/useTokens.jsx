@@ -73,9 +73,13 @@ const useTokens = (showDebugging = true) => {
             method: 'POST',
             body: { refresh: refreshToken },
             debugMessages: {
-                backendError: 'Failed fetching access token (backend)',
-                frontendError: 'Failed fetching access token (frontend)',
+                error: 'Error when fetching access token',
                 successfulBackEndResponse: 'Fetched access token successfully',
+            },
+            uxMessages: {
+                error:
+                    'Something went wrong in our authentication system, ' +
+                    'please refresh your browser.',
             },
         });
         if (response) {

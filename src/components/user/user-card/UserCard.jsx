@@ -4,7 +4,7 @@ import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';
 import useAPI from '@use-api';
-import AlertContext from '../../../context/alert-context/AlertContext';
+import AlertContext from '@alert-context';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
 
@@ -85,9 +85,11 @@ export const UserCard = () => {
             authorizationHeader: true,
             body: { refresh: refreshToken },
             debugMessages: {
-                backendError: 'Log out failed (backend)',
-                frontendError: 'Log out failed (frontend)',
+                error: 'Error when attempting to log out',
                 successfulBackEndResponse: 'Log out successful',
+            },
+            uxMessages: {
+                error: "Couldn't log you out, try refreshing your browser.",
             },
         });
         if (response) {

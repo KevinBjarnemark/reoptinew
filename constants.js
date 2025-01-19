@@ -30,6 +30,6 @@ export const PATH_ALIASES = {
     'app-close-button-provider':
         './src/context/app-close-button/AppCloseButtonProvider',
     'use-api': './src/hooks/api/useAPI',
-
     'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
+    'alert-context': './src/context/alert-context/AlertContext',
 };

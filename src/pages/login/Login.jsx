@@ -47,9 +47,11 @@ const Login = () => {
             formDataDraft,
             relativeURL: '/users/login/',
             debugMessages: {
-                backendError: 'Log in failed (backend)',
-                frontendError: 'Log in failed (frontend)',
+                error: 'Error when loggin in',
                 successfulBackEndResponse: 'Log in successful',
+            },
+            uxMessages: {
+                error: "Couldn't log you in, try refreshing your browser.",
             },
         });
         if (response) {

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { debug } from '@debug';
-import AlertContext from '../../context/alert-context/AlertContext';
+import AlertContext from '@alert-context';
 import GeneralLoadingContext from '@general-loading-context';
 import { fetchAPI } from '../../utils/fetch';
 import { handleErrors } from '../../utils/errorHandling';
@@ -118,12 +118,16 @@ const useAPI = (showDebugging = true) => {
      * @param {string} data.method The method of the request, defaults to
      * "POST".
      * @param {object} [data.debugMessages] Messages for debugging.
-     * @param {string} [data.debugMessages.backendError] Message to log when
-     * errors are thrown in the backend.
-     * @param {string} [data.debugMessages.frontendError] Message to log when
-     * errors are thrown in the frontend.
+     * @param {string} [data.debugMessages.error] Message to log when
+     * errors are thrown. Note! A string will automatically be inserted
+     * into your message, indicating if the error occurred on the front
+     * or backend.
      * @param {string} [data.debugMessages.successfulBackEndResponse] Message
-     * to log when the back end response was successful.
+     * to log when the response was successful.
+     * @param {object} [data.uxMessages] Messages displayed to the user.
+     * @param {string} [data.uxMessages.error] Message to display to the user when
+     * a frontend error occurred. Note, user-friendly error messages will be received
+     * straight from server.
      * @returns {object|null} Returns the successful backend response object on
      * success, or `null` if validation or backend submission fails.
      * @throws Handles errors gracefully. Both front and backend errors are
@@ -136,6 +140,7 @@ const useAPI = (showDebugging = true) => {
             body = null,
             relativeURL,
             debugMessages = {},
+            uxMessages = {},
             authorizationHeader = false,
             method = 'POST',
         } = data;
@@ -157,7 +162,7 @@ const useAPI = (showDebugging = true) => {
             const errorMessage =
                 error.message || 'Validation failed. Please try again.';
             debug(showDebugging, 'Frontend validation failed', errorMessage);
-            addAlert(errorMessage, 'Error');
+            addAlert(errorMessage, 'Error'); // These are custom error messages
             return;
         } finally {
             removeLoadingPoint();
@@ -207,7 +212,7 @@ const useAPI = (showDebugging = true) => {
             const jsonResponse = await response.json();
             const debugData = {
                 showDebugging,
-                message: debugMessages?.backendError,
+                message: `(Backend) ${debugMessages?.error}`,
             };
             if (handleErrors(response, jsonResponse, addAlert, debugData)) {
                 debug(
@@ -218,8 +223,8 @@ const useAPI = (showDebugging = true) => {
                 return jsonResponse; // Return successful response
             }
         } catch (error) {
-            debug(showDebugging, 'Unexpected error (frontend)', error);
-            addAlert(debugMessages?.frontendError, 'Error');
+            debug(showDebugging, `(Frontend) ${debugMessages?.error}`, error);
+            addAlert(uxMessages?.frontendError, 'Error');
         } finally {
             removeLoadingPoint();
         }

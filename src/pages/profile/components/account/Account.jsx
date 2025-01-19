@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import style from './Account.module.css';
-import defaultAvatarImage from '@default-avatar-image';
+import defaultAvatarImage from '../../../../assets/images/user/default-avatar.webp';
 import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
 import { debug } from '@debug';
@@ -33,9 +33,13 @@ const Account = () => {
             authorizationHeader: false,
             method: 'GET',
             debugMessages: {
-                backendError: 'Failed fetching user profile (backend)',
-                frontendError: 'Failed fetching user profile (frontend)',
+                error: 'Error when fetching user profile',
                 successfulBackEndResponse: 'Fetched user profile successfully',
+            },
+            uxMessages: {
+                error:
+                    "Couldn't load this user's profile. " +
+                    'Please refresh your browser.',
             },
         });
         if (response) {

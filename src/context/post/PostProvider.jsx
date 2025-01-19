@@ -5,8 +5,11 @@ import PageDimContext from '../page-dim/PageDimContext';
 import AppCloseButtonContext from '@app-close-button-context';
 import useAPI from '@use-api';
 import useNeutralizeApp from '@use-neutralize-app';
+import NotificationContext from '@notification-context';
 
 const PostProvider = ({ children }) => {
+    const { addNotification } = useContext(NotificationContext);
+
     // The current post focused, targeted by URL (parameter)
     const [currentPostId, setCurrentPostId] = useState(null);
     // The currently targeted post data
@@ -26,25 +29,24 @@ const PostProvider = ({ children }) => {
     const { setDim } = useContext(PageDimContext);
 
     const getSinglePost = async (id) => {
-        const init = async () => {
-            const response = await apiRequest({
-                relativeURL: `/posts/post/${id}`,
-                debugMessages: {
-                    backendError: "Couldn't fetch post (backend)",
-                    frontendError: "Couldn't fetch post (frontend)",
-                    successfulBackEndResponse: 'Fetched post successfully',
-                },
-                method: 'GET',
-            });
+        const response = await apiRequest({
+            method: 'GET',
+            relativeURL: `/posts/post/${id}`,
+            debugMessages: {
+                error: "Couldn't load single post.",
+                successfulBackEndResponse: 'Fetched single post successfully',
+            },
+            uxMessages: {
+                error: "Couldn't load post, try refreshing your browser.",
+            },
+        });
 
-            if (response) {
-                console.log('Fetched post successfully', response);
-                setSinglePost(response);
-            } else {
-                console.log("Couldn't fetch post", response);
-            }
-        };
-        await init();
+        if (response) {
+            setSinglePost(response);
+            await addNotification(true, 'Post loaded!');
+        } else {
+            await addNotification(false, "Couldn't load post :(");
+        }
     };
 
     const getAllPosts = async () => {
@@ -52,9 +54,11 @@ const PostProvider = ({ children }) => {
             const response = await apiRequest({
                 relativeURL: '/posts/posts/',
                 debugMessages: {
-                    backendError: "Couldn't fetch posts (backend)",
-                    frontendError: "Couldn't fetch posts (frontend)",
+                    error: 'Error when fetching posts',
                     successfulBackEndResponse: 'Fetched posts successfully',
+                },
+                uxMessages: {
+                    error: "Couldn't load posts. Try refreshing your browser.",
                 },
                 method: 'GET',
             });
@@ -72,7 +76,7 @@ const PostProvider = ({ children }) => {
     const handleClose = () => {
         navigate('/');
         setCurrentPostId(null);
-        neutralizeApp();
+        neutralizeApp(false);
     };
 
     const handleFocus = (postId) => {

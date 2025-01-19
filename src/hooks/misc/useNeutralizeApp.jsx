@@ -6,14 +6,16 @@ import PageDimContext from '../../context/page-dim/PageDimContext';
  * components a scrolls to the top.
  *
  */
-const useNeutralizeApp = (showDebugging = true) => {
+const useNeutralizeApp = () => {
     const { clearAppCloseButton } = useContext(AppCloseButtonContext);
     const { setDim } = useContext(PageDimContext);
 
-    const neutralizeApp = () => {
+    const neutralizeApp = (scrollToTop = true) => {
         setDim(false);
         clearAppCloseButton();
-        window.scrollTo(0, 0);
+        if (scrollToTop) {
+            window.scrollTo(0, 0);
+        }
     };
     return { neutralizeApp };
 };

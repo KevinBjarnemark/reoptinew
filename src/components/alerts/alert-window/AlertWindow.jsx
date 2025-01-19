@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import AlertContext from '../../../context/alert-context/AlertContext';
+import AlertContext from '@alert-context';
 import style from './AlertWindow.module.css';
 
 const AlertType = ({ messageIndex }) => {
