@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useRef } from 'react';
 import PostContext from './PostContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import PageDimContext from '../page-dim/PageDimContext';
 import AppCloseButtonContext from '@app-close-button-context';
 import useAPI from '@use-api';
@@ -10,8 +10,13 @@ import NotificationContext from '@notification-context';
 const PostProvider = ({ children }) => {
     const { addNotification } = useContext(NotificationContext);
 
-    // The current post focused, targeted by URL (parameter)
-    const [currentPostId, setCurrentPostId] = useState(null);
+    /**
+     * This is a custom configuration for loading single posts at a
+     * specific route. By default, all posts are viewed at the home
+     * page (/posts).
+     */
+    const pageRouteRef = useRef('posts');
+
     // The currently targeted post data
     const [singlePost, setSinglePost] = useState(null);
     // Loaded posts data
@@ -19,7 +24,6 @@ const PostProvider = ({ children }) => {
 
     // Hooks
     const navigate = useNavigate();
-
     // Custom hooks
     const { apiRequest } = useAPI(true);
     const { neutralizeApp } = useNeutralizeApp();
@@ -49,8 +53,13 @@ const PostProvider = ({ children }) => {
         }
     };
 
-    const getAllPosts = async () => {
+    const getPosts = async (filterObj) => {
         const init = async () => {
+            const body = {
+                action: 'filter',
+                filters: { ...filterObj },
+            };
+
             const response = await apiRequest({
                 relativeURL: '/posts/posts/',
                 debugMessages: {
@@ -60,58 +69,58 @@ const PostProvider = ({ children }) => {
                 uxMessages: {
                     error: "Couldn't load posts. Try refreshing your browser.",
                 },
-                method: 'GET',
+                method: filterObj ? 'POST' : 'GET',
+                ...(filterObj ? { body } : {}),
             });
 
             if (response) {
-                console.log('Fetched posts successfully', response);
                 setPosts(response);
+                await addNotification(true, 'Posts loaded!');
             } else {
-                console.log("Couldn't fetch posts", response);
+                await addNotification(false, "Couldn't load posts :(");
             }
         };
+
         await init();
     };
 
-    const handleClose = () => {
-        navigate('/');
-        setCurrentPostId(null);
-        neutralizeApp(false);
+    const renderPosts = (filterObj = null) => {
+        if (filterObj) {
+            getPosts({ ...filterObj });
+        } else {
+            getPosts();
+        }
     };
 
-    const handleFocus = (postId) => {
+    const renderPost = (postId) => {
         // Navigate to post URL
-        navigate(`/posts/post/${postId}`);
-        setCurrentPostId(postId);
+        navigate(`/${pageRouteRef.current}/post/${postId}`);
         // Dim the app background and show the close button
         setDim(true);
-        renderAppCloseButton(handleClose);
+        renderAppCloseButton(handleClosePost);
+        getSinglePost(postId);
     };
 
-    // Single posts
-    useEffect(() => {
-        if (currentPostId) {
-            getSinglePost(Number(currentPostId));
-            handleFocus(Number(currentPostId));
+    const handleClosePost = () => {
+        if (pageRouteRef.current === 'posts') {
+            navigate('/');
         } else {
-            setSinglePost(null);
+            navigate(`/${pageRouteRef.current}`);
         }
-    }, [currentPostId]);
-
-    // All posts
-    useEffect(() => {
-        getAllPosts();
-    }, []);
+        setSinglePost(null);
+        neutralizeApp(false);
+    };
 
     return (
         <PostContext.Provider
             value={{
-                handleFocus,
-                handleClose,
                 singlePost,
                 setSinglePost,
                 posts,
-                setCurrentPostId,
+                renderPosts,
+                renderPost,
+                handleClosePost,
+                pageRouteRef,
             }}
         >
             {children}

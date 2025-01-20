@@ -56,7 +56,7 @@ const Image = ({ image }) => {
     );
 };
 
-const FirstCard = ({ post, handleFocus, focused }) => {
+const FirstCard = ({ post, renderPost, focused }) => {
     const titleStyle = focused ? { fontSize: '150%' } : {};
 
     return (
@@ -69,7 +69,7 @@ const FirstCard = ({ post, handleFocus, focused }) => {
                     style['card-padding']
                 }
                 onClick={() => {
-                    handleFocus(post.id);
+                    renderPost(post.id);
                 }}
             >
                 <h6 style={{ ...titleStyle }}>{post.title}</h6>
@@ -87,7 +87,7 @@ const FirstCard = ({ post, handleFocus, focused }) => {
     );
 };
 
-const SecondCard = ({ post, handleFocus }) => {
+const SecondCard = ({ post, renderPost }) => {
     return (
         <div
             className={
@@ -102,13 +102,13 @@ const SecondCard = ({ post, handleFocus }) => {
     );
 };
 
-const CardChoser = ({ cardIndex, post, handleFocus, focused }) => {
+const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
     switch (cardIndex) {
         default: {
             return (
                 <FirstCard
                     post={post}
-                    handleFocus={handleFocus}
+                    renderPost={renderPost}
                     focused={focused}
                 />
             );
@@ -117,7 +117,7 @@ const CardChoser = ({ cardIndex, post, handleFocus, focused }) => {
             return (
                 <FirstCard
                     post={post}
-                    handleFocus={handleFocus}
+                    renderPost={renderPost}
                     focused={focused}
                 />
             );
@@ -126,7 +126,7 @@ const CardChoser = ({ cardIndex, post, handleFocus, focused }) => {
             return (
                 <SecondCard
                     post={post}
-                    handleFocus={handleFocus}
+                    renderPost={renderPost}
                     focused={focused}
                 />
             );
@@ -180,11 +180,15 @@ const ProfileImage = ({ src }) => {
 
 const UserBadge = ({ image, username }) => {
     const { neutralizeApp } = useNeutralizeApp();
+    const { handleClosePost } = useContext(PostContext);
 
     return (
         <Link
             className={`flex-row-absolute ${style['user-badge']}`}
-            onClick={neutralizeApp}
+            onClick={() => {
+                neutralizeApp();
+                handleClosePost();
+            }}
             to={`/profile/${username}`}
         >
             <ProfileImage src={image} />
@@ -195,7 +199,7 @@ const UserBadge = ({ image, username }) => {
 
 const Post = ({ standalone, post, postsLength }) => {
     const { profile } = useContext(UserContext);
-    const { handleFocus } = useContext(PostContext);
+    const { renderPost } = useContext(PostContext);
     const focused = standalone;
     const isAuthor = profile?.user_id === post?.author?.id;
     const [cardIndex, setCardIndex] = useState(0);
@@ -221,7 +225,7 @@ const Post = ({ standalone, post, postsLength }) => {
                 cardIndex={cardIndex}
                 post={post}
                 focused={focused}
-                handleFocus={handleFocus}
+                renderPost={renderPost}
             />
             <LeftAndRightButtons show={focused} setCardIndex={setCardIndex} />
             <EllipsisMenuButton

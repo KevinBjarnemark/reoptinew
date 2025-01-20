@@ -43,7 +43,7 @@ const Account = () => {
             },
         });
         if (response) {
-            debug(showDebugging, `Loaded user by ${identifier}`, response);
+            debug(showDebugging, `Loaded user (${identifier})`, response);
             setUserProfile(response);
         } else {
             debug(
