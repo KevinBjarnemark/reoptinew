@@ -14,7 +14,6 @@ const defaultImages = [
     defaultImage3,
     defaultImage4,
 ];
-import { env } from '../../../../../../env';
 import { Link } from 'react-router-dom';
 import useNeutralizeApp from '@use-neutralize-app';
 
@@ -163,9 +162,6 @@ const EllipsisMenuButton = ({ show }) => {
 };
 
 const ProfileImage = ({ src }) => {
-    // Insert the local API server in development
-    const imageUrl = `${env.VITE_DEV_MODE === 'true' ? `${env.VITE_API_URL}/` : ''}${src}`;
-
     return (
         <div
             className={
@@ -175,7 +171,7 @@ const ProfileImage = ({ src }) => {
             <img
                 className={`flex-column-relative ${style['profile-image']}`}
                 // Fallback to default image
-                src={src ? imageUrl : defaultAvatarImage}
+                src={src ? src : defaultAvatarImage}
                 alt="Profile image"
             />
         </div>
