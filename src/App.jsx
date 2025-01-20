@@ -20,9 +20,6 @@ import PostProvider from './context/post/PostProvider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
-const Post = lazy(
-    () => import('./components/posts/main/components/post/Post'),
-);
 const Signup = lazy(() => import('./pages/signup/Signup'));
 const Login = lazy(() => import('./pages/login/Login'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
@@ -31,11 +28,14 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />}>
-                {/* Nested route for focused post */}
-                <Route path="posts/post/:postId" element={<Post />} />
+                {/* Nested route for single posts */}
+                <Route path="posts/post/:postId" element={<></>} />
             </Route>
             {/* Profiles targeted by user id or username */}
-            <Route path="/profile/:identifier" element={<Profile />}></Route>
+            <Route path="/profile/:identifier" element={<Profile />}>
+                {/* Nested route for single post */}
+                <Route path="post/:postId" element={<></>} />
+            </Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
         </Routes>
