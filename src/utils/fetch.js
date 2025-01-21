@@ -12,7 +12,11 @@ import { env } from '../../env.js';
  * @throws Errors must be handled by the caller
  */
 export const fetchAPI = async (relativePath, fetchObject = {}) => {
-    const API_URL = env.VITE_API_URL;
+    // Build/get the API URL
+    const API_URL =
+        env.MODE === 'production'
+            ? env.VITE_API_URL
+            : `http://${env.VITE_API_HOST}:${Number(env.VITE_API_PORT)}`;
     const response = await fetch(`${API_URL}${relativePath}`, fetchObject);
     return response;
 };

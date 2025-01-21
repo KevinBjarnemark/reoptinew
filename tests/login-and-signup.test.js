@@ -16,6 +16,8 @@ import Login from '../src/pages/login/Login';
 jest.mock('../env.js', () => ({
     env: {
         VITE_API_URL: 'http://127.0.0.1:8000',
+        VITE_API_HOST: '127.0.0.1',
+        VITE_API_PORT: 8000,
         MODE: 'development',
     },
 }));
