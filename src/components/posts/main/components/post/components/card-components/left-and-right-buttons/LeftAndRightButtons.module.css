@@ -1,0 +1,27 @@
+.next-button {
+    top: 50%;
+    right: -110px;
+    width: 0;
+    height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid #c0c9cc;
+    border-bottom: 70px solid transparent;
+    transform: rotate(45deg) translate(-50%, -50%);
+}
+.next-button:hover {
+    border-right: 70px solid #a6b0b3;
+}
+
+.previous-button {
+    top: 50%;
+    left: -12px;
+    width: 0;
+    height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid #c0c9cc;
+    border-bottom: 70px solid transparent;
+    transform: rotate(225deg) translate(50%, -50%);
+}
+.previous-button:hover {
+    border-right: 70px solid #a6b0b3;
+}

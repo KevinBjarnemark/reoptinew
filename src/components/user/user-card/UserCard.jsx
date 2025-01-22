@@ -7,6 +7,7 @@ import useAPI from '@use-api';
 import AlertContext from '@alert-context';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router';
+import NotificationContext from '@notification-context';
 
 const UserCardButton = () => {
     const { isAuthenticated, profile } = useContext(UserContext);
@@ -62,6 +63,7 @@ export const UserCard = () => {
         useContext(UserContext);
     const { addAlert } = useContext(AlertContext);
     const { apiRequest } = useAPI(showDebugging);
+    const { addNotification } = useContext(NotificationContext);
 
     /**
      * Uses the onSubmit hook to submit the logout data to the
@@ -97,6 +99,9 @@ export const UserCard = () => {
             clearAuthTokens();
             debug(showDebugging, 'Removed auth tokens from local storage', '');
             setIsAuthenticated(false);
+            await addNotification(true, 'Log out successful.');
+        } else {
+            await addNotification(false, "Couldn't log you out :(");
         }
     };
 

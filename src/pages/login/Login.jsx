@@ -37,7 +37,7 @@ const Login = () => {
      * This function also validates the fields before sending
      * to the backend.
      */
-    const handleSubmit = async () => {
+    const handleLogIn = async () => {
         // Used in tests
         debug(showDebugging, 'Clicked the log in button', formDataDraft);
         // Simulated loading effect
@@ -64,7 +64,7 @@ const Login = () => {
             window.scrollTo(0, 0);
             await addNotification(true, 'Authenticated!');
         } else {
-            await addNotification(false, "Couldn't authenticate");
+            await addNotification(false, 'Authentication failed.');
         }
     };
 
@@ -75,7 +75,7 @@ const Login = () => {
                     text: 'Log in',
                     onClick: (e) => {
                         e.preventDefault();
-                        handleSubmit();
+                        handleLogIn();
                     },
                 }}
             >

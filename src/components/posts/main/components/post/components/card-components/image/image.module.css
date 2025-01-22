@@ -1,0 +1,9 @@
+.image {
+    z-index: 100;
+    object-fit: contain;
+    aspect-ratio: 16 / 9;
+    border-radius: 7px;
+    width: 96%;
+    background-color: #3a3e41;
+    max-height: 40vh;
+}

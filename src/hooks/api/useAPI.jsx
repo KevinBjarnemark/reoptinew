@@ -125,9 +125,9 @@ const useAPI = (showDebugging = true) => {
      * @param {string} [data.debugMessages.successfulBackEndResponse] Message
      * to log when the response was successful.
      * @param {object} [data.uxMessages] Messages displayed to the user.
-     * @param {string} [data.uxMessages.error] Message to display to the user when
-     * a frontend error occurred. Note, user-friendly error messages will be received
-     * straight from server.
+     * @param {string} [data.uxMessages.error] Message to display to the user
+     * when a frontend error occurred. Note, user-friendly error messages will
+     * be received straight from server.
      * @returns {object|null} Returns the successful backend response object on
      * success, or `null` if validation or backend submission fails.
      * @throws Handles errors gracefully. Both front and backend errors are

@@ -74,9 +74,16 @@ const Create = (props) => {
 
     // TEMPORARY
     const formDataDraft = {
-        title: 'Test post 1',
+        title: 'Test post 10',
         description: 'Test description',
         instructions: 'Test instructions',
+        harmful_materials: JSON.stringify([
+            'Corrosive Materials',
+            'Flammable Materials',
+            'Chemical Substances',
+            'Radioactive Materials',
+        ]),
+        harmful_tools: JSON.stringify(['Sharp or Cutting Tools']),
     };
 
     const createPost = async () => {

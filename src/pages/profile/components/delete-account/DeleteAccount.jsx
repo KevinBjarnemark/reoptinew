@@ -45,7 +45,7 @@ const FormContent = () => {
         onClick: (e) => {
             e.preventDefault();
             if (deleteButtonDisabled) {
-                handleSubmit();
+                handleAccountDeletion();
             }
         },
         disabled: deleteButtonDisabled,
@@ -95,7 +95,7 @@ const FormContent = () => {
      * Uses the onSubmit hook to submit the login form data to the
      * backend.
      */
-    const handleSubmit = async () => {
+    const handleAccountDeletion = async () => {
         setDeleteButtonDisabled(true);
         const formIsReady = await prepareForm();
         const formIsValidated = validateForm();

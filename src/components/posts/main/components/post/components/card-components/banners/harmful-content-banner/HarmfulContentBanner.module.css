@@ -1,0 +1,28 @@
+.container {
+    width: 100%;
+    align-items: center;
+}
+.title-inner-container {
+    background-color: #44484b;
+    padding: 3% 13% 1% 13%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.title-container h6 {
+    font-size: 120%;
+    color: #bdc5c9;
+    font-weight: 300;
+}
+.title-inner-container i {
+    color: #ff5656;
+    font-size: 140%;
+    padding: 0 5% 8% 5%;
+}
+
+.title-inner-container p {
+    font-size: 85%;
+    color: #bdc5c9;
+    font-weight: 300;
+}
