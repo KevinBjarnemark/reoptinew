@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import style from './Image.module.css';
+import style from './ImageTEMPORARY.module.css';
 import defaultImage1 from '../../../../../../../../assets/images/post/default/1.webp';
 import defaultImage2 from '../../../../../../../../assets/images/post/default/2.webp';
 import defaultImage3 from '../../../../../../../../assets/images/post/default/3.webp';
@@ -11,7 +11,7 @@ const defaultImages = [
     defaultImage4,
 ];
 
-const Image = ({ image }) => {
+const ImageTEMPORARY = ({ image }) => {
     const randomImageIndex = useMemo(
         () => Math.floor(Math.random() * defaultImages.length),
         [],
@@ -25,4 +25,4 @@ const Image = ({ image }) => {
     );
 };
 
-export default Image;
+export default ImageTEMPORARY;
