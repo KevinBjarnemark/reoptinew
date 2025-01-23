@@ -224,7 +224,9 @@ const useAPI = (showDebugging = true) => {
             }
         } catch (error) {
             debug(showDebugging, `(Frontend) ${debugMessages?.error}`, error);
-            addAlert(uxMessages?.frontendError, 'Error');
+            if (uxMessages?.error) {
+                addAlert(uxMessages.error, 'Error');
+            }
         } finally {
             removeLoadingPoint();
         }

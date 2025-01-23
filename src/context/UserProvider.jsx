@@ -28,11 +28,16 @@ const UserProvider = ({ children }) => {
      * available. If no valid token is found, the user is marked as
      * unauthenticated. If the profile fetch is successful, the user's profile
      * is stored in state and the user is marked as authenticated.
-     *
-     * @returns {Promise<void>} Resolves after updating the profile and
+     * @param {bool} refreshTokenBeforeStart Set this to true if you want to
+     * refresh the accesstoken before loading the profile.
+     * @returns {Promise<bool|null>} Resolves after updating the profile and
      * authentication state.
+     * @throws Errors must be handled by the caller
      */
-    const loadProfile = async () => {
+    const loadProfile = async (refreshTokenBeforeStart) => {
+        if (refreshTokenBeforeStart) {
+            await refreshAccessToken(showDebugging);
+        }
         const accessToken = await getAccessToken();
         if (!accessToken) {
             debug(
@@ -41,7 +46,7 @@ const UserProvider = ({ children }) => {
                 '',
             );
             setIsAuthenticated(false);
-            return null;
+            return null; // Indicate guest mode
         }
         // Fetch the user profile
         debug(showDebugging, 'Fetching the user profile', '');
@@ -53,23 +58,35 @@ const UserProvider = ({ children }) => {
                 error: 'Error when fetching user profile.',
                 successfulBackEndResponse: 'Fetched user profile successfully',
             },
-            uxMessages: {
-                error:
-                    "Couldn't load your profile. " +
-                    'Try refreshing your browser.',
-            },
+            // We'll try to load the profile 2 times, see frontend error
+            // handling in initLoadProfile.
+            uxMessages: null,
         });
         if (response) {
             debug(showDebugging, 'Fetched user profile', response);
             setProfile(response);
             setIsAuthenticated(true);
+            return true; // Indicate success
         } else {
             setIsAuthenticated(false);
+            return false; // Indicate failure
         }
     };
 
     const initLoadProfile = async () => {
-        await loadProfile();
+        const loadedProfile = await loadProfile(false);
+        if (loadedProfile === false) {
+            // The user may have outdated tokens, refresh and reload
+            // the profile
+            const loadedProfileSecondAttempt = await loadProfile(true);
+            if (loadedProfileSecondAttempt === false) {
+                addAlert(
+                    'An unexpected error occurred, when trying to keep ' +
+                        'you authenticated, try refreshing the browser.',
+                    'Error',
+                );
+            }
+        }
     };
 
     const initRefreshAccessToken = async () => {
@@ -77,7 +94,7 @@ const UserProvider = ({ children }) => {
         if (!refreshToken) {
             addAlert(
                 'An unexpected error occurred, when trying to keep ' +
-                    'you authenticated try refreshing the browser.',
+                    'you authenticated, try refreshing the browser.',
                 'Error',
             );
         }
