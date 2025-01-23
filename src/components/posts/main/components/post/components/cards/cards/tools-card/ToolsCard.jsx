@@ -1,7 +1,7 @@
-import style from './ToolsCard.module.css';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '../../../card-components/headings/title/Title';
 import Subtitle from '../../../card-components/headings/subtitle/Subtitle';
+import ResourceBuilder from '../../../card-components/builders/resource-builder/ResourceBuilder';
 
 const ToolsCard = ({ post, focused }) => {
     return (
@@ -13,15 +13,7 @@ const ToolsCard = ({ post, focused }) => {
         >
             <Title title={post.title} focused={focused} />
             <Subtitle subtitle="Tools" />
-            <div
-                className={`flex-column-relative ${sharedStyles['text-section']}`}
-            >
-                <textarea
-                    className={`flex-column-relative ${sharedStyles['textarea']}`}
-                    disabled
-                    value={'TODO'}
-                ></textarea>
-            </div>
+            <ResourceBuilder resources={post?.tools} />
         </div>
     );
 };

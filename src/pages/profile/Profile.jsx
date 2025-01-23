@@ -5,6 +5,7 @@ import Posts from '../../components/posts/main/Posts';
 import style from './Profile.module.css';
 import PostContext from '../../context/post/PostContext';
 import { useParams, Outlet, useLocation } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 /**
  * The profile page component.
@@ -14,6 +15,7 @@ import { useParams, Outlet, useLocation } from 'react-router-dom';
 const Profile = () => {
     const { singlePost, posts, renderPosts, renderPost, pageRouteRef } =
         useContext(PostContext);
+    const { isAuthenticated } = useContext(UserContext);
     const { postId } = useParams();
     const { identifier } = useParams();
     const location = useLocation();
@@ -40,7 +42,7 @@ const Profile = () => {
 
     useEffect(() => {
         renderPosts({ user_id: identifier });
-    }, []);
+    }, [isAuthenticated]);
 
     return (
         <>

@@ -3,10 +3,12 @@ import style from './Home.module.css';
 import Posts from '../../components/posts/main/Posts';
 import PostContext from '../../context/post/PostContext';
 import { useParams, Outlet } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 const Home = () => {
     const { singlePost, posts, renderPosts, renderPost } =
         useContext(PostContext);
+    const { isAuthenticated } = useContext(UserContext);
     const { postId } = useParams();
 
     // Since the context exist outside of the routes, handle
@@ -19,7 +21,7 @@ const Home = () => {
 
     useEffect(() => {
         renderPosts();
-    }, []);
+    }, [isAuthenticated]);
 
     return (
         <>

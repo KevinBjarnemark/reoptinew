@@ -84,6 +84,25 @@ const Create = (props) => {
             'Radioactive Materials',
         ]),
         harmful_tools: JSON.stringify(['Sharp or Cutting Tools']),
+        materials: JSON.stringify([
+            {
+                quantity: '10',
+                name: 'wooden boards',
+                description: 'Any wood type will do',
+            },
+            {
+                quantity: 'A couple of',
+                name: 'nails',
+                description: 'Stainless 2 inches long',
+            },
+        ]),
+        tools: JSON.stringify([
+            {
+                quantity: '1',
+                name: 'Screw driver',
+                description: 'Manual or electric',
+            },
+        ]),
     };
 
     const createPost = async () => {
