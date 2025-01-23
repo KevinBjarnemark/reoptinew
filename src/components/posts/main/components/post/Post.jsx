@@ -3,9 +3,6 @@ import style from './Post.module.css';
 import sharedStyles from './SharedStyles.module.css';
 import PostContext from '../../../../../context/post/PostContext';
 import UserContext from '../../../../../context/UserContext';
-import defaultAvatarImage from '../../../../../assets/images/user/default-avatar.webp';
-import { Link } from 'react-router-dom';
-import useNeutralizeApp from '@use-neutralize-app';
 // Cards
 import FrontCard from './components/cards/cards/front-card/FrontCard';
 import DescriptionCard from './components/cards/cards/description-card/DescriptionCard';
@@ -15,6 +12,8 @@ import InstructionsCard from './components/cards/cards/instructions-card/Instruc
 // Card components
 import LeftAndRightButtons from './components/card-components/left-and-right-buttons/LeftAndRightButtons';
 import EllipsisMenuButton from './components/card-components/buttons/elipsis-menu-button/ElipsisMenuButton';
+import UserProfile from './components/card-components/buttons/user-profile/UserProfile';
+import AgeRestriction from './components/card-components/buttons/age-restriction/AgeRestriction';
 
 const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
     switch (cardIndex) {
@@ -49,42 +48,6 @@ const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
             return <InstructionsCard post={post} focused={focused} />;
         }
     }
-};
-
-const ProfileImage = ({ src }) => {
-    return (
-        <div
-            className={
-                'flex-column-relative' + ' ' + style['profile-image-container']
-            }
-        >
-            <img
-                className={`flex-column-relative ${style['profile-image']}`}
-                // Fallback to default image
-                src={src ? src : defaultAvatarImage}
-                alt="Profile image"
-            />
-        </div>
-    );
-};
-
-const UserBadge = ({ image, username }) => {
-    const { neutralizeApp } = useNeutralizeApp();
-    const { handleClosePost } = useContext(PostContext);
-
-    return (
-        <Link
-            className={`flex-row-absolute ${style['user-badge']}`}
-            onClick={() => {
-                neutralizeApp();
-                handleClosePost();
-            }}
-            to={`/profile/${username}`}
-        >
-            <ProfileImage src={image} />
-            <p className={`flex-column-absolute`}>{username}</p>
-        </Link>
-    );
 };
 
 const Post = ({ standalone, post, postsLength }) => {
@@ -122,10 +85,17 @@ const Post = ({ standalone, post, postsLength }) => {
                 // Show if the user is the author (in focused view)
                 show={!focused && isAuthor}
             />
-            <UserBadge
+            <UserProfile
                 image={post?.author?.image}
                 username={post?.author?.username}
             />
+
+            {focused ? (
+                <AgeRestriction
+                    harmfulMaterials={post?.harmful_materials}
+                    harmfulTools={post?.harmful_tools}
+                />
+            ) : null}
         </section>
     );
 };

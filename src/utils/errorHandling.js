@@ -74,6 +74,13 @@ export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
                     );
                 });
             });
+        } else if (response.status === 403 && jsonResponse?.message) {
+            addAlert(jsonResponse.message, 'Info');
+            debug(
+                true,
+                'The server responded with a 403 HTTP response',
+                jsonResponse,
+            );
         } else {
             // Default to the generic message
             addAlert(

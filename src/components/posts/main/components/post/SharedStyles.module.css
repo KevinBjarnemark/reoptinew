@@ -13,15 +13,17 @@
 }
 
 .card-padding {
-    padding: 2% 1.5% 2% 4%;
+    padding: 2% 4% 2% 4%;
 }
 
 .text-section {
-    width: 90%;
+    width: 100%;
     height: 73%;
     min-height: 150px;
     align-items: flex-start;
     justify-content: flex-start;
+    background-color: #dbe3e6;
+    border-radius: 5px;
 }
 
 .textarea {
@@ -30,8 +32,6 @@
     width: 100%;
     border: none;
     padding: 1.5% 3%;
-    background-color: #dbe3e6;
-    border-radius: 5px;
     align-items: flex-start;
     justify-content: flex-start;
 }

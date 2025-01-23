@@ -1,7 +1,7 @@
 import style from './FrontCard.module.css';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '../../../card-components/headings/title/Title';
-import ImageTEMPORARY from '../../../card-components/image/ImageTEMPORARY';
+import Image from '../../../card-components/image/Image';
 import EngagementPanel from '../../../card-components/engagement-panel/EngagementPanel';
 
 const FrontCard = ({ post, renderPost, focused }) => {
@@ -21,8 +21,7 @@ const FrontCard = ({ post, renderPost, focused }) => {
                 }}
             >
                 <Title title={post.title} focused={focused} />
-
-                <ImageTEMPORARY image={{ src: post.image }} />
+                <Image image={{ src: post.image }} />
             </button>
             <EngagementPanel
                 savesMoney={0}

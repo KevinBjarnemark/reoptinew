@@ -1,7 +1,7 @@
 import style from './LeftAndRightButtons.module.css';
 
 const LeftAndRightButtons = ({ show, setCardIndex }) => {
-    const cardsAmount = 4;
+    const cardsAmount = 5;
 
     if (show) {
         return (

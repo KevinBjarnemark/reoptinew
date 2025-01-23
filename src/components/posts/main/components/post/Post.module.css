@@ -9,37 +9,6 @@
     aspect-ratio: 16 / 9;
 }
 
-.user-badge {
-    top: -26%;
-    left: 0;
-    width: 50%;
-    border-radius: 10px;
-}
-
-.user-badge:hover {
-    background-color: #3a3e41;
-}
-
-.user-badge p {
-    line-height: 0;
-    left: 30%;
-    bottom: 0%;
-    font-size: 100%;
-    color: #ffffff;
-}
-
-.profile-image-container {
-    width: 25%;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-    border: 2px solid #3a3e41;
-}
-.profile-image {
-    width: 100%;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-}
-
 /* When screens are larger than 400px */
 @media (min-width: 400px) {
     .post-under {

@@ -13,7 +13,9 @@ const InstructionsCard = ({ post, focused }) => {
         >
             <Title title={post.title} focused={focused} />
             <Subtitle subtitle="Instructions" />
-            <div className={`flex-column-relative ${style['text-section']}`}>
+            <div
+                className={`flex-column-relative ${sharedStyles['text-section']}`}
+            >
                 <textarea
                     className={`flex-column-relative ${sharedStyles['textarea']}`}
                     disabled

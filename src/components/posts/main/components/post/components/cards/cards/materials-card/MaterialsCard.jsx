@@ -2,9 +2,42 @@ import style from './MaterialsCard.module.css';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '../../../card-components/headings/title/Title';
 import Subtitle from '../../../card-components/headings/subtitle/Subtitle';
-import HarmfulContentBanner from '../../../card-components/banners/harmful-content-banner/HarmfulContentBanner';
+
+const MappedMaterials = ({ materials }) => {
+    return (
+        <ul className={`flex-column-relative ${style['materials']}`}>
+            {materials.map((material, index) => (
+                <li key={index} className="flex-column-relative w-100">
+                    <div
+                        className={`flex-column-relative ${style['material']}`}
+                    >
+                        <h6>
+                            <em>{material.quantity}</em>
+                            {material.name}
+                        </h6>
+
+                        <p>{material.description}</p>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    );
+};
 
 const MaterialsCard = ({ post, focused }) => {
+    const mockedMaterials = [
+        {
+            quantity: '10',
+            name: 'Wooden boards',
+            description: 'Any wood type will do.',
+        },
+        {
+            quantity: 'A couple of',
+            name: 'Nails',
+            description: 'Stainless 2 inches',
+        },
+    ];
+
     return (
         <div
             className={
@@ -13,23 +46,8 @@ const MaterialsCard = ({ post, focused }) => {
             }
         >
             <Title title={post.title} focused={focused} />
-            <HarmfulContentBanner
-                post={post}
-                title="Materials"
-                data={post?.harmful_materials}
-                focused={focused}
-            />
             <Subtitle subtitle="Materials" />
-
-            <div
-                className={`flex-column-relative ${sharedStyles['text-section']}`}
-            >
-                <textarea
-                    className={`flex-column-relative ${sharedStyles['textarea']}`}
-                    disabled
-                    value={'TODO'}
-                ></textarea>
-            </div>
+            <MappedMaterials materials={mockedMaterials} />
         </div>
     );
 };

@@ -1,0 +1,30 @@
+.user-profile {
+    top: -26%;
+    left: 0;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.user-profile:hover .profile-image-container {
+    box-shadow: 0 0 6px 3px #ffffff;
+}
+
+.user-profile p {
+    line-height: 0;
+    left: 30%;
+    bottom: 0%;
+    font-size: 100%;
+    color: #ffffff;
+}
+
+.profile-image-container {
+    width: 25%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 2px solid #3a3e41;
+}
+.profile-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}

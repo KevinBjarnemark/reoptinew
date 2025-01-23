@@ -21,3 +21,15 @@ export const isObject = (value, requireContent = false) => {
 
     return requireContent ? Object.keys(value).length > 0 : true;
 };
+
+/**
+ * Check if the inputed value is an array.
+ *
+ */
+export const isArray = (value, requireContent = false) => {
+    if (typeof value !== 'object' || value === null || !Array.isArray(value)) {
+        return false; // Not an array
+    }
+
+    return requireContent ? value.length > 0 : true;
+};

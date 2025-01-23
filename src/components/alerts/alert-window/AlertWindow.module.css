@@ -1,16 +1,14 @@
-
 .container {
     left: 0;
     bottom: 0;
     width: 330px;
-    transform: translate(-100%, 0);  /* Start hidden */
+    transform: translate(-100%, 0); /* Start hidden */
     height: 130px;
     justify-content: flex-start;
     align-items: center;
     background-color: #2f3234;
     border-radius: 5px;
     transition: transform 0.3s;
-    /* box-shadow: 0 0 6px 4px #3d404194; */
     box-shadow: 0 0 6px 4px #ffc079;
 }
 
@@ -35,16 +33,16 @@
 }
 
 .content {
-    color:#ffffff;
+    color: #ffffff;
     align-items: flex-start;
-    padding: 5px 20px
+    padding: 5px 20px;
+    overflow: auto;
 }
 
 .button {
     color: #ffffff;
     font-size: 18px;
     margin: 0 5px;
-
 }
 .button:hover {
     color: #fca559;
@@ -72,5 +70,5 @@
     top: -24px;
     background-color: #2f3234;
     border-radius: 3px;
-    padding: 0 18px
+    padding: 0 18px;
 }

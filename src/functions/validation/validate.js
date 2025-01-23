@@ -112,5 +112,27 @@ export const validateCommon = (formDataDraft) => {
             new Date(formDataDraft.birth_date) >= new Date(): {
             throw new Error('Birth date cannot be in the future.');
         }
+        // Users must be 13 years or older
+        case checkField('birth_date'): {
+            const today = new Date();
+            const birthDate = new Date(formDataDraft.birth_date);
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            // Check if their birthday hasn't passed this year
+            const birthdayNotPassed =
+                today.getMonth() < birthDate.getMonth() ||
+                (today.getMonth() === birthDate.getMonth() &&
+                    today.getDate() < birthDate.getDate());
+            // Subtract 1 if the birthday hasn't passed this year
+            if (birthdayNotPassed) {
+                age -= 1;
+            }
+            if (age < VALIDATION_RULES.BIRTH_DATE.MINIMUM_AGE) {
+                throw new Error(
+                    'You must be 13 years or older to create an account.',
+                );
+            }
+            break;
+        }
     }
 };

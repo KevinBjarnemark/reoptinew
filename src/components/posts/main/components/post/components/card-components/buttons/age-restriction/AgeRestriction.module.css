@@ -1,0 +1,24 @@
+.container {
+    top: -40px;
+    right: 0;
+    width: 50%;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.container button {
+    border-radius: 5px;
+    padding: 3px 6px;
+    background-color: #42474aa0;
+}
+.container button:hover {
+    box-shadow: 0 0 6px 3px #747a7e;
+}
+
+.container h3 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 140%;
+    color: #ff6262;
+}

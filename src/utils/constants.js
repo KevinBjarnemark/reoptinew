@@ -19,6 +19,10 @@ export const VALIDATION_RULES = {
     IMAGE: {
         VALID_EXTENSIONS: ['jpg', 'jpeg', 'png', 'webp'],
     },
+    BIRTH_DATE: {
+        MINIMUM_AGE: 13,
+    },
+    AGE_RESTRICTED_CONTENT_AGE: 16,
 };
 
 export const harmfulTools = [

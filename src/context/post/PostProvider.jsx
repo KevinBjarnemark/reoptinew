@@ -35,7 +35,8 @@ const PostProvider = ({ children }) => {
     const getSinglePost = async (id) => {
         const response = await apiRequest({
             method: 'GET',
-            relativeURL: `/posts/post/${id}`,
+            relativeURL: `/posts/posts/${id}`,
+            authorizationHeader: true,
             debugMessages: {
                 error: "Couldn't load single post.",
                 successfulBackEndResponse: 'Fetched single post successfully',
@@ -62,6 +63,7 @@ const PostProvider = ({ children }) => {
 
             const response = await apiRequest({
                 relativeURL: '/posts/posts/',
+                authorizationHeader: true,
                 debugMessages: {
                     error: 'Error when fetching posts',
                     successfulBackEndResponse: 'Fetched posts successfully',
