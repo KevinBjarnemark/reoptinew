@@ -80,6 +80,9 @@
     align-items: center;
     justify-content: center;
 }
+.engage-button-container:hover {
+    background-color: #ccd6db;
+}
 
 .engage-button-container i {
     color: var(--gray);

@@ -55,7 +55,13 @@ export const formatErrorIdentifier = (text = '') => {
  *
  * @throws Errors for this function must be handled by the caller.
  */
-export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
+export const handleErrors = (
+    response,
+    jsonResponse,
+    addAlert,
+    debugData,
+    skipUxErrors = false,
+) => {
     if (!response.ok) {
         debug(
             debugData.showDebugging,
@@ -67,15 +73,19 @@ export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
         if (isObject(errorDetails, true)) {
             Object.entries(errorDetails).forEach(([field, value]) => {
                 value.forEach((errorMessage) => {
-                    addAlert(
-                        `${formatErrorIdentifier(field + ': ')}` +
-                            `${errorMessage}`,
-                        'Server Error',
-                    );
+                    if (!skipUxErrors) {
+                        addAlert(
+                            `${formatErrorIdentifier(field + ': ')}` +
+                                `${errorMessage}`,
+                            'Server Error',
+                        );
+                    }
                 });
             });
         } else if (response.status === 403 && jsonResponse?.message) {
-            addAlert(jsonResponse.message, 'Info');
+            if (!skipUxErrors) {
+                addAlert(jsonResponse.message, 'Info');
+            }
             debug(
                 true,
                 'The server responded with a 403 HTTP response',
@@ -83,10 +93,13 @@ export const handleErrors = (response, jsonResponse, addAlert, debugData) => {
             );
         } else {
             // Default to the generic message
-            addAlert(
-                jsonResponse?.error_message || 'An unexpected error occurred.',
-                'Server Error',
-            );
+            if (!skipUxErrors) {
+                addAlert(
+                    jsonResponse?.error_message ||
+                        'An unexpected error occurred.',
+                    'Server Error',
+                );
+            }
             debug(
                 true,
                 'UNEXPECTED! A backend error was detected, but there ' +

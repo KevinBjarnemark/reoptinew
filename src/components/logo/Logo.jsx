@@ -1,6 +1,11 @@
+import { useContext } from 'react';
 import style from './Logo.module.css';
+import { Link } from 'react-router-dom';
+import NotificationContext from '@notification-context';
 
-const Logo = ({ loading = false, hide = false }) => {
+const Logo = ({ loading = false, hide = false, link = null }) => {
+    const { addNotification } = useContext(NotificationContext);
+
     const animationCSS = {
         'outer-circle': loading ? style['outer-circle-animation'] : '',
         'loading-text-container-animation': loading
@@ -10,8 +15,18 @@ const Logo = ({ loading = false, hide = false }) => {
         'brand-name-animation': loading ? style['brand-name-animation'] : '',
     };
 
+    const Wrapper = link ? Link : 'div';
+
+    const handleClick = async () => {
+        if (window.location.pathname === '/') {
+            await addNotification(true, 'Click here to start over');
+        }
+    };
+
     return (
-        <div
+        <Wrapper
+            to={link || undefined}
+            onClick={handleClick}
             className={'flex-column-relative ' + `${style['container']}`}
             style={{ transform: `scale(${hide ? 0 : 1})` }}
         >
@@ -49,7 +64,7 @@ const Logo = ({ loading = false, hide = false }) => {
             >
                 {loading ? 'Loading...' : 'eoptinew'}
             </p>
-        </div>
+        </Wrapper>
     );
 };
 

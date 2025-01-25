@@ -60,6 +60,7 @@ const UserProvider = ({ children }) => {
             },
             // We'll try to load the profile 2 times, see frontend error
             // handling in initLoadProfile.
+            skipUxErrors: true,
             uxMessages: null,
         });
         if (response) {

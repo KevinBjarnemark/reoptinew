@@ -27,6 +27,7 @@ const FrontCard = ({ post, renderPost, focused }) => {
                 savesMoney={0}
                 savesTime={0}
                 isUseful={0}
+                postId={post?.id}
                 likes={post?.likes}
                 comments={post?.comments?.length}
             />

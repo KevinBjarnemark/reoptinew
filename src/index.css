@@ -192,6 +192,8 @@ header {
     padding-top: 12px;
     background-color: var(--color-background);
     border-bottom: 3px solid #292c2e49;
+    opacity: 0;
+    transition: opacity 1s;
 }
 
 nav {

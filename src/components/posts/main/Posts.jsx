@@ -1,5 +1,6 @@
 import style from './Posts.module.css';
 import Post from './components/post/Post';
+import PostContext from '../../../context/post/PostContext';
 
 const RenderPosts = ({ posts }) => {
     const postsExist = posts && Array.isArray(posts) && posts?.length > 0;
@@ -10,7 +11,10 @@ const RenderPosts = ({ posts }) => {
                 {posts.map((post) => {
                     return (
                         <Post
-                            key={post.id}
+                            // Use a key that includes all values that might change during
+                            // interactions to help JavaScript and React efficiently identify
+                            // and re-render the component.
+                            key={`${post.id}-${post.likes.count}`}
                             standalone={false}
                             post={{ ...post }}
                             postsLength={posts.length}

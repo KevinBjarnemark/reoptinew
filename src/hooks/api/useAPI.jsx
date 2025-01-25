@@ -143,6 +143,7 @@ const useAPI = (showDebugging = true) => {
             uxMessages = {},
             authorizationHeader = false,
             method = 'POST',
+            skipUxErrors = false,
         } = data;
 
         addLoadingPoint();
@@ -214,7 +215,15 @@ const useAPI = (showDebugging = true) => {
                 showDebugging,
                 message: `(Backend) ${debugMessages?.error}`,
             };
-            if (handleErrors(response, jsonResponse, addAlert, debugData)) {
+            if (
+                handleErrors(
+                    response,
+                    jsonResponse,
+                    addAlert,
+                    debugData,
+                    skipUxErrors,
+                )
+            ) {
                 debug(
                     showDebugging,
                     debugMessages?.successfulBackEndResponse,

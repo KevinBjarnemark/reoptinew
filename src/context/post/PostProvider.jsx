@@ -1,6 +1,6 @@
 import { useState, useContext, useRef } from 'react';
 import PostContext from './PostContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PageDimContext from '../page-dim/PageDimContext';
 import AppCloseButtonContext from '@app-close-button-context';
 import useAPI from '@use-api';
@@ -52,6 +52,22 @@ const PostProvider = ({ children }) => {
         } else {
             await addNotification(false, "Couldn't load post :(");
         }
+    };
+
+    const updateLikes = (id, increment) => {
+        setPosts((prev) =>
+            prev.map((post) =>
+                post.id === id
+                    ? {
+                          ...post,
+                          likes: {
+                              count: post.likes.count + increment,
+                              user_has_liked: increment < 0 ? false : true,
+                          },
+                      }
+                    : post,
+            ),
+        );
     };
 
     const getPosts = async (filterObj) => {
@@ -123,6 +139,7 @@ const PostProvider = ({ children }) => {
                 renderPost,
                 handleClosePost,
                 pageRouteRef,
+                updateLikes,
             }}
         >
             {children}
