@@ -4,8 +4,9 @@ import useAPI from '@use-api';
 import useSimulateLoading from '@use-simulate-loading';
 import NotificationContext from '@notification-context';
 import { debug } from '@debug';
-import NavMenu from '../nav-menu/NavMenu';
+import BasicMenu from '../../../../menus/basic-menu/BasicMenu';
 import UserContext from '../../../../../context/UserContext';
+import NavButton from '../buttons/nav-button/NavButton';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
@@ -17,7 +18,7 @@ const Links = (props) => {
 
     return (
         <>
-            <NavMenu.Wrapper
+            <BasicMenu.Wrapper
                 props={{
                     toggled,
                     handleToggle,
@@ -25,14 +26,14 @@ const Links = (props) => {
                     name: 'Navigation',
                 }}
             >
-                <NavMenu.LinkItem
+                <BasicMenu.LinkItem
                     name="Home"
                     icon="fa-solid fa-house"
                     link="/"
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
-                <NavMenu.LinkItem
+                <BasicMenu.LinkItem
                     name="About"
                     icon="fa-solid fa-circle-info"
                     link="/about"
@@ -40,16 +41,16 @@ const Links = (props) => {
                 />
                 <BorderSeparator />
                 {profile?.username ? (
-                    <NavMenu.LinkItem
+                    <BasicMenu.LinkItem
                         name="Profile"
                         icon="fa-solid fa-user"
                         link={`/profile/${profile?.username}`}
                         handleClose={handleToggle}
                     />
                 ) : null}
-            </NavMenu.Wrapper>
+            </BasicMenu.Wrapper>
 
-            <NavMenu.NavButton
+            <NavButton
                 buttonProps={{ onClick: handleToggle }}
                 icon="fa-solid fa-bars"
             />
@@ -132,10 +133,10 @@ const Create = (props) => {
 
     return (
         <>
-            <NavMenu.Wrapper
+            <BasicMenu.Wrapper
                 props={{ toggled, handleToggle, top: '115px', name: 'Create' }}
             >
-                <NavMenu.ButtonItem
+                <BasicMenu.ButtonItem
                     name="Create post"
                     icon="fa-solid fa-plus"
                     props={{
@@ -146,9 +147,9 @@ const Create = (props) => {
                     }}
                 />
                 <BorderSeparator />
-            </NavMenu.Wrapper>
+            </BasicMenu.Wrapper>
 
-            <NavMenu.NavButton
+            <NavButton
                 buttonProps={{ onClick: handleToggle }}
                 icon="fa-solid fa-plus"
             />

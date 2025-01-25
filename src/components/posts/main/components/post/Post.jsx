@@ -14,6 +14,7 @@ import LeftAndRightButtons from './components/card-components/left-and-right-but
 import EllipsisMenuButton from './components/card-components/buttons/elipsis-menu-button/ElipsisMenuButton';
 import UserProfile from './components/card-components/buttons/user-profile/UserProfile';
 import AgeRestriction from './components/card-components/buttons/age-restriction/AgeRestriction';
+import ModeLabel from './components/card-components/labels/mode-label/ModeLabel';
 
 const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
     switch (cardIndex) {
@@ -50,9 +51,10 @@ const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
     }
 };
 
-const Post = ({ standalone, post, postsLength }) => {
+const Post = ({ standalone, post, settings }) => {
     const { profile } = useContext(UserContext);
-    const { renderPost } = useContext(PostContext);
+    const { renderPost, editingPost, setEditingPost } =
+        useContext(PostContext);
     const focused = standalone;
     const isAuthor = profile?.user_id === post?.author?.id;
     const [cardIndex, setCardIndex] = useState(0);
@@ -60,14 +62,14 @@ const Post = ({ standalone, post, postsLength }) => {
     // Enlarge this component when focused
     const focusedStyle = focused
         ? {
-              zIndex: postsLength + 1,
+              zIndex: 2,
               position: 'fixed',
               width: '60%',
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
           }
-        : {};
+        : { zIndex: settings?.toggled === `Settings ${post.id}` ? 1000 : 0 };
 
     return (
         <section
@@ -81,10 +83,7 @@ const Post = ({ standalone, post, postsLength }) => {
                 renderPost={renderPost}
             />
             <LeftAndRightButtons show={focused} setCardIndex={setCardIndex} />
-            <EllipsisMenuButton
-                // Show if the user is the author (in focused view)
-                show={!focused && isAuthor}
-            />
+
             <UserProfile
                 image={post?.author?.image}
                 username={post?.author?.username}
@@ -95,6 +94,20 @@ const Post = ({ standalone, post, postsLength }) => {
                     harmfulMaterials={post?.harmful_materials}
                     harmfulTools={post?.harmful_tools}
                 />
+            ) : null}
+
+            <EllipsisMenuButton
+                postId={post.id}
+                settings={settings}
+                renderPost={renderPost}
+                setEditingPost={setEditingPost}
+                // Show if the user is the author (in focused view)
+                show={!focused && isAuthor}
+            />
+
+            {/* Show editing label in standalone when editing */}
+            {standalone && editingPost === post.id ? (
+                <ModeLabel labelText="Edit Mode" />
             ) : null}
         </section>
     );

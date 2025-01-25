@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import style from './Posts.module.css';
 import Post from './components/post/Post';
-import PostContext from '../../../context/post/PostContext';
 
 const RenderPosts = ({ posts }) => {
     const postsExist = posts && Array.isArray(posts) && posts?.length > 0;
+    const [toggled, setToggled] = useState('');
+
+    const handleToggleSettings = (id) => {
+        setToggled((prev) => (prev.endsWith(id) ? '' : `Settings ${id}`));
+    };
 
     if (postsExist) {
         return (
@@ -17,7 +22,10 @@ const RenderPosts = ({ posts }) => {
                             key={`${post.id}-${post.likes.count}`}
                             standalone={false}
                             post={{ ...post }}
-                            postsLength={posts.length}
+                            settings={{
+                                handleToggle: handleToggleSettings,
+                                toggled,
+                            }}
                         />
                     );
                 })}
@@ -38,7 +46,6 @@ const Posts = ({ postsArray, singlePost }) => {
                     key={`focused-${singlePost.id}`}
                     standalone={true}
                     post={{ ...singlePost }}
-                    postsLength={1}
                 />
             ) : null}
         </div>

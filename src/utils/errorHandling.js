@@ -51,7 +51,10 @@ export const formatErrorIdentifier = (text = '') => {
 };
 
 /**
+ * Handles server errors by displaying user-friendly messages.
  *
+ * Note that this function sometimes replaces error alerts with info
+ * alerts to provide a better user experience.
  *
  * @throws Errors for this function must be handled by the caller.
  */
@@ -82,6 +85,7 @@ export const handleErrors = (
                     }
                 });
             });
+            // Handle 403 errors that include a custom message
         } else if (response.status === 403 && jsonResponse?.message) {
             if (!skipUxErrors) {
                 addAlert(jsonResponse.message, 'Info');
@@ -89,6 +93,20 @@ export const handleErrors = (
             debug(
                 true,
                 'The server responded with a 403 HTTP response',
+                jsonResponse,
+            );
+            // Customize missing credentials (401)
+        } else if (
+            response.status === 401 &&
+            jsonResponse?.detail ===
+                'Authentication credentials were not provided.'
+        ) {
+            if (!skipUxErrors) {
+                addAlert('You must be logged in to use this feature.', 'Info');
+            }
+            debug(
+                true,
+                'The server responded with a 401 HTTP response',
                 jsonResponse,
             );
         } else {

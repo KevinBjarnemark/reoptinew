@@ -1,23 +1,8 @@
-import style from './NavMenu.module.css';
+import { useRef, useEffect } from 'react';
+import style from './BasicMenu.module.css';
 import { Link } from 'react-router-dom';
-import BackgroundShadow from '../background-shadow/BackgroundShadow';
+import FadedBackgroundShadow from '../../backgrounds/faded-background-shadow/FadedBackgroundShadow';
 import BorderSeparator from '@border-separator';
-
-/**
- * The icon button in sidebar (always visible).
- */
-const NavButton = (props) => {
-    const { buttonProps = {}, icon } = props;
-
-    return (
-        <button
-            className={`${style['icon-button']} pt-4 pb-4 w-100`}
-            {...buttonProps}
-        >
-            <i className={icon}></i>
-        </button>
-    );
-};
 
 const ButtonItem = ({ props, name, icon }) => {
     return (
@@ -71,20 +56,53 @@ const SectionTitle = ({ name }) => {
 };
 
 const Wrapper = ({ children, props }) => {
-    const { toggled, handleToggle, name, top } = props;
+    const {
+        toggled,
+        handleToggle,
+        name,
+        top,
+        hideTitle = false,
+        hideShadow = false,
+    } = props;
 
     const show = toggled === name;
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target)
+            ) {
+                handleToggle(); // Trigger the toggle function
+            }
+        };
+
+        // Add event listeners
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, []);
+
     if (show) {
         return (
-            <section>
-                <BackgroundShadow show={show} />
+            <section ref={containerRef}>
+                {!hideShadow ? <FadedBackgroundShadow show={show} /> : null}
                 <div
                     className={'flex-column-absolute ' + `${style.container}`}
                     style={{ top }}
                 >
-                    <SectionTitle name={name} />
-                    <BorderSeparator />
+                    {!hideTitle ? (
+                        <>
+                            <SectionTitle name={name} />
+                            <BorderSeparator />
+                        </>
+                    ) : null}
                     {children}
                     <SectionClose handleClose={handleToggle} />
                 </div>
@@ -93,13 +111,12 @@ const Wrapper = ({ children, props }) => {
     }
 };
 
-const NavMenu = () => {
+const BasicMenu = () => {
     return <></>;
 };
 
-NavMenu.NavButton = NavButton;
-NavMenu.ButtonItem = ButtonItem;
-NavMenu.LinkItem = LinkItem;
-NavMenu.Wrapper = Wrapper;
+BasicMenu.ButtonItem = ButtonItem;
+BasicMenu.LinkItem = LinkItem;
+BasicMenu.Wrapper = Wrapper;
 
-export default NavMenu;
+export default BasicMenu;

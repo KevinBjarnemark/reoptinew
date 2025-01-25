@@ -1,0 +1,17 @@
+.label {
+    top: -40px;
+    right: 20%;
+    width: 100px;
+    background-color: #4f5558;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px 2px #ffc073;
+}
+
+.label h6 {
+    margin: 0;
+    height: 100%;
+    color: #ffb578;
+}

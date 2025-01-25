@@ -21,6 +21,8 @@ const PostProvider = ({ children }) => {
     const [singlePost, setSinglePost] = useState(null);
     // Loaded posts data
     const [posts, setPosts] = useState([]);
+    // The post that is currently being edited
+    const [editingPost, setEditingPost] = useState('');
 
     // Hooks
     const navigate = useNavigate();
@@ -126,6 +128,7 @@ const PostProvider = ({ children }) => {
             navigate(`/${pageRouteRef.current}`);
         }
         setSinglePost(null);
+        setEditingPost('');
         neutralizeApp(false);
     };
 
@@ -140,6 +143,8 @@ const PostProvider = ({ children }) => {
                 handleClosePost,
                 pageRouteRef,
                 updateLikes,
+                editingPost,
+                setEditingPost,
             }}
         >
             {children}

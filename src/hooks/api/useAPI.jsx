@@ -206,7 +206,11 @@ const useAPI = (showDebugging = true) => {
                 );
             }
 
-            debug(showDebugging, 'Executing an API request', fetchObject);
+            debug(
+                showDebugging,
+                `Executing an API request (${relativeURL})`,
+                fetchObject,
+            );
             // Execute the request
             const response = await fetchAPI(relativeURL, fetchObject);
 
