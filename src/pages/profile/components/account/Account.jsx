@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import style from './Account.module.css';
-import defaultAvatarImage from '../../../../assets/images/user/default-avatar.webp';
+import defaultAvatarImage from '@images/user/default-avatar.webp';
 import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
 import { debug } from '@debug';
@@ -25,39 +25,46 @@ const Account = () => {
     const { apiRequest } = useAPI(showDebugging);
     const [userProfile, setUserProfile] = useState(null);
 
-    const loadUserProfileByIdentifier = async (identifier) => {
-        // Fetch a user's profile by identifier (id or username)
-        debug(showDebugging, 'Fetching the user profile', '');
-        const response = await apiRequest({
-            relativeURL: `/users/profile/${identifier}`,
-            authorizationHeader: false,
-            method: 'GET',
-            debugMessages: {
-                error: 'Error when fetching user profile',
-                successfulBackEndResponse: 'Fetched user profile successfully',
-            },
-            uxMessages: {
-                error:
-                    "Couldn't load this user's profile. " +
-                    'Please refresh your browser.',
-            },
-        });
-        if (response) {
-            debug(showDebugging, `Loaded user (${identifier})`, response);
-            setUserProfile(response);
-        } else {
-            debug(
-                showDebugging,
-                "Couldn't get the user profile by id",
-                response,
-            );
-        }
-    };
-
     useEffect(() => {
+        const loadUserProfileByIdentifier = async (identifier) => {
+            // Fetch a user's profile by identifier (id or username)
+            debug(showDebugging, 'Fetching the user profile', '');
+            const response = await apiRequest({
+                relativeURL: `/users/profile/${identifier}`,
+                authorizationHeader: false,
+                method: 'GET',
+                debugMessages: {
+                    error: 'Error when fetching user profile',
+                    successfulBackEndResponse:
+                        'Fetched user profile successfully',
+                },
+                uxMessages: {
+                    error:
+                        "Couldn't load this user's profile. " +
+                        'Please refresh your browser.',
+                },
+            });
+            if (response) {
+                debug(showDebugging, `Loaded user (${identifier})`, response);
+                setUserProfile(response);
+            } else {
+                debug(
+                    showDebugging,
+                    "Couldn't get the user profile by id",
+                    response,
+                );
+            }
+        };
+
         if (identifier) {
             loadUserProfileByIdentifier(identifier);
         }
+
+        // apiRequest is in itself not a dependency,
+        // but since it's imported from a context, ES Lint is flagging
+        // it as one unnecessarily. showDebugging is also excluded as it
+        // doesn't change.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [identifier]);
 
     return (

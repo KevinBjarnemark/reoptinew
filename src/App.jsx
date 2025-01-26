@@ -16,7 +16,7 @@ import NotificationProvider from '@notification-provider';
 import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from '@app-close-button';
 import AppCloseButtonProvider from '@app-close-button-provider';
-import PostProvider from './context/post/PostProvider';
+import PostProvider from '@post-provider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));

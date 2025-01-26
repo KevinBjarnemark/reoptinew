@@ -16,9 +16,10 @@ const RenderPosts = ({ posts }) => {
                 {posts.map((post) => {
                     return (
                         <Post
-                            // Use a key that includes all values that might change during
-                            // interactions to help JavaScript and React efficiently identify
-                            // and re-render the component.
+                            // Use a key that includes all values that might
+                            // change during interactions to help JavaScript
+                            // and React efficiently identify and re-render the
+                            // component.
                             key={`${post.id}-${post.likes.count}`}
                             standalone={false}
                             post={{ ...post }}

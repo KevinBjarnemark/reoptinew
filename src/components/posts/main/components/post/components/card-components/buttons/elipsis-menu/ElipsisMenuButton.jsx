@@ -1,18 +1,23 @@
+import { useContext } from 'react';
 import style from './EllipsisMenuButton.module.css';
 import BasicMenu from '../../../../../../../../menus/basic-menu/BasicMenu';
-import BorderSeparator from '../../../../../../../../separators/border-separator/BorderSeparator';
+import BorderSeparator from '@border-separator';
+import PostContext from '@post-context';
 
 const Menu = (props) => {
-    const { toggled, handleToggle, postId, renderPost, setEditingPost } =
-        props;
+    const { toggled, handleToggle, post } = props;
+    const { openEditor } = useContext(PostContext);
 
     const handleEdit = () => {
         // Close the menu
         handleToggle();
         // Set editing post id
-        setEditingPost(postId);
-        // Render post
-        renderPost(postId);
+        openEditor(post.id);
+    };
+
+    const handleDelete = () => {
+        // Close the menu
+        handleToggle();
     };
 
     return (
@@ -20,17 +25,16 @@ const Menu = (props) => {
             props={{
                 toggled: toggled,
                 handleToggle,
-                name: `Settings ${postId}`,
+                name: `Settings ${post.id}`,
                 top: '5px',
                 hideTitle: true,
                 hideShadow: true,
             }}
         >
-            <BasicMenu.LinkItem
+            <BasicMenu.ButtonItem
                 name="Delete"
                 icon="fa-solid fa-trash"
-                link="/"
-                handleClose={handleToggle}
+                props={{ onClick: handleDelete }}
             />
             <BorderSeparator />
             <BasicMenu.ButtonItem
@@ -54,15 +58,11 @@ const Button = (props) => {
     );
 };
 
-const EllipsisMenuButton = ({
-    show,
-    settings,
-    postId,
-    renderPost,
-    setEditingPost,
-}) => {
+const EllipsisMenuButton = (props) => {
+    const { post, show, settings } = props;
+
     const handleToggle = () => {
-        settings.handleToggle(postId);
+        settings.handleToggle(post.id);
     };
     if (show) {
         return (
@@ -74,9 +74,7 @@ const EllipsisMenuButton = ({
                         {...{
                             toggled: settings.toggled,
                             handleToggle,
-                            postId,
-                            renderPost,
-                            setEditingPost,
+                            post,
                         }}
                     />
                 </div>

@@ -1,6 +1,7 @@
-import style from './LeftAndRightButtons.module.css';
+import style from './LrButtons.module.css';
 
-const LeftAndRightButtons = ({ show, setCardIndex }) => {
+const LrButtons = (props) => {
+    const { show, setCardIndex } = props;
     const cardsAmount = 5;
 
     if (show) {
@@ -25,4 +26,4 @@ const LeftAndRightButtons = ({ show, setCardIndex }) => {
     }
 };
 
-export default LeftAndRightButtons;
+export default LrButtons;

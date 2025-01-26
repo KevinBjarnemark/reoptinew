@@ -1,7 +1,7 @@
 import sharedStyles from '../../../../SharedStyles.module.css';
-import Title from '../../../card-components/headings/title/Title';
-import Subtitle from '../../../card-components/headings/subtitle/Subtitle';
-import ResourceBuilder from '../../../card-components/builders/resource-builder/ResourceBuilder';
+import Title from '@c-c/headings/title/Title';
+import Subtitle from '@c-c/headings/subtitle/Subtitle';
+import ResourceBuilder from '@c-c/builders/resource-builder/ResourceBuilder';
 
 const ToolsCard = ({ post, focused }) => {
     return (

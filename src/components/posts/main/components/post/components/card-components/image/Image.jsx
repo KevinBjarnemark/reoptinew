@@ -1,27 +1,70 @@
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import style from './Image.module.css';
-import defaultImage1 from '../../../../../../../../assets/images/post/default/1.webp';
-import defaultImage2 from '../../../../../../../../assets/images/post/default/2.webp';
-import defaultImage3 from '../../../../../../../../assets/images/post/default/3.webp';
-import defaultImage4 from '../../../../../../../../assets/images/post/default/4.webp';
-const defaultImages = [
-    defaultImage1,
-    defaultImage2,
-    defaultImage3,
-    defaultImage4,
-];
 
-const Image = ({ image }) => {
-    const randomImageIndex = useMemo(
-        () => Math.floor(Math.random() * defaultImages.length),
-        [],
-    );
+const Image = ({
+    image,
+    inputProps = {},
+    previewImg = null,
+    editMode,
+    defaultImage,
+    focused,
+}) => {
+    const [showCustomImageHint, setShowCustomImageHint] = useState(false);
+
+    useEffect(() => {
+        let timeId;
+
+        if (editMode && focused) {
+            setShowCustomImageHint(true);
+            timeId = setTimeout(() => {
+                setShowCustomImageHint(false);
+            }, 3000);
+        }
+
+        return () => {
+            clearTimeout(timeId);
+        };
+
+        // Both editMode and focused won't change unless the
+        // component unmounts.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
-        <img
-            className={`flex-column-relative ${style.image}`}
-            src={image.src ? image.src : defaultImages[randomImageIndex]}
-        ></img>
+        <button className={`flex-column-relative ${style['image-container']}`}>
+            {editMode ? (
+                <>
+                    <input {...inputProps} type="file" hidden />
+                    <label
+                        htmlFor={inputProps.id}
+                        className={'flex-column-absolute'}
+                        style={{
+                            backgroundColor: showCustomImageHint
+                                ? '#ffffff'
+                                : 'transparent',
+                        }}
+                    >
+                        {showCustomImageHint
+                            ? 'Click here to upload a custom image'
+                            : ''}
+                    </label>
+                </>
+            ) : null}
+
+            {!previewImg ? (
+                <img
+                    className={`flex-column-relative ${style['image']}`}
+                    src={image.src ? image.src : defaultImage}
+                    alt="Preview image"
+                />
+            ) : (
+                <img
+                    className={`flex-column-relative ${style['image']}`}
+                    src={previewImg}
+                    alt="Preview image"
+                />
+            )}
+        </button>
     );
 };
 

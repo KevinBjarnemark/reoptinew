@@ -1,13 +1,29 @@
-import style from './FrontCard.module.css';
+import { useContext } from 'react';
 import sharedStyles from '../../../../SharedStyles.module.css';
-import Title from '../../../card-components/headings/title/Title';
-import Image from '../../../card-components/image/Image';
-import EngagementPanel from '../../../card-components/engagement-panel/EngagementPanel';
+import Title from '@c-c/headings/title/Title';
+import Image from '@c-c/image/Image';
+import EngagementPanel from '@c-c/engagement-panel/EngagementPanel';
+import PostContext from '@post-context';
+import defaultImage1 from '@images/post/default/1.webp';
+import defaultImage2 from '@images/post/default/2.webp';
+import defaultImage3 from '@images/post/default/3.webp';
+import defaultImage4 from '@images/post/default/4.webp';
+const defaultImages = [
+    defaultImage1,
+    defaultImage2,
+    defaultImage3,
+    defaultImage4,
+];
 
-const FrontCard = ({ post, renderPost, focused }) => {
+const FrontCard = (props) => {
+    const { post, focused, editedPostRef, editMode, defaultImageIndex } =
+        props;
+    const { renderPost, previewImage, setPreviewImage } =
+        useContext(PostContext);
+
     return (
         <div className={`flex-row-absolute ${sharedStyles.post}`}>
-            <button
+            <div
                 className={
                     'flex-column-relative ' +
                     sharedStyles['card-button'] +
@@ -15,14 +31,31 @@ const FrontCard = ({ post, renderPost, focused }) => {
                     sharedStyles['card-padding']
                 }
                 onClick={() => {
-                    if (!focused) {
+                    if (!focused && !editMode) {
                         renderPost(post.id);
                     }
                 }}
             >
                 <Title title={post.title} focused={focused} />
-                <Image image={{ src: post.image }} />
-            </button>
+                <Image
+                    editMode={editMode}
+                    focused={focused}
+                    defaultImage={defaultImages[defaultImageIndex]}
+                    image={{ src: post?.image }}
+                    inputProps={{
+                        id: `post-image-${post.id}`,
+                        onChange: (e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                editedPostRef.current.image = file;
+                                setPreviewImage(URL.createObjectURL(file));
+                            }
+                        },
+                    }}
+                    previewImg={editMode ? previewImage : null}
+                />
+            </div>
+
             <EngagementPanel
                 savesMoney={0}
                 savesTime={0}

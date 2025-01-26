@@ -1,65 +1,83 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import style from './Post.module.css';
-import sharedStyles from './SharedStyles.module.css';
-import PostContext from '../../../../../context/post/PostContext';
+import PostContext from '@post-context';
 import UserContext from '../../../../../context/UserContext';
 // Cards
-import FrontCard from './components/cards/cards/front-card/FrontCard';
-import DescriptionCard from './components/cards/cards/description-card/DescriptionCard';
-import MaterialsCard from './components/cards/cards/materials-card/MaterialsCard';
-import ToolsCard from './components/cards/cards/tools-card/ToolsCard';
-import InstructionsCard from './components/cards/cards/instructions-card/InstructionsCard';
+import FrontCard from '@c/front-card/FrontCard';
+import DescriptionCard from '@c/description-card/DescriptionCard';
+import MaterialsCard from '@c/materials-card/MaterialsCard';
+import ToolsCard from '@c/tools-card/ToolsCard';
+import InstructionsCard from '@c/instructions-card/InstructionsCard';
 // Card components
-import LeftAndRightButtons from './components/card-components/left-and-right-buttons/LeftAndRightButtons';
-import EllipsisMenuButton from './components/card-components/buttons/elipsis-menu-button/ElipsisMenuButton';
-import UserProfile from './components/card-components/buttons/user-profile/UserProfile';
-import AgeRestriction from './components/card-components/buttons/age-restriction/AgeRestriction';
-import ModeLabel from './components/card-components/labels/mode-label/ModeLabel';
+import LrButtons from '@c-c/buttons/lr-buttons/LrButtons';
+import EllipsisMenuButton from '@c-c/buttons/elipsis-menu/ElipsisMenuButton';
+import UserProfile from '@c-c/buttons/user-profile/UserProfile';
+import AgeRestriction from '@c-c/buttons/age-restriction/AgeRestriction';
+import ModeLabel from '@c-c/labels/mode-label/ModeLabel';
+import PickerPanel from '@c-c/panels/picker-panel/PickerPanel';
 
-const CardChoser = ({ cardIndex, post, renderPost, focused }) => {
+const CardChoser = (props) => {
+    const {
+        cardIndex,
+        post,
+        focused,
+        editMode,
+        editedPostRef,
+        defaultImageIndex,
+    } = props;
+    // Shared props
+    const sharedProps = { post, focused, editMode, editedPostRef };
+
+    // Front card props
+    const frontCardProps = { ...sharedProps, defaultImageIndex };
+
     switch (cardIndex) {
         default: {
-            return (
-                <FrontCard
-                    post={post}
-                    renderPost={renderPost}
-                    focused={focused}
-                />
-            );
+            return <FrontCard {...frontCardProps} />;
         }
         case 0: {
-            return (
-                <FrontCard
-                    post={post}
-                    renderPost={renderPost}
-                    focused={focused}
-                />
-            );
+            return <FrontCard {...frontCardProps} />;
         }
         case 1: {
-            return <DescriptionCard post={post} focused={focused} />;
+            return <DescriptionCard {...sharedProps} />;
         }
         case 2: {
-            return <MaterialsCard post={post} focused={focused} />;
+            return <MaterialsCard {...sharedProps} />;
         }
         case 3: {
-            return <ToolsCard post={post} focused={focused} />;
+            return <ToolsCard {...sharedProps} />;
         }
         case 4: {
-            return <InstructionsCard post={post} focused={focused} />;
+            return <InstructionsCard {...sharedProps} />;
         }
     }
 };
 
 const Post = ({ standalone, post, settings }) => {
+    // Contexts
     const { profile } = useContext(UserContext);
-    const { renderPost, editingPost, setEditingPost } =
-        useContext(PostContext);
-    const focused = standalone;
-    const isAuthor = profile?.user_id === post?.author?.id;
+    const { editingPost, editedPostRef } = useContext(PostContext);
+    // States
     const [cardIndex, setCardIndex] = useState(0);
+    const [defaultImageIndex, setDefaultImageIndex] = useState(
+        post?.default_image_index ? post.default_image_index : 1,
+    );
+    // Variables
+    const isAuthor = profile?.user_id === post?.author?.id;
+    const focused = standalone;
+    const editMode = editingPost === post?.id;
 
-    // Enlarge this component when focused
+    // Update default_image_index when it's state changes
+    useEffect(() => {
+        editedPostRef.current.default_image_index = defaultImageIndex;
+
+        // Ignoring editedPostRef as a dependency because React doesn't
+        // track changes to refs, and adding it here would have no effect.
+        // This useEffect only needs to re-run when defaultImageIndex changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultImageIndex]);
+
+    // Enlarge the component when focused
     const focusedStyle = focused
         ? {
               zIndex: 2,
@@ -77,18 +95,20 @@ const Post = ({ standalone, post, settings }) => {
             style={{ ...focusedStyle }}
         >
             <CardChoser
-                cardIndex={cardIndex}
-                post={post}
-                focused={focused}
-                renderPost={renderPost}
+                {...{
+                    cardIndex,
+                    post,
+                    focused,
+                    editMode,
+                    editedPostRef,
+                    defaultImageIndex,
+                }}
             />
-            <LeftAndRightButtons show={focused} setCardIndex={setCardIndex} />
-
+            <LrButtons {...{ show: focused, setCardIndex }} />
             <UserProfile
                 image={post?.author?.image}
                 username={post?.author?.username}
             />
-
             {focused ? (
                 <AgeRestriction
                     harmfulMaterials={post?.harmful_materials}
@@ -96,19 +116,25 @@ const Post = ({ standalone, post, settings }) => {
                 />
             ) : null}
 
+            {/* Only visible if the user is the author */}
             <EllipsisMenuButton
-                postId={post.id}
-                settings={settings}
-                renderPost={renderPost}
-                setEditingPost={setEditingPost}
-                // Show if the user is the author (in focused view)
-                show={!focused && isAuthor}
+                {...{ post, show: !focused && isAuthor, settings }}
             />
 
-            {/* Show editing label in standalone when editing */}
+            {/* Edit mode label, only visible when editing in standalone */}
             {standalone && editingPost === post.id ? (
                 <ModeLabel labelText="Edit Mode" />
             ) : null}
+
+            <PickerPanel
+                {...{
+                    show: editMode && cardIndex === 0,
+                    index: defaultImageIndex,
+                    setIndex: setDefaultImageIndex,
+                    maxLength: 4,
+                    label: 'Pick a default image',
+                }}
+            />
         </section>
     );
 };

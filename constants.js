@@ -32,4 +32,15 @@ export const PATH_ALIASES = {
     'use-api': './src/hooks/api/useAPI',
     'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
     'alert-context': './src/context/alert-context/AlertContext',
+    'post-provider': './src/context/post/PostProvider',
+    'post-context': './src/context/post/PostContext',
+
+    // Images
+    images: './src/assets/images',
+
+    // Cards and card components
+    c: './src/components/posts/main/components/post/components/cards/cards/',
+    'c-c':
+        './src/components/posts/main/components/post/components/' +
+        'card-components/',
 };

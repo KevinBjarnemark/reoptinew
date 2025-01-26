@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import style from './Home.module.css';
 import Posts from '../../components/posts/main/Posts';
-import PostContext from '../../context/post/PostContext';
+import PostContext from '@post-context';
 import { useParams, Outlet } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 
@@ -17,10 +17,20 @@ const Home = () => {
         if (postId) {
             renderPost(Number(postId));
         }
-    }, [postId]);
+
+        // renderPost is in itself not a dependency,
+        // but since it's imported from a context, ES Lint is flagging
+        // it as one unnecessarily.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [postId, isAuthenticated]);
 
     useEffect(() => {
         renderPosts();
+
+        // renderPosts is in itself not a dependency,
+        // but since it's imported from a context, ES Lint is flagging
+        // it as one unnecessarily.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated]);
 
     return (

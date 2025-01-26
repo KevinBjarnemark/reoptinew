@@ -1,0 +1,40 @@
+.picker-panel-container {
+    bottom: -85px;
+    left: 0;
+    width: 100%;
+}
+
+.toggle-buttons-container {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: #c8d0d5;
+    padding: 8px 0;
+    border-radius: 5px;
+}
+
+.toggle-buttons-container button {
+    top: 20%;
+    color: #646c71;
+    padding: 0 5%;
+}
+
+.toggle-buttons-container p {
+    margin: 0;
+    color: #646c71;
+}
+
+.label {
+    width: 100%;
+    align-items: center;
+}
+
+.label p {
+    margin: 0;
+    text-align: center;
+    background-color: #c8d0d5;
+    border-radius: 5px;
+    padding: 2px 20px;
+    margin-top: 3px;
+    width: fit-content;
+}

@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import style from './EngagementPanel.module.css';
 import useAPI from '@use-api';
 import { debug } from '@debug';
-import PostContext from '../../../../../../../../context/post/PostContext';
+import PostContext from '@post-context';
 
 const RatingProgressBar = ({ icon, value }) => {
     return (

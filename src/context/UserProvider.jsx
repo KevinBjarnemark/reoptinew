@@ -116,6 +116,8 @@ const UserProvider = ({ children }) => {
          * @throws Errors must be handled by the caller
          */
         const refreshTokenPeriodically = () => {
+            const bufferTime = 3;
+
             timeId = setTimeout(
                 () => {
                     if (isAuthenticated) {
@@ -128,9 +130,8 @@ const UserProvider = ({ children }) => {
                         // Re-execute the interval
                         refreshTokenPeriodically();
                     }
-                    // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
-                },
-                (ACCESS_TOKEN_LIFETIME - 1) * 60 * 1000,
+                }, // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
+                (ACCESS_TOKEN_LIFETIME - bufferTime) * 60 * 1000,
             );
         };
         if (isAuthenticated) {

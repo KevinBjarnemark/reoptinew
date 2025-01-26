@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import style from './UserProfile.module.css';
-import defaultAvatarImage from '../../../../../../../../../assets/images/user/default-avatar.webp';
+import defaultAvatarImage from '@images/user/default-avatar.webp';
 import { Link } from 'react-router-dom';
 import useNeutralizeApp from '@use-neutralize-app';
-import PostContext from '../../../../../../../../../context/post/PostContext';
+import PostContext from '@post-context';
 
 const ProfileImage = ({ src }) => {
     return (

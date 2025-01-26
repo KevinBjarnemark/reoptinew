@@ -21,8 +21,11 @@ const PostProvider = ({ children }) => {
     const [singlePost, setSinglePost] = useState(null);
     // Loaded posts data
     const [posts, setPosts] = useState([]);
-    // The post that is currently being edited
+
+    // The post that is currently being edited (post id)
     const [editingPost, setEditingPost] = useState('');
+    const [previewImage, setPreviewImage] = useState(null);
+    const editedPostRef = useRef({});
 
     // Hooks
     const navigate = useNavigate();
@@ -121,11 +124,41 @@ const PostProvider = ({ children }) => {
         getSinglePost(postId);
     };
 
+    const preFillFields = (post) => {
+        editedPostRef.current = {
+            title: post.title,
+            ...(post?.image ? { image: post.image } : {}),
+            description: post.description,
+            harmful_materials: post.harmful_materials,
+            harmful_tools: post.harmful_tools,
+            instructions: post.instructions,
+            materials: post.materials,
+            tools: post.tools,
+        };
+    };
+
+    const openEditor = (postId) => {
+        setEditingPost(postId);
+        renderPost(postId);
+        const targetedPost = posts.find((post) => post.id === postId);
+        preFillFields(targetedPost);
+    };
+
+    const clearEditor = () => {
+        setEditingPost('');
+        editedPostRef.current = {};
+        setPreviewImage(null);
+    };
+
     const handleClosePost = () => {
         if (pageRouteRef.current === 'posts') {
             navigate('/');
         } else {
             navigate(`/${pageRouteRef.current}`);
+        }
+        // Clear the editor, if it's open
+        if (editingPost) {
+            clearEditor();
         }
         setSinglePost(null);
         setEditingPost('');
@@ -145,6 +178,10 @@ const PostProvider = ({ children }) => {
                 updateLikes,
                 editingPost,
                 setEditingPost,
+                editedPostRef,
+                previewImage,
+                setPreviewImage,
+                openEditor,
             }}
         >
             {children}

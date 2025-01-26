@@ -36,17 +36,6 @@ const LinkItem = ({ name, icon, link, handleClose }) => {
     );
 };
 
-const SectionClose = ({ handleClose }) => {
-    return (
-        <button
-            className={`flex-row-relative ${style['section-close']}`}
-            onClick={handleClose}
-        >
-            <h5>Close</h5>
-        </button>
-    );
-};
-
 const SectionTitle = ({ name }) => {
     return (
         <div className={`flex-row-relative ${style['section-title']}`}>
@@ -104,7 +93,6 @@ const Wrapper = ({ children, props }) => {
                         </>
                     ) : null}
                     {children}
-                    <SectionClose handleClose={handleToggle} />
                 </div>
             </section>
         );

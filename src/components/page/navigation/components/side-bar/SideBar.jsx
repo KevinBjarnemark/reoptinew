@@ -146,7 +146,6 @@ const Create = (props) => {
                         },
                     }}
                 />
-                <BorderSeparator />
             </BasicMenu.Wrapper>
 
             <NavButton
