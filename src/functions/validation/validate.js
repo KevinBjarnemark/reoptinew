@@ -1,5 +1,5 @@
 import { VALIDATION_RULES } from '../../utils/constants';
-import { any } from '../../utils/helpers';
+import { any } from '@helpers';
 
 /**
  * Validates common fields in a form (frontend) by throwing custom

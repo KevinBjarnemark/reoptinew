@@ -69,7 +69,7 @@ const Post = ({ standalone, post, settings }) => {
 
     // Update default_image_index when it's state changes
     useEffect(() => {
-        editedPostRef.current.default_image_index = defaultImageIndex;
+        editedPostRef.current.draft.default_image_index = defaultImageIndex;
 
         // Ignoring editedPostRef as a dependency because React doesn't
         // track changes to refs, and adding it here would have no effect.

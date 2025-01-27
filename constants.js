@@ -44,6 +44,7 @@ export const PATH_ALIASES = {
     debug: './src/utils/log',
     'basic-button': './src/components/buttons/basic-button/BasicButton',
     authentication: './src/functions/authentication',
+    helpers: './src/utils/helpers',
     // Images
     images: './src/assets/images',
     'default-avatar-image': './src/assets/images/user/default-avatar.webp',

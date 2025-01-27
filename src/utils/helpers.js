@@ -33,3 +33,7 @@ export const isArray = (value, requireContent = false) => {
 
     return requireContent ? value.length > 0 : true;
 };
+
+export const createFileURL = (file) => {
+    return URL.createObjectURL(file);
+};

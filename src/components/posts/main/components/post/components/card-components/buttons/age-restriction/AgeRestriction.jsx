@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import style from './AgeRestriction.module.css';
 import AlertContext from '@alert-context';
-import { isArray } from '../../../../../../../../../utils/helpers';
+import { isArray } from '@helpers';
 import { debug } from '@debug';
 import { VALIDATION_RULES } from '../../../../../../../../../utils/constants';
 

@@ -25,7 +25,7 @@ const PostProvider = ({ children }) => {
     // The post that is currently being edited (post id)
     const [editingPost, setEditingPost] = useState('');
     const [previewImage, setPreviewImage] = useState(null);
-    const editedPostRef = useRef({});
+    const editedPostRef = useRef({ draft: {}, data: {} });
 
     // Hooks
     const navigate = useNavigate();
@@ -125,7 +125,7 @@ const PostProvider = ({ children }) => {
     };
 
     const preFillFields = (post) => {
-        editedPostRef.current = {
+        editedPostRef.current.draft = {
             title: post.title,
             ...(post?.image ? { image: post.image } : {}),
             description: post.description,
@@ -146,7 +146,7 @@ const PostProvider = ({ children }) => {
 
     const clearEditor = () => {
         setEditingPost('');
-        editedPostRef.current = {};
+        editedPostRef.current = { draft: {}, data: {} };
         setPreviewImage(null);
     };
 
