@@ -2,6 +2,7 @@
     top: -40px;
     right: 20%;
     width: 100px;
+    height: auto; /* Compatibility fix! */
     background-color: #4f5558;
     border-radius: 5px;
     align-items: center;

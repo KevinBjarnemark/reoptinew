@@ -6,6 +6,7 @@
  * Format: {customName, relativePath}
  */
 export const PATH_ALIASES = {
+    // Contexts and providers
     'app-loading-context':
         './src/context/loading/app-loading/AppLoadingContext',
     'app-loading-provider':
@@ -16,31 +17,38 @@ export const PATH_ALIASES = {
         './src/context/loading/general-loading/GeneralLoadingProvider',
     'notification-provider': './src/context/notification/NotificationProvider',
     'notification-context': './src/context/notification/NotificationContext',
-    'border-separator':
-        './src/components/separators/border-separator/BorderSeparator',
-    debug: './src/utils/log',
-    'basic-button': './src/components/buttons/basic-button/BasicButton',
-    authentication: './src/functions/authentication',
-    'default-avatar-image': './src/assets/images/user/default-avatar.webp',
-    'use-simulate-loading': './src/hooks/effects/useSimulateLoading',
-    'app-close-button':
-        './src/components/buttons/app-close-button/AppCloseButton',
     'app-close-button-context':
         './src/context/app-close-button/AppCloseButtonContext',
     'app-close-button-provider':
         './src/context/app-close-button/AppCloseButtonProvider',
-    'use-api': './src/hooks/api/useAPI',
-    'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
     'alert-context': './src/context/alert-context/AlertContext',
     'post-provider': './src/context/post/PostProvider',
     'post-context': './src/context/post/PostContext',
+    'screen-context': './src/context/screen-context/ScreenContext',
+    'screen-provider': './src/context/screen-context/ScreenProvider',
+    // Components
+    'border-separator':
+        './src/components/separators/border-separator/BorderSeparator',
+    'app-close-button':
+        './src/components/buttons/app-close-button/AppCloseButton',
 
-    // Images
-    images: './src/assets/images',
+    'triangle-button':
+        './src/components/buttons/triangle-button/TriangleButton',
 
     // Cards and card components
     c: './src/components/posts/main/components/post/components/cards/cards/',
     'c-c':
         './src/components/posts/main/components/post/components/' +
         'card-components/',
+    // Functions
+    debug: './src/utils/log',
+    'basic-button': './src/components/buttons/basic-button/BasicButton',
+    authentication: './src/functions/authentication',
+    // Images
+    images: './src/assets/images',
+    'default-avatar-image': './src/assets/images/user/default-avatar.webp',
+    // Custom hooks
+    'use-simulate-loading': './src/hooks/effects/useSimulateLoading',
+    'use-api': './src/hooks/api/useAPI',
+    'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
 };

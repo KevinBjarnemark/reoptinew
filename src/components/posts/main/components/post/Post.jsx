@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import style from './Post.module.css';
 import PostContext from '@post-context';
 import UserContext from '../../../../../context/UserContext';
+import ScreenContext from '@screen-context';
 // Cards
 import FrontCard from '@c/front-card/FrontCard';
 import DescriptionCard from '@c/description-card/DescriptionCard';
@@ -9,7 +10,7 @@ import MaterialsCard from '@c/materials-card/MaterialsCard';
 import ToolsCard from '@c/tools-card/ToolsCard';
 import InstructionsCard from '@c/instructions-card/InstructionsCard';
 // Card components
-import LrButtons from '@c-c/buttons/lr-buttons/LrButtons';
+import CardToggler from '@c-c/buttons/card-toggler/CardToggler';
 import EllipsisMenuButton from '@c-c/buttons/elipsis-menu/ElipsisMenuButton';
 import UserProfile from '@c-c/buttons/user-profile/UserProfile';
 import AgeRestriction from '@c-c/buttons/age-restriction/AgeRestriction';
@@ -20,13 +21,13 @@ const CardChoser = (props) => {
     const {
         cardIndex,
         post,
-        focused,
+        standalone,
         editMode,
         editedPostRef,
         defaultImageIndex,
     } = props;
     // Shared props
-    const sharedProps = { post, focused, editMode, editedPostRef };
+    const sharedProps = { post, standalone, editMode, editedPostRef };
 
     // Front card props
     const frontCardProps = { ...sharedProps, defaultImageIndex };
@@ -64,7 +65,6 @@ const Post = ({ standalone, post, settings }) => {
     );
     // Variables
     const isAuthor = profile?.user_id === post?.author?.id;
-    const focused = standalone;
     const editMode = editingPost === post?.id;
 
     // Update default_image_index when it's state changes
@@ -77,39 +77,45 @@ const Post = ({ standalone, post, settings }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultImageIndex]);
 
-    // Enlarge the component when focused
-    const focusedStyle = focused
+    const { screenWidth } = useContext(ScreenContext);
+
+    // Enlarge the component when in standalone mode
+    const standaloneStyle = standalone
         ? {
               zIndex: 2,
               position: 'fixed',
-              width: '60%',
-              top: '50%',
+              width: screenWidth <= 650 ? '90%' : '60%',
+              top: screenWidth <= 650 ? '60%' : '50%',
               left: '50%',
+              height: 'auto', // Compatibility fix!
               transform: 'translate(-50%, -50%)',
           }
-        : { zIndex: settings?.toggled === `Settings ${post.id}` ? 1000 : 0 };
+        : {
+              zIndex: settings?.toggled === `Settings ${post.id}` ? 1000 : 0,
+              margin: '30px 10px',
+          };
 
     return (
         <section
             className={`flex-row-relative ${style['post-under']}`}
-            style={{ ...focusedStyle }}
+            style={{ ...standaloneStyle }}
         >
             <CardChoser
                 {...{
                     cardIndex,
                     post,
-                    focused,
+                    standalone,
                     editMode,
                     editedPostRef,
                     defaultImageIndex,
                 }}
             />
-            <LrButtons {...{ show: focused, setCardIndex }} />
+            <CardToggler {...{ show: standalone, setCardIndex }} />
             <UserProfile
                 image={post?.author?.image}
                 username={post?.author?.username}
             />
-            {focused ? (
+            {standalone ? (
                 <AgeRestriction
                     harmfulMaterials={post?.harmful_materials}
                     harmfulTools={post?.harmful_tools}
@@ -118,10 +124,11 @@ const Post = ({ standalone, post, settings }) => {
 
             {/* Only visible if the user is the author */}
             <EllipsisMenuButton
-                {...{ post, show: !focused && isAuthor, settings }}
+                {...{ post, show: !standalone && isAuthor, settings }}
             />
 
-            {/* Edit mode label, only visible when editing in standalone */}
+            {/* Edit mode label, only visible when editing in 
+                standalone */}
             {standalone && editingPost === post.id ? (
                 <ModeLabel labelText="Edit Mode" />
             ) : null}

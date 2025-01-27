@@ -7,14 +7,14 @@ const Image = ({
     previewImg = null,
     editMode,
     defaultImage,
-    focused,
+    standalone,
 }) => {
     const [showCustomImageHint, setShowCustomImageHint] = useState(false);
 
     useEffect(() => {
         let timeId;
 
-        if (editMode && focused) {
+        if (editMode && standalone) {
             setShowCustomImageHint(true);
             timeId = setTimeout(() => {
                 setShowCustomImageHint(false);
@@ -25,7 +25,7 @@ const Image = ({
             clearTimeout(timeId);
         };
 
-        // Both editMode and focused won't change unless the
+        // Both editMode and standalone mode won't change unless the
         // component unmounts.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

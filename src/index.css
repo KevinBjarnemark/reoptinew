@@ -147,6 +147,7 @@ label {
 button {
     border: none;
     background-color: transparent;
+    color: #000000;
 }
 
 main {

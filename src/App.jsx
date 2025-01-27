@@ -17,6 +17,7 @@ import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from '@app-close-button';
 import AppCloseButtonProvider from '@app-close-button-provider';
 import PostProvider from '@post-provider';
+import ScreenProvider from '@screen-provider';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
@@ -63,21 +64,25 @@ const AppBody = ({ children }) => {
 export function AppContextWrap({ children }) {
     return (
         <Router>
-            <GeneralLoadingProvider>
-                <PageDimProvider>
-                    <AppCloseButtonProvider>
-                        <AlertProvider>
-                            <NotificationProvider>
-                                <UserProvider>
-                                    <AppLoadingProvider>
-                                        <PostProvider>{children}</PostProvider>
-                                    </AppLoadingProvider>
-                                </UserProvider>
-                            </NotificationProvider>
-                        </AlertProvider>
-                    </AppCloseButtonProvider>
-                </PageDimProvider>
-            </GeneralLoadingProvider>
+            <ScreenProvider>
+                <GeneralLoadingProvider>
+                    <PageDimProvider>
+                        <AppCloseButtonProvider>
+                            <AlertProvider>
+                                <NotificationProvider>
+                                    <UserProvider>
+                                        <AppLoadingProvider>
+                                            <PostProvider>
+                                                {children}
+                                            </PostProvider>
+                                        </AppLoadingProvider>
+                                    </UserProvider>
+                                </NotificationProvider>
+                            </AlertProvider>
+                        </AppCloseButtonProvider>
+                    </PageDimProvider>
+                </GeneralLoadingProvider>
+            </ScreenProvider>
         </Router>
     );
 }

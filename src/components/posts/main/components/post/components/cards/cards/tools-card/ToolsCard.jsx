@@ -3,7 +3,7 @@ import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
 import ResourceBuilder from '@c-c/builders/resource-builder/ResourceBuilder';
 
-const ToolsCard = ({ post, focused }) => {
+const ToolsCard = ({ post, standalone }) => {
     return (
         <div
             className={
@@ -11,7 +11,7 @@ const ToolsCard = ({ post, focused }) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} focused={focused} />
+            <Title title={post.title} standalone={standalone} />
             <Subtitle subtitle="Tools" />
             <ResourceBuilder resources={post?.tools} />
         </div>

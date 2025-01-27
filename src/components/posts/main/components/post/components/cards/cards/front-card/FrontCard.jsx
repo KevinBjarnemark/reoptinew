@@ -16,7 +16,7 @@ const defaultImages = [
 ];
 
 const FrontCard = (props) => {
-    const { post, focused, editedPostRef, editMode, defaultImageIndex } =
+    const { post, standalone, editedPostRef, editMode, defaultImageIndex } =
         props;
     const { renderPost, previewImage, setPreviewImage } =
         useContext(PostContext);
@@ -31,15 +31,15 @@ const FrontCard = (props) => {
                     sharedStyles['card-padding']
                 }
                 onClick={() => {
-                    if (!focused && !editMode) {
+                    if (!standalone && !editMode) {
                         renderPost(post.id);
                     }
                 }}
             >
-                <Title title={post.title} focused={focused} />
+                <Title title={post.title} standalone={standalone} />
                 <Image
                     editMode={editMode}
-                    focused={focused}
+                    standalone={standalone}
                     defaultImage={defaultImages[defaultImageIndex]}
                     image={{ src: post?.image }}
                     inputProps={{

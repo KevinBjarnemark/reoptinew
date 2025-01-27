@@ -8,4 +8,5 @@
     align-items: center;
     background-color: #343b3edd;
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(5px); /* Compatibility fix! */
 }

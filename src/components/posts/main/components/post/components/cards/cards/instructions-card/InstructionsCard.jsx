@@ -2,7 +2,7 @@ import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
 
-const InstructionsCard = ({ post, focused }) => {
+const InstructionsCard = ({ post, standalone }) => {
     return (
         <div
             className={
@@ -10,7 +10,7 @@ const InstructionsCard = ({ post, focused }) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} focused={focused} />
+            <Title title={post.title} standalone={standalone} />
             <Subtitle subtitle="Instructions" />
             <div
                 className={

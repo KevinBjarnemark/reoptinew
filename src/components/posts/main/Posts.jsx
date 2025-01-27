@@ -44,7 +44,7 @@ const Posts = ({ postsArray, singlePost }) => {
 
             {singlePost ? (
                 <Post
-                    key={`focused-${singlePost.id}`}
+                    key={`standalone-${singlePost.id}`}
                     standalone={true}
                     post={{ ...singlePost }}
                 />
