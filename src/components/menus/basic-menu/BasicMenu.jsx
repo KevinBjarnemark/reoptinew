@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import style from './BasicMenu.module.css';
 import { Link } from 'react-router-dom';
-import FadedBackgroundShadow from '../../backgrounds/faded-background-shadow/FadedBackgroundShadow';
+import FadedBackgroundShadow from '@faded-background-shadow';
 import BorderSeparator from '@border-separator';
 
 const ButtonItem = ({ props, name, icon }) => {
@@ -59,10 +59,10 @@ const Wrapper = ({ children, props }) => {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
+        const handleClickOutside = (e) => {
             if (
                 containerRef.current &&
-                !containerRef.current.contains(event.target)
+                !containerRef.current.contains(e.target)
             ) {
                 handleToggle(); // Trigger the toggle function
             }
@@ -76,6 +76,11 @@ const Wrapper = ({ children, props }) => {
             document.removeEventListener('mousedown', handleClickOutside);
             document.removeEventListener('touchstart', handleClickOutside);
         };
+
+        // handleToggle is in itself not a dependency,
+        // but since it's imported from props, ES Lint is flagging
+        // it as one unnecessarily.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (show) {

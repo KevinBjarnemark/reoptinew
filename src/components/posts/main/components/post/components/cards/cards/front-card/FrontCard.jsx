@@ -21,14 +21,12 @@ import AlertContext from '@alert-context';
 
 const FrontCard = (props) => {
     const showDebugging = true;
-    const { post, standalone, editedPostRef, editMode, defaultImageIndex } =
-        props;
-    const { renderPost, previewImage, setPreviewImage, editingPost } =
+    const { post, standalone, editMode, defaultImageIndex } = props;
+    const { renderPost, previewImage, setPreviewImage, editedPostRef } =
         useContext(PostContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
     );
-    const editingThisPost = editingPost === post?.id;
     const [firstRender, setFirstRender] = useState(true);
     const [imageDynamicKey, setImageDynamicKey] = useState(false);
     const { addAlert } = useContext(AlertContext);
@@ -37,7 +35,7 @@ const FrontCard = (props) => {
         addLoadingPoint();
         try {
             const file = e.target.files[0];
-            if (editingThisPost && file) {
+            if (editMode && file) {
                 const fileUrl = createFileURL(file);
                 setPreviewImage(fileUrl);
                 debug(showDebugging, 'Post preview image updated', '');
@@ -55,9 +53,9 @@ const FrontCard = (props) => {
             }
         } catch (error) {
             addAlert(
-                'Something went adding your custom image, try refreshing ' +
-                    'your browser. Note that your edits will be erased ' +
-                    'after a browser refresh.',
+                'Something went wrong when adding your custom image, ' +
+                    'try refreshing your browser. Note that your edits ' +
+                    'will be erased after a browser refresh.',
                 'Error',
             );
             debug(
@@ -79,7 +77,7 @@ const FrontCard = (props) => {
         setFirstRender(false);
 
         // Use saved edited post data to update the preview image after
-        // allowing the  dynamic key change to take effect.
+        // allowing the component to mount.
         if (editedPostRef.current.data.imageUrl) {
             timeId = setTimeout(() => {
                 setPreviewImage(editedPostRef.current.data.imageUrl);
@@ -92,7 +90,7 @@ const FrontCard = (props) => {
     }, []);
 
     useEffect(() => {
-        if (!firstRender && editingThisPost) {
+        if (!firstRender && editMode) {
             setPreviewImage(null);
             // Clear the custom image
             editedPostRef.current.draft.image = null;
@@ -130,15 +128,13 @@ const FrontCard = (props) => {
                     standalone={standalone}
                     defaultImage={defaultImages[defaultImageIndex]}
                     image={{
-                        src: editingThisPost ? previewImage : post?.image,
+                        src: editMode ? previewImage : post?.image,
                     }}
                     inputProps={{
                         id: `post-image-${post.id}`,
-                        onChange: (e) => {
-                            updateImage(e);
-                        },
+                        onChange: updateImage,
                     }}
-                    previewImg={editingThisPost ? previewImage : null}
+                    previewImg={editMode ? previewImage : null}
                 />
             </div>
 
@@ -149,6 +145,7 @@ const FrontCard = (props) => {
                 postId={post?.id}
                 likes={post?.likes}
                 comments={post?.comments?.length}
+                editMode={editMode}
             />
         </div>
     );

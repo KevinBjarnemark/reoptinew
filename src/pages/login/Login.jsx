@@ -37,7 +37,8 @@ const Login = () => {
      * This function also validates the fields before sending
      * to the backend.
      */
-    const handleLogIn = async () => {
+    const handleLogIn = async (e) => {
+        e.preventDefault();
         // Used in tests
         debug(showDebugging, 'Clicked the log in button', formDataDraft);
         // Simulated loading effect
@@ -73,10 +74,7 @@ const Login = () => {
             <BasicForm
                 submitButtonProps={{
                     text: 'Log in',
-                    onClick: (e) => {
-                        e.preventDefault();
-                        handleLogIn();
-                    },
+                    onClick: handleLogIn,
                 }}
             >
                 <div className="flex-row-relative align-items-start">
@@ -102,7 +100,6 @@ const Login = () => {
                                 inputProps={{
                                     placeholder: '',
                                     type: 'password',
-
                                     onChange: (e) => {
                                         setFormDataDraft((prev) => ({
                                             ...prev,

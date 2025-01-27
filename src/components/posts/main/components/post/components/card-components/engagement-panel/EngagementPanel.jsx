@@ -3,6 +3,7 @@ import style from './EngagementPanel.module.css';
 import useAPI from '@use-api';
 import { debug } from '@debug';
 import PostContext from '@post-context';
+import AlertContext from '@alert-context';
 
 const RatingProgressBar = ({ icon, value }) => {
     return (
@@ -53,16 +54,23 @@ const EngageButton = ({ onClick, value, icon }) => {
 };
 
 const LikeButton = (props) => {
-    const { postId = null, likes = { count: 0, user_has_liked: false } } =
-        props;
-    const { updateLikes } = useContext(PostContext);
-
+    const {
+        postId = null,
+        likes = { count: 0, user_has_liked: false },
+        editMode,
+    } = props;
+    const { updateLikes, editingPost } = useContext(PostContext);
+    const { addAlert } = useContext(AlertContext);
     const showDebugging = true;
     const { apiRequest } = useAPI(true);
     const [userHasLiked, setUserHasLiked] = useState(likes?.user_has_liked);
     const [likeCount, setLikeCount] = useState(likes?.count);
 
     const like = async () => {
+        if (editMode) {
+            addAlert('You cannot like this post in edit mode.', 'Info');
+            return;
+        }
         const response = await apiRequest({
             method: userHasLiked ? 'DELETE' : 'POST',
             authorizationHeader: true,
@@ -116,14 +124,14 @@ const LikeButton = (props) => {
     );
 };
 
-const EngageButtons = ({ postId, likes, comments }) => {
+const EngageButtons = ({ postId, likes, comments, editMode }) => {
     return (
         <div
             className={
                 'flex-row-relative ' + `${style['engage-buttons-container']}`
             }
         >
-            <LikeButton {...{ postId, likes }} />
+            <LikeButton {...{ postId, likes, editMode }} />
 
             <div className={style['vertical-separator']}></div>
             <EngageButton
@@ -142,6 +150,7 @@ const EngagementPanel = ({
     postId = null,
     likes = { count: 0, user_has_liked: false },
     comments = 0,
+    editMode,
 }) => {
     return (
         <div className={`flex-column-relative ${style.container}`}>
@@ -155,7 +164,7 @@ const EngagementPanel = ({
             <RatingProgressBar icon="fa-solid fa-hand-fist" value={isUseful} />
 
             <div className={style['horizontal-separator']}></div>
-            <EngageButtons {...{ postId, likes, comments }} />
+            <EngageButtons {...{ postId, likes, comments, editMode }} />
             <div className={style['horizontal-separator']}></div>
         </div>
     );

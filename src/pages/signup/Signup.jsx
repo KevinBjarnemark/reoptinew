@@ -55,7 +55,8 @@ const Signup = () => {
      * Uses the onSubmit hook to submit the login form data to the
      * backend.
      */
-    const handleSignup = async () => {
+    const handleSignup = async (e) => {
+        e.preventDefault();
         await simulateLoading();
         const response = await apiRequest({
             validateForm,
@@ -88,10 +89,7 @@ const Signup = () => {
             <BasicForm
                 submitButtonProps={{
                     text: 'Sign up',
-                    onClick: (e) => {
-                        e.preventDefault();
-                        handleSignup();
-                    },
+                    onClick: handleSignup,
                 }}
             >
                 <div className={style['form-container']}>

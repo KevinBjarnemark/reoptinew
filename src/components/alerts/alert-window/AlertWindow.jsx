@@ -101,7 +101,7 @@ const AlertWindow = () => {
         if (alerts?.length > 0) {
             setTransformTranslate('translate(0, 0)');
         }
-        // Explanation:
+
         // setTransformTranslate is in itself not a dependency,
         // but since it's imported from a context, ES Lint is flagging
         // it as one unnecessarily.
@@ -123,7 +123,6 @@ const AlertWindow = () => {
             clearTimeout(timeId);
         };
 
-        // Explanation:
         // setTransformTranslate is in itself not a dependency,
         // but since it's imported from a context, ES Lint is flagging
         // it as one unnecessarily.

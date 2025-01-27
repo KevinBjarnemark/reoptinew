@@ -42,12 +42,7 @@ const FormContent = () => {
             backgroundColor: '#fe5a5a',
             cursor: deleteButtonDisabled ? 'not-allowed' : 'pointer',
         },
-        onClick: (e) => {
-            e.preventDefault();
-            if (deleteButtonDisabled) {
-                handleAccountDeletion();
-            }
-        },
+        onClick: handleAccountDeletion,
         disabled: deleteButtonDisabled,
     };
 
@@ -95,7 +90,12 @@ const FormContent = () => {
      * Uses the onSubmit hook to submit the login form data to the
      * backend.
      */
-    const handleAccountDeletion = async () => {
+    const handleAccountDeletion = async (e) => {
+        e.preventDefault();
+        if (!deleteButtonDisabled) {
+            return;
+        }
+
         setDeleteButtonDisabled(true);
         const formIsReady = await prepareForm();
         const formIsValidated = validateForm();

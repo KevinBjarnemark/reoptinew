@@ -31,9 +31,11 @@ export const PATH_ALIASES = {
         './src/components/separators/border-separator/BorderSeparator',
     'app-close-button':
         './src/components/buttons/app-close-button/AppCloseButton',
-
     'triangle-button':
         './src/components/buttons/triangle-button/TriangleButton',
+
+    'faded-background-shadow':
+        './src/components/backgrounds/faded-background-shadow/FadedBackgroundShadow',
 
     // Cards and card components
     c: './src/components/posts/main/components/post/components/cards/cards/',

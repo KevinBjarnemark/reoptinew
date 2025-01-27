@@ -18,16 +18,9 @@ import ModeLabel from '@c-c/labels/mode-label/ModeLabel';
 import PickerPanel from '@c-c/panels/picker-panel/PickerPanel';
 
 const CardChoser = (props) => {
-    const {
-        cardIndex,
-        post,
-        standalone,
-        editMode,
-        editedPostRef,
-        defaultImageIndex,
-    } = props;
+    const { cardIndex, post, standalone, editMode, defaultImageIndex } = props;
     // Shared props
-    const sharedProps = { post, standalone, editMode, editedPostRef };
+    const sharedProps = { post, standalone, editMode };
 
     // Front card props
     const frontCardProps = { ...sharedProps, defaultImageIndex };
@@ -106,7 +99,6 @@ const Post = ({ standalone, post, settings }) => {
                     post,
                     standalone,
                     editMode,
-                    editedPostRef,
                     defaultImageIndex,
                 }}
             />
