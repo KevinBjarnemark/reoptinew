@@ -3,9 +3,13 @@ import style from './AgeRestriction.module.css';
 import AlertContext from '@alert-context';
 import { isArray } from '@helpers';
 import { debug } from '@debug';
-import { VALIDATION_RULES } from '../../../../../../../../../utils/constants';
+import { VALIDATION_RULES } from '@constants';
 
-const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
+const AgeRestriction = ({
+    harmfulMaterialCategories,
+    harmfulToolCategories,
+    harmfulPost,
+}) => {
     const showDebugging = true;
     const { addAlert } = useContext(AlertContext);
 
@@ -23,13 +27,13 @@ const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
             const length = contentArray.length;
 
             const concatenatedString = contentArray
-                .map((material, index) => {
+                .map((i, index) => {
                     if (index === length - 1 && length > 1) {
                         // Add "and" for the last item
-                        return `and ${material.name}`;
+                        return `and ${i}`;
                     }
                     // Add all other items normally
-                    return material.name;
+                    return i;
                 })
                 // Join the names with a comma
                 .join(', ');
@@ -48,8 +52,15 @@ const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
 
     const handleClick = () => {
         try {
-            fireAlert('Materials', harmfulMaterials);
-            fireAlert('Tools', harmfulTools);
+            if (harmfulPost) {
+                addAlert(
+                    'The outcome of this post may be dangerous for children.' +
+                        '',
+                    'Info',
+                );
+            }
+            fireAlert('Materials', harmfulMaterialCategories);
+            fireAlert('Tools', harmfulToolCategories);
         } catch (error) {
             debug(
                 'e',
@@ -66,7 +77,11 @@ const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
         }
     };
 
-    if (isArray(harmfulMaterials, true) || isArray(harmfulTools, true)) {
+    if (
+        isArray(harmfulMaterialCategories, true) ||
+        isArray(harmfulToolCategories, true) ||
+        harmfulPost
+    ) {
         return (
             <div className={`flex-column-absolute ${style['container']}`}>
                 <button onClick={handleClick}>

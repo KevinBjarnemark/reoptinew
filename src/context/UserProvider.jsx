@@ -4,7 +4,7 @@ import UserContext from './UserContext';
 import useAPI from '@use-api';
 import useTokens from '../hooks/authentication/useTokens';
 import AlertContext from '@alert-context';
-import { ACCESS_TOKEN_LIFETIME } from '../utils/constants';
+import { ACCESS_TOKEN_LIFETIME } from '@constants';
 
 const UserProvider = ({ children }) => {
     // Config

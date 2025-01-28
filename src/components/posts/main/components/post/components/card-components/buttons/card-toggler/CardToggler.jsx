@@ -4,8 +4,8 @@ import { TriangleButton } from '@triangle-button';
 import ScreenContext from '@screen-context';
 
 const CardToggler = (props) => {
-    const { show, setCardIndex } = props;
-    const cardsAmount = 5;
+    const { show, setCardIndex, editMode } = props;
+    const cardsAmount = editMode ? 6 : 5;
     const { screenWidth } = useContext(ScreenContext);
 
     const leftToggle = () => {

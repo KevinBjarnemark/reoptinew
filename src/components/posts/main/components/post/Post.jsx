@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import style from './Post.module.css';
 import PostContext from '@post-context';
 import UserContext from '../../../../../context/UserContext';
@@ -9,6 +9,7 @@ import DescriptionCard from '@c/description-card/DescriptionCard';
 import MaterialsCard from '@c/materials-card/MaterialsCard';
 import ToolsCard from '@c/tools-card/ToolsCard';
 import InstructionsCard from '@c/instructions-card/InstructionsCard';
+import SafetyCard from '@c/safety-card/SafetyCard';
 // Card components
 import CardToggler from '@c-c/buttons/card-toggler/CardToggler';
 import EllipsisMenuButton from '@c-c/buttons/elipsis-menu/ElipsisMenuButton';
@@ -43,6 +44,12 @@ const CardChoser = (props) => {
         }
         case 4: {
             return <InstructionsCard {...sharedProps} />;
+        }
+        case 5: {
+            if (editMode) {
+                return <SafetyCard {...sharedProps} />;
+            }
+            return null;
         }
     }
 };
@@ -92,15 +99,18 @@ const Post = ({ standalone, post, settings }) => {
                     defaultImageIndex,
                 }}
             />
-            <CardToggler {...{ show: standalone, setCardIndex }} />
+            <CardToggler {...{ show: standalone, setCardIndex, editMode }} />
             <UserProfile
                 image={post?.author?.image}
                 username={post?.author?.username}
             />
             {standalone ? (
                 <AgeRestriction
-                    harmfulMaterials={post?.harmful_materials}
-                    harmfulTools={post?.harmful_tools}
+                    harmfulPost={post?.harmful_post}
+                    harmfulMaterialCategories={
+                        post?.harmful_material_categories
+                    }
+                    harmfulToolCategories={post?.harmful_tool_categories}
                 />
             ) : null}
 

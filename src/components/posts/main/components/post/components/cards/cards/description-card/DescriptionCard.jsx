@@ -37,7 +37,7 @@ const DescriptionCard = (props) => {
     const textAreaProps = !editMode
         ? {
               disabled: true,
-              value: editedPost.draft.description,
+              value: post.description,
           }
         : {
               disabled: false,

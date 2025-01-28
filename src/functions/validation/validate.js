@@ -1,4 +1,4 @@
-import { VALIDATION_RULES } from '../../utils/constants';
+import { VALIDATION_RULES } from '@constants';
 import { any } from '@helpers';
 
 /**

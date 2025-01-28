@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+    align-items: center;
+    margin: 15px 0;
+    padding: 0 10px;
+}
+
+.item {
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: #ccd4d7;
+    border-radius: 3px;
+    padding: 10px 10px;
+    margin: 10px 0;
+}
+
+.checkbox-container {
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #e2e8ea;
+    border: dashed 1.5px #8b9194;
+}
+.checkbox {
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.label {
+    margin: 0 45px;
+    color: #000000;
+    cursor: pointer;
+}

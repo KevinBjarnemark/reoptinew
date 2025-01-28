@@ -43,7 +43,7 @@ const InstructionsCard = (props) => {
     const textareaProps = !editMode
         ? {
               disabled: true,
-              value: editedPost.draft.instructions,
+              value: post.instructions,
           }
         : {
               disabled: false,

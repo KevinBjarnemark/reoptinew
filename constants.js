@@ -6,6 +6,8 @@
  * Format: {customName, relativePath}
  */
 export const PATH_ALIASES = {
+    // Constants
+    constants: './src/utils/constants',
     // Contexts and providers
     'app-loading-context':
         './src/context/loading/app-loading/AppLoadingContext',
@@ -36,16 +38,18 @@ export const PATH_ALIASES = {
         './src/components/buttons/app-close-button/AppCloseButton',
     'triangle-button':
         './src/components/buttons/triangle-button/TriangleButton',
-
     'faded-background-shadow':
         './src/components/backgrounds/faded-background-shadow/' +
         'FadedBackgroundShadow',
-
     // Cards and card components
     c: './src/components/posts/main/components/post/components/cards/cards/',
     'c-c':
         './src/components/posts/main/components/post/components/' +
         'card-components/',
+    // Checkbox builder folder
+    'c-builder':
+        './src/components/posts/main/components/post/components/' +
+        'card-components/builders/checkbox-builder/',
     // Functions
     debug: './src/utils/log',
     'basic-button': './src/components/buttons/basic-button/BasicButton',

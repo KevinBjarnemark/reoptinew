@@ -25,7 +25,7 @@ export const VALIDATION_RULES = {
     AGE_RESTRICTED_CONTENT_AGE: 16,
 };
 
-export const harmfulTools = [
+export const HARMFUL_TOOL_CATEGORIES = [
     {
         category: 'Sharp or Cutting Tools',
         examples: ['Knives', 'Blades', 'Scissors'],
@@ -81,7 +81,7 @@ export const harmfulTools = [
     },
 ];
 
-export const harmfulMaterials = [
+export const HARMFUL_MATERIAL_CATEGORIES = [
     {
         category: 'Chemical Substances',
         examples: [

@@ -78,13 +78,13 @@ const Create = (props) => {
         title: 'Test post 10',
         description: 'Test description',
         instructions: 'Test instructions',
-        harmful_materials: JSON.stringify([
+        harmful_material_categories: JSON.stringify([
             'Corrosive Materials',
             'Flammable Materials',
             'Chemical Substances',
             'Radioactive Materials',
         ]),
-        harmful_tools: JSON.stringify(['Sharp or Cutting Tools']),
+        harmful_tool_categories: JSON.stringify(['Sharp or Cutting Tools']),
         materials: JSON.stringify([
             {
                 quantity: '10',
