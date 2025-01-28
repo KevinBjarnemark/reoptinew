@@ -1,13 +1,15 @@
 import { useState, useContext, useRef } from 'react';
 import PostContext from './PostContext';
 import { useNavigate } from 'react-router-dom';
-import PageDimContext from '../page-dim/PageDimContext';
+import PageDimContext from '../../page-dim/PageDimContext';
 import AppCloseButtonContext from '@app-close-button-context';
 import useAPI from '@use-api';
 import useNeutralizeApp from '@use-neutralize-app';
 import NotificationContext from '@notification-context';
+import { debug } from '@debug';
 
 const PostProvider = ({ children }) => {
+    const showDebugging = true;
     const { addNotification } = useContext(NotificationContext);
 
     /**
@@ -25,7 +27,6 @@ const PostProvider = ({ children }) => {
     // The post that is currently being edited (post id)
     const [editingPost, setEditingPost] = useState('');
     const [previewImage, setPreviewImage] = useState(null);
-    const editedPostRef = useRef({ draft: {}, data: {} });
 
     // Hooks
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ const PostProvider = ({ children }) => {
     const { neutralizeApp } = useNeutralizeApp();
 
     // Contexts
-    const { renderAppCloseButton } = useContext(AppCloseButtonContext);
+    const { setShowAppCloseButton } = useContext(AppCloseButtonContext);
     const { setDim } = useContext(PageDimContext);
 
     const getSinglePost = async (id) => {
@@ -116,53 +117,51 @@ const PostProvider = ({ children }) => {
     };
 
     const renderPost = (postId) => {
-        // Navigate to post URL
-        navigate(`/${pageRouteRef.current}/post/${postId}`);
+        // Navigate to post route
+        const postRoute = `/${pageRouteRef.current}/post/${postId}`;
+        navigate(postRoute);
+        debug('d', showDebugging, 'Navigated to post route:', postRoute);
         // Dim the app background and show the close button
         setDim(true);
-        renderAppCloseButton(handleClosePost);
+        // Fetch the targeted post
+        debug('d', showDebugging, 'Fetching a single post.', '');
         getSinglePost(postId);
-    };
-
-    const preFillFields = (post) => {
-        editedPostRef.current.draft = {
-            title: post.title,
-            ...(post?.image ? { image: post.image } : {}),
-            description: post.description,
-            harmful_materials: post.harmful_materials,
-            harmful_tools: post.harmful_tools,
-            instructions: post.instructions,
-            materials: post.materials,
-            tools: post.tools,
-        };
+        // Show the app close button
+        setShowAppCloseButton(true);
     };
 
     const openEditor = (postId) => {
         setEditingPost(postId);
+        debug('d', showDebugging, `Opened editor for post ${postId}.`, '');
         renderPost(postId);
-        const targetedPost = posts.find((post) => post.id === postId);
-        preFillFields(targetedPost);
-    };
-
-    const clearEditor = () => {
-        setEditingPost('');
-        editedPostRef.current = { draft: {}, data: {} };
-        setPreviewImage(null);
     };
 
     const handleClosePost = () => {
-        if (pageRouteRef.current === 'posts') {
-            navigate('/');
-        } else {
-            navigate(`/${pageRouteRef.current}`);
-        }
-        // Clear the editor, if it's open
-        if (editingPost) {
-            clearEditor();
-        }
+        debug('d', showDebugging, 'Closing a post...', '');
         setSinglePost(null);
         setEditingPost('');
         neutralizeApp(false);
+        // Handle both profile and home route navigation
+        const userIsAtHomeRoute = pageRouteRef.current === 'posts';
+        if (userIsAtHomeRoute) {
+            navigate('/');
+            debug(
+                'd',
+                showDebugging,
+                'Navigated back to the home route because the user ' +
+                    ' was there initially.',
+                '',
+            );
+        } else {
+            navigate(`/${pageRouteRef.current}`);
+            debug(
+                'd',
+                showDebugging,
+                `Navigated back to ${pageRouteRef.current} because ` +
+                    ' the user was there initially.',
+                '',
+            );
+        }
     };
 
     return (
@@ -178,7 +177,6 @@ const PostProvider = ({ children }) => {
                 updateLikes,
                 editingPost,
                 setEditingPost,
-                editedPostRef,
                 previewImage,
                 setPreviewImage,
                 openEditor,

@@ -35,7 +35,10 @@ const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
                 .join(', ');
 
             addAlert(
-                `This post may include ${name.toLowerCase()} that are not safe for children. ${name} such as ${concatenatedString + '.'}`,
+                `This post may include ${name.toLowerCase()} that are not ` +
+                    `safe for children. ${name} such as ` +
+                    concatenatedString +
+                    '.',
                 'Info',
             );
         } else {
@@ -49,13 +52,15 @@ const AgeRestriction = ({ harmfulMaterials, harmfulTools }) => {
             fireAlert('Tools', harmfulTools);
         } catch (error) {
             debug(
+                'e',
                 showDebugging,
-                'Error when concatenating age-restricted content for a post',
+                'Error when concatenating age-restricted content for a post:',
                 error,
             );
             addAlert(
-                'Something went wrong when gathering data about age-restricted content. ' +
-                    'Since our system failed, this post may include harmful content for children.',
+                'Something went wrong when gathering data about ' +
+                    'age-restricted content. Since our system failed, this ' +
+                    'post may include harmful content for children.',
                 'Error',
             );
         }

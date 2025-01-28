@@ -67,6 +67,7 @@ export const handleErrors = (
 ) => {
     if (!response.ok) {
         debug(
+            debugData.logName,
             debugData.showDebugging,
             debugData.message,
             backendError(response, jsonResponse),
@@ -91,8 +92,9 @@ export const handleErrors = (
                 addAlert(jsonResponse.message, 'Info');
             }
             debug(
+                'e',
                 true,
-                'The server responded with a 403 HTTP response',
+                'The server responded with a 403 HTTP response:',
                 jsonResponse,
             );
             // Customize missing credentials (401)
@@ -105,8 +107,9 @@ export const handleErrors = (
                 addAlert('You must be logged in to use this feature.', 'Info');
             }
             debug(
+                'e',
                 true,
-                'The server responded with a 401 HTTP response',
+                'The server responded with a 401 HTTP response.',
                 jsonResponse,
             );
         } else {
@@ -119,6 +122,7 @@ export const handleErrors = (
                 );
             }
             debug(
+                'e',
                 true,
                 'UNEXPECTED! A backend error was detected, but there ' +
                     'were no error messages available',

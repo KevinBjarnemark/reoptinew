@@ -29,8 +29,9 @@ const AppLoadingProvider = ({ children }) => {
                 setAppLoading(false);
             }, 3000);
             debug(
+                'd',
                 showDebugging,
-                'App loading done! Should exit loading screen in 3 seconds',
+                'App loading done! Should exit loading screen in 3 seconds.',
                 '',
             );
         }

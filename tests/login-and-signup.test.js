@@ -64,7 +64,7 @@ describe('App', () => {
         });
 
         // Check if the user clicked the Log in button
-        expect(testLogs).toContain('Clicked the log in button');
+        expect(testLogs).toContain('Clicked the log in button:');
         // Check if the form data state was updated correctly
         expect(testLogs).toContainEqual({
             username: 'testUser',

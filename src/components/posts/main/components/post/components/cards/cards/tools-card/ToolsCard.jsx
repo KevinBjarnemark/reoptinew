@@ -3,7 +3,9 @@ import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
 import ResourceBuilder from '@c-c/builders/resource-builder/ResourceBuilder';
 
-const ToolsCard = ({ post, standalone }) => {
+const ToolsCard = (props) => {
+    const { post, standalone, editMode } = props;
+
     return (
         <div
             className={
@@ -13,7 +15,13 @@ const ToolsCard = ({ post, standalone }) => {
         >
             <Title title={post.title} standalone={standalone} />
             <Subtitle subtitle="Tools" />
-            <ResourceBuilder resources={post?.tools} />
+            <ResourceBuilder
+                {...{
+                    editMode,
+                    resource: 'Tool',
+                    resources: post.tools,
+                }}
+            />
         </div>
     );
 };

@@ -43,6 +43,7 @@ const AppCloseButtonProvider = ({ children }) => {
                 showAppCloseButton,
                 clearAppCloseButton,
                 renderAppCloseButton,
+                setShowAppCloseButton,
             }}
         >
             {children}

@@ -39,8 +39,7 @@ const Login = () => {
      */
     const handleLogIn = async (e) => {
         e.preventDefault();
-        // Used in tests
-        debug(showDebugging, 'Clicked the log in button', formDataDraft);
+        debug('t', showDebugging, 'Clicked the log in button:', formDataDraft);
         // Simulated loading effect
         await simulateLoading();
         const response = await apiRequest({

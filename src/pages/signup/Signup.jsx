@@ -74,7 +74,7 @@ const Signup = () => {
             // Save tokens
             localStorage.setItem('access_token', response.access);
             localStorage.setItem('refresh_token', response.refresh);
-            debug(showDebugging, 'Sign up successful', response);
+            debug('s', showDebugging, 'Sign up successful:', response);
             await addNotification(true, 'Welcome!');
             setIsAuthenticated(true);
             navigate(`/profile/${formDataDraft.username}`);

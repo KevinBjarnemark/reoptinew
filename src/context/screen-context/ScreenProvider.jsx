@@ -36,7 +36,7 @@ const ScreenProvider = ({ children }) => {
                 setScreenWidth(innerWidth);
                 // Update the last checkpoint
                 lastCheckpointRef.current = currentCheckpoint;
-                debug(showDebugging, 'Updated screen width', innerWidth);
+                debug('d', showDebugging, 'Updated screen width:', innerWidth);
             }
         };
 

@@ -20,7 +20,7 @@ const buildFormData = (showDebugging, normalObject) => {
     const formData = new FormData();
     Object.entries(normalObject).forEach(([key, value]) => {
         if (value !== null) {
-            debug(showDebugging, `Appending form data (${key})`, value);
+            debug('d', showDebugging, `Appending form data (${key}):`, value);
             formData.append(key, value);
         }
     });
@@ -152,17 +152,24 @@ const useAPI = (showDebugging = true) => {
             if (validateForm) {
                 validateForm(); // Should throw custom errors
             } else {
+                // Not logged as an error as it is OK to skip validation
                 debug(
+                    'd',
                     showDebugging,
                     'No validate form function included, ' +
-                        'skipping frontend validation',
+                        'skipping frontend validation.',
                     '',
                 );
             }
         } catch (error) {
             const errorMessage =
                 error.message || 'Validation failed. Please try again.';
-            debug(showDebugging, 'Frontend validation failed', errorMessage);
+            debug(
+                'd',
+                showDebugging,
+                'Frontend validation failed:',
+                errorMessage,
+            );
             addAlert(errorMessage, 'Error'); // These are custom error messages
             return;
         } finally {
@@ -199,16 +206,19 @@ const useAPI = (showDebugging = true) => {
             } else if (body) {
                 fetchObject.body = JSON.stringify(body);
             } else {
+                // Not logged as an error as it is OK to not include a body
                 debug(
+                    'd',
                     showDebugging,
-                    'No form data or body detected',
+                    'No form data or body detected:',
                     fetchObject,
                 );
             }
 
             debug(
+                'd',
                 showDebugging,
-                `Executing an API request (${relativeURL})`,
+                `Executing an API request (${relativeURL}):`,
                 fetchObject,
             );
             // Execute the request
@@ -216,6 +226,7 @@ const useAPI = (showDebugging = true) => {
 
             const jsonResponse = await response.json();
             const debugData = {
+                logName: 'e',
                 showDebugging,
                 message: `(Backend) ${debugMessages?.error}`,
             };
@@ -229,6 +240,7 @@ const useAPI = (showDebugging = true) => {
                 )
             ) {
                 debug(
+                    's',
                     showDebugging,
                     debugMessages?.successfulBackEndResponse,
                     jsonResponse,
@@ -236,7 +248,12 @@ const useAPI = (showDebugging = true) => {
                 return jsonResponse; // Return successful response
             }
         } catch (error) {
-            debug(showDebugging, `(Frontend) ${debugMessages?.error}`, error);
+            debug(
+                'e',
+                showDebugging,
+                `(Frontend) ${debugMessages?.error}`,
+                error,
+            );
             if (uxMessages?.error) {
                 addAlert(uxMessages.error, 'Error');
             }

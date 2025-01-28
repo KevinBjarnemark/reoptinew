@@ -4,6 +4,7 @@ import Title from '@c-c/headings/title/Title';
 import Image from '@c-c/image/Image';
 import EngagementPanel from '@c-c/engagement-panel/EngagementPanel';
 import PostContext from '@post-context';
+import EditedPostContext from '@edited-post-context';
 import defaultImage1 from '@images/post/default/1.webp';
 import defaultImage2 from '@images/post/default/2.webp';
 import defaultImage3 from '@images/post/default/3.webp';
@@ -22,8 +23,9 @@ import AlertContext from '@alert-context';
 const FrontCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode, defaultImageIndex } = props;
-    const { renderPost, previewImage, setPreviewImage, editedPostRef } =
+    const { renderPost, previewImage, setPreviewImage } =
         useContext(PostContext);
+    const { editedPost, setEditedPost } = useContext(EditedPostContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
     );
@@ -38,15 +40,27 @@ const FrontCard = (props) => {
             if (editMode && file) {
                 const fileUrl = createFileURL(file);
                 setPreviewImage(fileUrl);
-                debug(showDebugging, 'Post preview image updated', '');
-                editedPostRef.current.draft.image = file;
-                debug(showDebugging, 'Edited post draft updated (image)', '');
-                editedPostRef.current.data.imageUrl = fileUrl;
+                debug('d', showDebugging, 'Post preview image updated.', '');
+                setEditedPost((prev) => ({
+                    ...prev,
+                    draft: { ...prev.draft, image: file },
+                }));
                 debug(
+                    'd',
+                    showDebugging,
+                    'Edited post draft updated (image).',
+                    '',
+                );
+                setEditedPost((prev) => ({
+                    ...prev,
+                    data: { ...prev.data, imageUrl: fileUrl },
+                }));
+                debug(
+                    'd',
                     showDebugging,
                     'Saved the edited post image url, ' +
                         'used for resetting the image after a component ' +
-                        'unmount',
+                        'unmount.',
                     '',
                 );
                 setImageDynamicKey((prev) => !prev);
@@ -59,8 +73,9 @@ const FrontCard = (props) => {
                 'Error',
             );
             debug(
+                'e',
                 showDebugging,
-                'Error when attempting to add a custom post image',
+                'Error when attempting to add a custom post image.',
                 error,
             );
         } finally {
@@ -78,27 +93,58 @@ const FrontCard = (props) => {
 
         // Use saved edited post data to update the preview image after
         // allowing the component to mount.
-        if (editedPostRef.current.data.imageUrl) {
+        if (editedPost.data.imageUrl) {
             timeId = setTimeout(() => {
-                setPreviewImage(editedPostRef.current.data.imageUrl);
+                setPreviewImage(editedPost.data.imageUrl);
             }, 0);
         }
 
         return () => {
             clearTimeout(timeId);
         };
+
+        // This `useEffect` is only intended to run when the
+        // component mounts
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (!firstRender && editMode) {
             setPreviewImage(null);
             // Clear the custom image
-            editedPostRef.current.draft.image = null;
+            setEditedPost((prev) => ({
+                ...prev,
+                draft: { ...prev.draft, image: null },
+            }));
             // Save default_image_index
-            editedPostRef.current.draft.default_image_index =
-                defaultImageIndex;
+            setEditedPost((prev) => ({
+                ...prev,
+                draft: {
+                    ...prev.draft,
+                    default_image_index: defaultImageIndex,
+                },
+            }));
         }
+
+        // Both setEditedPost and setPreviewImage are in themselves not
+        // dependencies, but since they're imported from context, ES Lint
+        // is flagging them as such, unnecessarily.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [firstRender, defaultImageIndex]);
+
+    const imageProps = {
+        editMode,
+        standalone,
+        defaultImage: defaultImages[defaultImageIndex],
+        image: {
+            src: editMode ? previewImage : post?.image,
+        },
+        inputProps: {
+            id: `post-image-${post.id}`,
+            onChange: updateImage,
+        },
+        previewImg: editMode ? previewImage : null,
+    };
 
     return (
         <div className={`flex-row-absolute ${sharedStyles.post}`}>
@@ -122,19 +168,10 @@ const FrontCard = (props) => {
                     // 2. Selecting a default image from the picker panel.
                     // 3. Re-uploading the same image as before.
                     //
-                    // A state change will not trigger a re-render in this case.
+                    // A state change will not trigger a re-render in this
+                    // case.
                     key={`image-${imageDynamicKey}`}
-                    editMode={editMode}
-                    standalone={standalone}
-                    defaultImage={defaultImages[defaultImageIndex]}
-                    image={{
-                        src: editMode ? previewImage : post?.image,
-                    }}
-                    inputProps={{
-                        id: `post-image-${post.id}`,
-                        onChange: updateImage,
-                    }}
-                    previewImg={editMode ? previewImage : null}
+                    {...imageProps}
                 />
             </div>
 

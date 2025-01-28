@@ -28,7 +28,7 @@ const Account = () => {
     useEffect(() => {
         const loadUserProfileByIdentifier = async (identifier) => {
             // Fetch a user's profile by identifier (id or username)
-            debug(showDebugging, 'Fetching the user profile', '');
+            debug('d', showDebugging, 'Fetching the user profile.', '');
             const response = await apiRequest({
                 relativeURL: `/users/profile/${identifier}`,
                 authorizationHeader: false,
@@ -45,12 +45,18 @@ const Account = () => {
                 },
             });
             if (response) {
-                debug(showDebugging, `Loaded user (${identifier})`, response);
+                debug(
+                    's',
+                    showDebugging,
+                    `Loaded user (${identifier}):`,
+                    response,
+                );
                 setUserProfile(response);
             } else {
                 debug(
+                    'e',
                     showDebugging,
-                    "Couldn't get the user profile by id",
+                    "Couldn't get the user profile by id:",
                     response,
                 );
             }

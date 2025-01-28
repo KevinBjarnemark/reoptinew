@@ -247,7 +247,7 @@ Debugging functions have been moderately sprinkled throughout the project. These
 
 **Example:**  
 ```javascript
-debug(showDebugging, 'Sign up successful', response);
+debug("s", showDebugging, 'Sign up successful', response);
 ```
 
 The benefits of this approach include: 

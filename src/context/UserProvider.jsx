@@ -41,7 +41,8 @@ const UserProvider = ({ children }) => {
         const accessToken = await getAccessToken();
         if (!accessToken) {
             debug(
-                true,
+                'd',
+                showDebugging,
                 'No valid access token available user is not authenticated.',
                 '',
             );
@@ -49,7 +50,7 @@ const UserProvider = ({ children }) => {
             return null; // Indicate guest mode
         }
         // Fetch the user profile
-        debug(showDebugging, 'Fetching the user profile', '');
+        debug('d', showDebugging, 'Fetching the user profile.', '');
         const response = await apiRequest({
             relativeURL: '/users/profile/',
             authorizationHeader: true,
@@ -64,7 +65,7 @@ const UserProvider = ({ children }) => {
             uxMessages: null,
         });
         if (response) {
-            debug(showDebugging, 'Fetched user profile', response);
+            debug('s', showDebugging, 'Fetched user profile:', response);
             setProfile(response);
             setIsAuthenticated(true);
             return true; // Indicate success
@@ -122,6 +123,7 @@ const UserProvider = ({ children }) => {
                 () => {
                     if (isAuthenticated) {
                         debug(
+                            'd',
                             true,
                             'Refreshing the access token before expiring.',
                             '',

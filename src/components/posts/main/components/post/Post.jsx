@@ -50,7 +50,7 @@ const CardChoser = (props) => {
 const Post = ({ standalone, post, settings }) => {
     // Contexts
     const { profile } = useContext(UserContext);
-    const { editingPost, editedPostRef } = useContext(PostContext);
+    const { editingPost } = useContext(PostContext);
     // States
     const [cardIndex, setCardIndex] = useState(0);
     const [defaultImageIndex, setDefaultImageIndex] = useState(
@@ -59,16 +59,6 @@ const Post = ({ standalone, post, settings }) => {
     // Variables
     const isAuthor = profile?.user_id === post?.author?.id;
     const editMode = editingPost === post?.id;
-
-    // Update default_image_index when it's state changes
-    useEffect(() => {
-        editedPostRef.current.draft.default_image_index = defaultImageIndex;
-
-        // Ignoring editedPostRef as a dependency because React doesn't
-        // track changes to refs, and adding it here would have no effect.
-        // This useEffect only needs to re-run when defaultImageIndex changes.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [defaultImageIndex]);
 
     const { screenWidth } = useContext(ScreenContext);
 

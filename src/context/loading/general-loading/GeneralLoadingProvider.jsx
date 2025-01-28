@@ -11,11 +11,11 @@ const AppLoadingProvider = ({ children }) => {
 
     const addLoadingPoint = () => {
         setLoadingPoints((prev) => [...prev, '.']);
-        debug(showDebugging, 'Added a loading point', '');
+        debug('d', showDebugging, 'Added a loading point.', '');
     };
     const removeLoadingPoint = () => {
         setLoadingPoints((prev) => prev.slice(0, -1));
-        debug(showDebugging, 'Removed a loading point', '');
+        debug('d', showDebugging, 'Removed a loading point.', '');
     };
 
     useEffect(() => {

@@ -3,14 +3,19 @@ import style from './EllipsisMenuButton.module.css';
 import BasicMenu from '../../../../../../../../menus/basic-menu/BasicMenu';
 import BorderSeparator from '@border-separator';
 import PostContext from '@post-context';
+import EditedPostContext from '@edited-post-context';
 
 const Menu = (props) => {
     const { toggled, handleToggle, post } = props;
-    const { openEditor } = useContext(PostContext);
+    const { openEditor, posts } = useContext(PostContext);
+    const { setEditedPost } = useContext(EditedPostContext);
 
     const handleEdit = () => {
         // Close the menu
         handleToggle();
+        // Pre-fill values
+        const targetedPost = posts.find((i) => i.id === post.id);
+        setEditedPost({ data: {}, draft: { ...targetedPost } });
         // Set editing post id
         openEditor(post.id);
     };

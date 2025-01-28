@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import style from './Image.module.css';
 
-const Image = ({
-    image,
-    inputProps = {},
-    previewImg = null,
-    editMode,
-    defaultImage,
-    standalone,
-}) => {
+const Image = (props) => {
+    const {
+        image,
+        inputProps = {},
+        previewImg = null,
+        editMode,
+        defaultImage,
+        standalone,
+    } = props;
     const [showCustomImageHint, setShowCustomImageHint] = useState(false);
 
     useEffect(() => {

@@ -55,7 +55,12 @@ const FormContent = () => {
             formDataDraft.current.username = profile.username;
             return true;
         }
-        debug(showDebugging, "Couldn't find your username", profile?.username);
+        debug(
+            'e',
+            showDebugging,
+            "Couldn't find the user's username:",
+            profile,
+        );
         await addNotification(false, "Couldn't find your username.");
         addAlert(
             'An unexpected error occurred, try refreshing the browser.',
@@ -78,7 +83,14 @@ const FormContent = () => {
         } catch (error) {
             const errorMessage =
                 error.message || 'Validation failed. Please try again.';
-            debug(showDebugging, 'Frontend validation failed', errorMessage);
+            // Not logged as an error as the errors are directed towards
+            // the user
+            debug(
+                'd',
+                showDebugging,
+                'Frontend validation failed:',
+                errorMessage,
+            );
             addAlert(errorMessage, 'Error');
             return false;
         } finally {
@@ -126,14 +138,16 @@ const FormContent = () => {
             clearAuthTokens();
             await addNotification(true, 'Account deleted.');
             debug(
+                's',
                 showDebugging,
-                'Successfully deleted your account',
+                'Successfully deleted account:',
                 response,
             );
             setIsAuthenticated(false);
             navigate('/');
             window.scrollTo(0, 0);
         } else {
+            debug('e', showDebugging, "Couldn't delete account:", response);
             await addNotification(false, "Couldn't delete your account.");
         }
         setDeleteButtonDisabled(false);

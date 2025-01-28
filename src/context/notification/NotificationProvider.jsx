@@ -26,7 +26,7 @@ const NotificationProvider = ({ children }) => {
     const addNotification = async (successful, message) => {
         try {
             setCurrentNotification({ successful, message });
-            debug(showDebugging, 'Added a notification', '');
+            debug('d', showDebugging, 'Added a notification.', '');
             await new Promise((resolve) => {
                 timeIdRef.current = setTimeout(() => {
                     setCurrentNotification(null);
@@ -34,7 +34,7 @@ const NotificationProvider = ({ children }) => {
                 }, 2000);
             });
         } catch (error) {
-            debug(showDebugging, 'Failed to add a notification', error);
+            debug('e', showDebugging, 'Failed to add a notification:', error);
             setCurrentNotification(null);
         }
     };

@@ -17,26 +17,34 @@ const useTokens = (showDebugging = true) => {
      */
     const getAccessToken = async () => {
         const showDebugging = true;
-        debug(showDebugging, 'Getting the access token, if it exists.', '');
+        debug(
+            'd',
+            showDebugging,
+            'Getting the access token, if it exists.',
+            '',
+        );
         let accessToken = localStorage.getItem('access_token');
 
         if (accessToken) {
             debug(
+                'd',
                 showDebugging,
-                'Found the access token (local storage).',
+                'Found the access token (local storage):',
                 accessToken,
             );
             return accessToken;
         } else {
             debug(
+                'd',
                 showDebugging,
                 "Couldn't find the access token (local storage)" +
-                    ', refreshing it now.',
+                    ', refreshing it now:',
                 accessToken,
             );
             const refreshedAccessToken = await refreshAccessToken();
             if (refreshedAccessToken) {
                 debug(
+                    'd',
                     showDebugging,
                     'Refreshed access token.',
                     refreshedAccessToken,
@@ -62,12 +70,22 @@ const useTokens = (showDebugging = true) => {
         // Get the refresh token if it exists
         const refreshToken = getRefreshToken();
         if (!refreshToken) {
-            debug(showDebugging, 'Refresh token is missing', refreshToken);
+            debug(
+                'd',
+                showDebugging,
+                'Refresh token is missing.',
+                refreshToken,
+            );
             return null;
         }
 
         // Fetch a new access token
-        debug(showDebugging, 'Attempting to fetch a new access token', '');
+        debug(
+            'd',
+            showDebugging,
+            'Attempting to fetch a new access token.',
+            '',
+        );
         const response = await apiRequest({
             relativeURL: '/users/api/token/refresh/',
             method: 'POST',
@@ -89,13 +107,19 @@ const useTokens = (showDebugging = true) => {
             localStorage.setItem('access_token', accessToken);
             localStorage.setItem('refresh_token', refreshToken);
             debug(
+                'd',
                 showDebugging,
-                'Refreshed both the access and refresh token (local storage)',
+                'Refreshed both the access and refresh token (local storage).',
                 '',
             );
             return response.access;
         } else {
-            debug(showDebugging, "Couldn't refresh access token", response);
+            debug(
+                'e',
+                showDebugging,
+                "Couldn't refresh access token:",
+                response,
+            );
             return null;
         }
     };

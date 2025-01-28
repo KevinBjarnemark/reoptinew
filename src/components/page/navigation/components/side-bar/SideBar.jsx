@@ -123,10 +123,15 @@ const Create = (props) => {
         });
 
         if (response) {
-            debug(showDebugging, 'Post posted successfully', response);
+            debug('s', showDebugging, 'Post posted successfully:', response);
             await addNotification(true, 'Posted!');
         } else {
-            debug(showDebugging, "Couldn't create post (backend)", response);
+            debug(
+                'e',
+                showDebugging,
+                "Couldn't create post (backend):",
+                response,
+            );
             await addNotification(false, "Couldn't create post :(");
         }
     };

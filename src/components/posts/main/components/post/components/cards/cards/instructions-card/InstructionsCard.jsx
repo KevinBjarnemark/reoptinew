@@ -1,49 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
-import PostContext from '@post-context';
 import { debug } from '@debug';
 import AlertContext from '@alert-context';
+import EditedPostContext from '@edited-post-context';
 
 const InstructionsCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode } = props;
-    const { editedPostRef } = useContext(PostContext);
+    const { editedPost, setEditedPost } = useContext(EditedPostContext);
     const { addAlert } = useContext(AlertContext);
-    const [instructionsDynamicKey, setInstructionsDynamicKey] =
-        useState(false);
-    const [editedPostInstructions, setEditedPostInstructions] = useState(
-        post.instructions,
-    );
-
-    useEffect(() => {
-        // Use saved edited post data to update the instructions after
-        // allowing the component to mount.
-        const timeId = setTimeout(() => {
-            if (editedPostRef.current.draft.instructions) {
-                setEditedPostInstructions(
-                    editedPostRef.current.draft.instructions,
-                );
-                setInstructionsDynamicKey((prev) => !prev);
-            }
-        }, 0);
-        return () => {
-            clearTimeout(timeId);
-        };
-
-        // Ignoring editedPostRef as a dependency because React doesn't
-        // track changes to refs, and adding it here would have no effect.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleChange = (e) => {
         try {
-            editedPostRef.current.draft.instructions = e.target.value;
-            setEditedPostInstructions(e.target.value);
+            setEditedPost((prev) => ({
+                ...prev,
+                draft: { ...prev.draft, instructions: e.target.value },
+            }));
             debug(
+                'd',
                 showDebugging,
-                'Edited post draft updated (instructions)',
+                'Edited post draft updated (instructions).',
                 '',
             );
         } catch (error) {
@@ -54,8 +32,9 @@ const InstructionsCard = (props) => {
                 'Error',
             );
             debug(
+                'e',
                 showDebugging,
-                'Error when updating edited post draft (instructions)',
+                'Error when updating edited post draft (instructions):',
                 error,
             );
         }
@@ -64,11 +43,11 @@ const InstructionsCard = (props) => {
     const textareaProps = !editMode
         ? {
               disabled: true,
-              value: editedPostInstructions,
+              value: editedPost.draft.instructions,
           }
         : {
               disabled: false,
-              defaultValue: editedPostInstructions,
+              defaultValue: editedPost.draft.instructions,
           };
 
     return (
@@ -86,7 +65,6 @@ const InstructionsCard = (props) => {
                 }
             >
                 <textarea
-                    key={`textarea-${instructionsDynamicKey}`}
                     className={
                         'flex-column-relative ' + sharedStyles['textarea']
                     }

@@ -73,7 +73,12 @@ export const UserCard = () => {
         // Get the refresh token if it exists
         const refreshToken = getRefreshToken();
         if (!refreshToken) {
-            debug(showDebugging, 'Refresh token is missing', refreshToken);
+            debug(
+                'd',
+                showDebugging,
+                'Refresh token is missing:',
+                refreshToken,
+            );
             addAlert(
                 'Unexpected error, when trying to log you ' +
                     'out. Try refreshing the browser.',
@@ -95,9 +100,14 @@ export const UserCard = () => {
             },
         });
         if (response) {
-            debug(showDebugging, 'Logout successful', response);
+            debug('s', showDebugging, 'Logout successful:', response);
             clearAuthTokens();
-            debug(showDebugging, 'Removed auth tokens from local storage', '');
+            debug(
+                'd',
+                showDebugging,
+                'Removed auth tokens from local storage.',
+                '',
+            );
             setIsAuthenticated(false);
             await addNotification(true, 'Log out successful.');
         } else {

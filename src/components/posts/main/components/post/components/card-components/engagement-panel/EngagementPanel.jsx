@@ -59,7 +59,7 @@ const LikeButton = (props) => {
         likes = { count: 0, user_has_liked: false },
         editMode,
     } = props;
-    const { updateLikes, editingPost } = useContext(PostContext);
+    const { updateLikes } = useContext(PostContext);
     const { addAlert } = useContext(AlertContext);
     const showDebugging = true;
     const { apiRequest } = useAPI(true);
@@ -94,10 +94,11 @@ const LikeButton = (props) => {
 
         if (response) {
             debug(
+                's',
                 showDebugging,
                 'User successfully ' + userHasLiked
                     ? 'removed a like from a post'
-                    : 'liked a post',
+                    : 'liked a post:',
                 `postId = ${postId}`,
             );
             setUserHasLiked((prev) => !prev);

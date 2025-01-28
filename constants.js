@@ -22,8 +22,11 @@ export const PATH_ALIASES = {
     'app-close-button-provider':
         './src/context/app-close-button/AppCloseButtonProvider',
     'alert-context': './src/context/alert-context/AlertContext',
-    'post-provider': './src/context/post/PostProvider',
-    'post-context': './src/context/post/PostContext',
+    'post-provider': './src/context/posts/post/PostProvider',
+    'post-context': './src/context/posts/post/PostContext',
+    'edited-post-provider':
+        './src/context/posts/edited-post/EditedPostProvider',
+    'edited-post-context': './src/context/posts/edited-post/EditedPostContext',
     'screen-context': './src/context/screen-context/ScreenContext',
     'screen-provider': './src/context/screen-context/ScreenProvider',
     // Components
@@ -35,7 +38,8 @@ export const PATH_ALIASES = {
         './src/components/buttons/triangle-button/TriangleButton',
 
     'faded-background-shadow':
-        './src/components/backgrounds/faded-background-shadow/FadedBackgroundShadow',
+        './src/components/backgrounds/faded-background-shadow/' +
+        'FadedBackgroundShadow',
 
     // Cards and card components
     c: './src/components/posts/main/components/post/components/cards/cards/',

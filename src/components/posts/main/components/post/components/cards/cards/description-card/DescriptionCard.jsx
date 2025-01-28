@@ -1,51 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
-import PostContext from '@post-context';
 import { debug } from '@debug';
 import AlertContext from '@alert-context';
+import EditedPostContext from '@edited-post-context';
 
 const DescriptionCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode } = props;
-    const { editedPostRef } = useContext(PostContext);
+    const { editedPost, setEditedPost } = useContext(EditedPostContext);
     const { addAlert } = useContext(AlertContext);
-    const [textareaDynamicKey, setTextareaDynamicKey] = useState(false);
-
-    const [editedPostDescription, setEditedPostDescription] = useState(
-        post.description,
-    );
-
-    useEffect(() => {
-        // Use saved edited post data to update the description after
-        // allowing the component to mount.
-        const timeId = setTimeout(() => {
-            if (editedPostRef.current.draft.description) {
-                setEditedPostDescription(
-                    editedPostRef.current.draft.description,
-                );
-                setTextareaDynamicKey((prev) => !prev);
-            }
-        }, 0);
-        return () => {
-            clearTimeout(timeId);
-        };
-
-        // Ignoring editedPostRef as a dependency because React doesn't
-        // track changes to refs, and adding it here would have no effect.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleChange = (e) => {
         try {
-            editedPostRef.current.draft.description = e.target.value;
-            setEditedPostDescription(e.target.value);
-            debug(
-                showDebugging,
-                'Edited post draft updated (description)',
-                '',
-            );
+            setEditedPost((prev) => ({
+                ...prev,
+                draft: { ...prev.draft, description: e.target.value },
+            }));
         } catch (error) {
             addAlert(
                 'Something went wrong when saving your description ' +
@@ -54,8 +26,9 @@ const DescriptionCard = (props) => {
                 'Error',
             );
             debug(
+                'e',
                 showDebugging,
-                'Error when updating edited post draft (description)',
+                'Error when updating edited post draft (description):',
                 error,
             );
         }
@@ -64,11 +37,11 @@ const DescriptionCard = (props) => {
     const textAreaProps = !editMode
         ? {
               disabled: true,
-              value: editedPostDescription,
+              value: editedPost.draft.description,
           }
         : {
               disabled: false,
-              defaultValue: editedPostDescription,
+              defaultValue: editedPost.draft.description,
           };
 
     return (
@@ -86,7 +59,6 @@ const DescriptionCard = (props) => {
                 }
             >
                 <textarea
-                    key={`textarea-${textareaDynamicKey}`}
                     className={
                         'flex-column-relative ' + sharedStyles['textarea']
                     }

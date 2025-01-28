@@ -17,6 +17,7 @@ import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from '@app-close-button';
 import AppCloseButtonProvider from '@app-close-button-provider';
 import PostProvider from '@post-provider';
+import EditedPostProvider from '@edited-post-provider';
 import ScreenProvider from '@screen-provider';
 
 // Load pages lazily
@@ -73,7 +74,9 @@ export function AppContextWrap({ children }) {
                                     <UserProvider>
                                         <AppLoadingProvider>
                                             <PostProvider>
-                                                {children}
+                                                <EditedPostProvider>
+                                                    {children}
+                                                </EditedPostProvider>
                                             </PostProvider>
                                         </AppLoadingProvider>
                                     </UserProvider>

@@ -35,6 +35,7 @@ const useSimulateLoading = (showDebugging = true) => {
             });
         } catch (error) {
             debug(
+                'e',
                 showDebugging,
                 'Failed to simulate the loading effect',
                 error,
