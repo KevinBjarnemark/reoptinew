@@ -1,3 +1,31 @@
+export const DEFAULT_POST = {
+    title: '',
+    description: '',
+    instructions: '',
+    default_image_index: 1,
+    harmful_post: false,
+    tags: null,
+    harmful_tool_categories: [],
+    harmful_material_categories: [],
+    tools: [
+        // Example:
+        /* {
+            quantity: '',
+            name: '',
+            description: '',
+        }, */
+    ],
+    materials: [
+        // Example:
+        /* {
+            quantity: '',
+            name: '',
+            description: '',
+        }, */
+    ],
+    image: null,
+};
+
 /**
  * This is a backend error code/identifier that identifies
  * non-field errors

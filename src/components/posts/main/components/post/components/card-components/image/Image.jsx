@@ -10,7 +10,7 @@ const Image = (props) => {
         defaultImage,
         standalone,
     } = props;
-    const [showCustomImageHint, setShowCustomImageHint] = useState(false);
+    const [showCustomImageHint, setShowCustomImageHint] = useState(true);
 
     useEffect(() => {
         let timeId;

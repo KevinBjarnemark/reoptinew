@@ -38,7 +38,7 @@ const PostProvider = ({ children }) => {
     const { setShowAppCloseButton } = useContext(AppCloseButtonContext);
     const { setDim } = useContext(PageDimContext);
 
-    const getSinglePost = async (id) => {
+    const fetchSinglePost = async (id) => {
         const response = await apiRequest({
             method: 'GET',
             relativeURL: `/posts/posts/${id}`,
@@ -51,13 +51,29 @@ const PostProvider = ({ children }) => {
                 error: "Couldn't load post, try refreshing your browser.",
             },
         });
-
         if (response) {
-            setSinglePost(response);
-            await addNotification(true, 'Post loaded!');
+            return response;
         } else {
-            await addNotification(false, "Couldn't load post :(");
+            return null;
         }
+    };
+
+    const loadSinglePost = async (id) => {
+        const fetchedPost = await fetchSinglePost(id);
+        if (fetchedPost) {
+            setSinglePost(fetchedPost);
+            await addNotification(true, 'Post loaded!');
+            return;
+        }
+        await addNotification(false, "Couldn't load post :(");
+    };
+
+    const updateSinglePost = async (id) => {
+        const fetchedPost = await fetchSinglePost(id);
+
+        setPosts((prev) =>
+            prev.map((post) => (post.id === id ? fetchedPost : post)),
+        );
     };
 
     const updateLikes = (id, increment) => {
@@ -125,7 +141,7 @@ const PostProvider = ({ children }) => {
         setDim(true);
         // Fetch the targeted post
         debug('d', showDebugging, 'Fetching a single post.', '');
-        getSinglePost(postId);
+        loadSinglePost(postId);
         // Show the app close button
         setShowAppCloseButton(true);
     };
@@ -170,6 +186,7 @@ const PostProvider = ({ children }) => {
                 singlePost,
                 setSinglePost,
                 posts,
+                setPosts,
                 renderPosts,
                 renderPost,
                 handleClosePost,
@@ -180,6 +197,7 @@ const PostProvider = ({ children }) => {
                 previewImage,
                 setPreviewImage,
                 openEditor,
+                updateSinglePost,
             }}
         >
             {children}

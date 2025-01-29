@@ -6,7 +6,7 @@ import { debug } from '@debug';
 import AlertContext from '@alert-context';
 import EditedPostContext from '@edited-post-context';
 
-const InstructionsCard = (props) => {
+const TagsCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode } = props;
     const { editedPost, setEditedPost } = useContext(EditedPostContext);
@@ -16,11 +16,11 @@ const InstructionsCard = (props) => {
         try {
             setEditedPost((prev) => ({
                 ...prev,
-                draft: { ...prev.draft, instructions: e.target.value },
+                draft: { ...prev.draft, tags: e.target.value },
             }));
         } catch (error) {
             addAlert(
-                'Something went wrong when saving your instructions ' +
+                'Something went wrong when saving your tags ' +
                     'to draft, try refreshing your browser. Note that ' +
                     'your edits will be erased after a browser refresh.',
                 'Error',
@@ -28,7 +28,7 @@ const InstructionsCard = (props) => {
             debug(
                 'e',
                 showDebugging,
-                'Error when updating edited post draft (instructions):',
+                'Error when updating edited post draft (tags):',
                 error,
             );
         }
@@ -37,11 +37,11 @@ const InstructionsCard = (props) => {
     const textareaProps = !editMode
         ? {
               disabled: true,
-              value: post.instructions,
+              value: post.tags,
           }
         : {
               disabled: false,
-              defaultValue: editedPost.draft.instructions,
+              defaultValue: editedPost.draft.tags,
           };
 
     return (
@@ -52,7 +52,7 @@ const InstructionsCard = (props) => {
             }
         >
             <Title title={post.title} standalone={standalone} />
-            <Subtitle subtitle="Instructions" />
+            <Subtitle subtitle="Tags" />
             <div
                 className={
                     'flex-column-relative ' + sharedStyles['text-section']
@@ -70,4 +70,4 @@ const InstructionsCard = (props) => {
     );
 };
 
-export default InstructionsCard;
+export default TagsCard;

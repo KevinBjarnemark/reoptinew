@@ -27,6 +27,7 @@ const RenderPosts = ({ posts }) => {
                                 handleToggle: handleToggleSettings,
                                 toggled,
                             }}
+                            postsMaxLength={posts.length}
                         />
                     );
                 })}

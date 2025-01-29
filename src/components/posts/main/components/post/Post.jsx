@@ -10,6 +10,8 @@ import MaterialsCard from '@c/materials-card/MaterialsCard';
 import ToolsCard from '@c/tools-card/ToolsCard';
 import InstructionsCard from '@c/instructions-card/InstructionsCard';
 import SafetyCard from '@c/safety-card/SafetyCard';
+import TagsCard from '@c/tags-card/TagsCard';
+import SubmitCard from '@c/submit-card/SubmitCard';
 // Card components
 import CardToggler from '@c-c/buttons/card-toggler/CardToggler';
 import EllipsisMenuButton from '@c-c/buttons/elipsis-menu/ElipsisMenuButton';
@@ -47,27 +49,40 @@ const CardChoser = (props) => {
         }
         case 5: {
             if (editMode) {
+                return <TagsCard {...sharedProps} />;
+            }
+            return null;
+        }
+        case 6: {
+            if (editMode) {
                 return <SafetyCard {...sharedProps} />;
+            }
+            return null;
+        }
+        case 7: {
+            if (editMode) {
+                return <SubmitCard {...sharedProps} />;
             }
             return null;
         }
     }
 };
 
-const Post = ({ standalone, post, settings }) => {
+const Post = ({ standalone, post, settings = {}, postsMaxLength = 0 }) => {
     // Contexts
     const { profile } = useContext(UserContext);
     const { editingPost } = useContext(PostContext);
+    const { screenWidth } = useContext(ScreenContext);
     // States
     const [cardIndex, setCardIndex] = useState(0);
+    // This useState is defaulted to 1 if the default_image_index
+    // is missing.
     const [defaultImageIndex, setDefaultImageIndex] = useState(
-        post?.default_image_index ? post.default_image_index : 1,
+        post?.default_image_index !== null ? post.default_image_index : 1,
     );
     // Variables
     const isAuthor = profile?.user_id === post?.author?.id;
     const editMode = editingPost === post?.id;
-
-    const { screenWidth } = useContext(ScreenContext);
 
     // Enlarge the component when in standalone mode
     const standaloneStyle = standalone
@@ -81,7 +96,10 @@ const Post = ({ standalone, post, settings }) => {
               transform: 'translate(-50%, -50%)',
           }
         : {
-              zIndex: settings?.toggled === `Settings ${post.id}` ? 1000 : 0,
+              zIndex:
+                  settings?.toggled === `Settings ${post.id}`
+                      ? postsMaxLength + 1
+                      : 0,
               margin: '30px 10px',
           };
 
@@ -125,6 +143,7 @@ const Post = ({ standalone, post, settings }) => {
                 <ModeLabel labelText="Edit Mode" />
             ) : null}
 
+            {/* Default images toggler */}
             <PickerPanel
                 {...{
                     show: editMode && cardIndex === 0,

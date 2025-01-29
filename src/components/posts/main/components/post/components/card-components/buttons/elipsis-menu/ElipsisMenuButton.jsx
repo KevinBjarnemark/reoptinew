@@ -4,13 +4,21 @@ import BasicMenu from '../../../../../../../../menus/basic-menu/BasicMenu';
 import BorderSeparator from '@border-separator';
 import PostContext from '@post-context';
 import EditedPostContext from '@edited-post-context';
+import AlertContext from '@alert-context';
 
+/**
+ * A small menu displayed when interacting with the classic
+ * tree-dots menu.
+ *
+ * @returns {JSX.Element} A typical react component
+ */
 const Menu = (props) => {
     const { toggled, handleToggle, post } = props;
     const { openEditor, posts } = useContext(PostContext);
     const { setEditedPost } = useContext(EditedPostContext);
+    const { addAlert } = useContext(AlertContext);
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         // Close the menu
         handleToggle();
         // Pre-fill values
@@ -18,6 +26,14 @@ const Menu = (props) => {
         setEditedPost({ data: {}, draft: { ...targetedPost } });
         // Set editing post id
         openEditor(post.id);
+        // Avoid showing the info message immediately
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 1000);
+        });
+        // Guide the user
+        addAlert('Go to the last card to submit you edits.', 'Info');
     };
 
     const handleDelete = () => {

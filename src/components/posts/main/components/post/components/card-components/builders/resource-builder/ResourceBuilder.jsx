@@ -263,29 +263,27 @@ const ResourceBuilder = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editMode]);
 
-    if (isArray(loacalResources, true)) {
-        return (
-            <>
-                {editMode ? (
-                    <AddResource
-                        {...{
-                            resource,
-                            draftEntry,
-                            setLoacalResources,
-                        }}
-                    />
-                ) : null}
-                <Resources
+    return (
+        <>
+            {editMode ? (
+                <AddResource
                     {...{
+                        resource,
                         draftEntry,
-                        editMode,
-                        loacalResources,
                         setLoacalResources,
                     }}
                 />
-            </>
-        );
-    }
+            ) : null}
+            <Resources
+                {...{
+                    draftEntry,
+                    editMode,
+                    loacalResources,
+                    setLoacalResources,
+                }}
+            />
+        </>
+    );
 };
 
 export default ResourceBuilder;

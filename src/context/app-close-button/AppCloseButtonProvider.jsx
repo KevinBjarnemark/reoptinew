@@ -4,36 +4,21 @@ import AppCloseButtonContext from './AppCloseButtonContext';
 const AppCloseButtonProvider = ({ children }) => {
     const appCloseButtonOnClickRef = useRef(() => {});
     const [showAppCloseButton, setShowAppCloseButton] = useState(false);
+    const [closeAppButtonTrigger, setCloseAppButtonTrigger] = useState(null);
 
     /**
-     * Clears the appCloseButtonOnClickRef and sets the
-     * ShowAppCloseButton state to false.
-     *
-     * Use this function to clear the app close button.
+     * Helps with toggling the `closeAppButtonTrigger` whenever the
+     * app close button should be clicked.
      *
      * @returns {void}
      * @throws Errors must be handled by the caller
      */
-    const clearAppCloseButton = () => {
-        appCloseButtonOnClickRef.current = () => {};
-        setShowAppCloseButton(false);
+    const appCloseButton = () => {
+        setCloseAppButtonTrigger((prev) => (prev === null ? true : !prev));
     };
 
-    /**
-     * Inserts a function into the appCloseButtonOnClickRef and
-     * sets the setShowAppCloseButton to true.
-     *
-     * Use this function to control what happens when clicking the
-     * app close button.
-     *
-     * @param {bool}  insertFunction The function you want to be stored
-     * in the appCloseButtonOnClickRef.
-     * @returns {void}
-     * @throws Errors must be handled by the caller
-     */
-    const renderAppCloseButton = (insertFunction) => {
-        appCloseButtonOnClickRef.current = insertFunction;
-        setShowAppCloseButton(true);
+    const clearAppCloseButton = () => {
+        setShowAppCloseButton(false);
     };
 
     return (
@@ -42,8 +27,9 @@ const AppCloseButtonProvider = ({ children }) => {
                 appCloseButtonOnClickRef,
                 showAppCloseButton,
                 clearAppCloseButton,
-                renderAppCloseButton,
                 setShowAppCloseButton,
+                appCloseButton,
+                closeAppButtonTrigger,
             }}
         >
             {children}

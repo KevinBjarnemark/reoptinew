@@ -93,35 +93,49 @@ const FrontCard = (props) => {
 
         // Use saved edited post data to update the preview image after
         // allowing the component to mount.
-        if (editedPost.data.imageUrl) {
+        if (editedPost.data.imageUrl || post.image) {
             timeId = setTimeout(() => {
-                setPreviewImage(editedPost.data.imageUrl);
-            }, 0);
+                // Prioritize edited post data
+                const imageUrl = editedPost.data.imageUrl || post.image;
+                setPreviewImage(imageUrl);
+            }, 100);
         }
 
         return () => {
             clearTimeout(timeId);
         };
 
-        // This `useEffect` is only intended to run when the
-        // component mounts
+        // This `useEffect` is intended to run only when the
+        // component mounts.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    /**
+     * This useEffect clears the preview image when interacting
+     * with the defaultImageIndex managed by the `PickerPanel`.
+     */
     useEffect(() => {
         if (!firstRender && editMode) {
             setPreviewImage(null);
-            // Clear the custom image
+            // Clear the custom image and set `defaultImageIndex`
             setEditedPost((prev) => ({
+                // Spread previous values
                 ...prev,
-                draft: { ...prev.draft, image: null },
-            }));
-            // Save default_image_index
-            setEditedPost((prev) => ({
-                ...prev,
+                // Target the draft entry
                 draft: {
+                    // Spread previous draft
                     ...prev.draft,
+                    // Clear the image
+                    image: null,
+                    // Set default image index
                     default_image_index: defaultImageIndex,
+                },
+                // Target the data entry
+                data: {
+                    // Spread previous data
+                    ...prev.data,
+                    // Clear the image url
+                    imageUrl: null,
                 },
             }));
         }
@@ -130,7 +144,7 @@ const FrontCard = (props) => {
         // dependencies, but since they're imported from context, ES Lint
         // is flagging them as such, unnecessarily.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [firstRender, defaultImageIndex]);
+    }, [firstRender, defaultImageIndex, editMode]);
 
     const imageProps = {
         editMode,
