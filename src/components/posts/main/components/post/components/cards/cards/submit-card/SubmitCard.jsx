@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import style from './SubmitCard.module.css';
-import sharedStyles from '../../../../SharedStyles.module.css';
+import sharedStyle from '@c-shared-style/Shared.module.css';
 // Card components
 import Title from '@c-c/headings/title/Title';
 // Contexts
@@ -11,7 +11,6 @@ import NotificationContext from '@notification-context';
 import GeneralLoadingContext from '@general-loading-context';
 // Custom hooks
 import useAPI from '@use-api';
-
 // Logging
 import { debug } from '@debug';
 import AppCloseButtonContext from '@app-close-button-context';
@@ -154,8 +153,8 @@ const SubmitCard = (props) => {
     return (
         <div
             className={
-                `flex-column-absolute ${sharedStyles.post} ` +
-                sharedStyles['card-padding']
+                `flex-column-absolute ${sharedStyle.post} ` +
+                sharedStyle['card-padding']
             }
         >
             <Title {...{ editMode, standalone, title: post.title }} />

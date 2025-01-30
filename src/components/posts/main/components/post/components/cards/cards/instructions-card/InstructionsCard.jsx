@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import sharedStyles from '../../../../SharedStyles.module.css';
+import sharedStyle from '@c-shared-style/Shared.module.css';
 import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
 import { debug } from '@debug';
@@ -47,20 +47,20 @@ const InstructionsCard = (props) => {
     return (
         <div
             className={
-                `flex-column-absolute ${sharedStyles.post} ` +
-                sharedStyles['card-padding']
+                `flex-column-absolute ${sharedStyle.post} ` +
+                sharedStyle['card-padding']
             }
         >
             <Title {...{ editMode, standalone, title: post.title }} />
             <Subtitle subtitle="Instructions" />
             <div
                 className={
-                    'flex-column-relative ' + sharedStyles['text-section']
+                    'flex-column-relative ' + sharedStyle['text-section']
                 }
             >
                 <textarea
                     className={
-                        'flex-column-relative ' + sharedStyles['textarea']
+                        'flex-column-relative ' + sharedStyle['textarea']
                     }
                     {...textareaProps}
                     onChange={handleChange}

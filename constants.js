@@ -32,6 +32,7 @@ export const PATH_ALIASES = {
     'screen-context': './src/context/screen-context/ScreenContext',
     'screen-provider': './src/context/screen-context/ScreenProvider',
     // Components
+    image: './src/components/images/image/Image',
     'border-separator':
         './src/components/separators/border-separator/BorderSeparator',
     'app-close-button':
@@ -46,6 +47,8 @@ export const PATH_ALIASES = {
     'c-c':
         './src/components/posts/main/components/post/components/' +
         'card-components/',
+    // CSS modules
+    'c-shared-style': './src/components/posts/main/styles/',
     // Checkbox builder folder
     'c-builder':
         './src/components/posts/main/components/post/components/' +
@@ -62,4 +65,5 @@ export const PATH_ALIASES = {
     'use-simulate-loading': './src/hooks/effects/useSimulateLoading',
     'use-api': './src/hooks/api/useAPI',
     'use-neutralize-app': './src/hooks/misc/useNeutralizeApp',
+    'use-load-image': './src/hooks/files/useLoadImage',
 };

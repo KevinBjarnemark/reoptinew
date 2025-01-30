@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState, useRef } from 'react';
-import sharedStyles from '../../../../SharedStyles.module.css';
+import sharedStyle from '@c-shared-style/Shared.module.css';
+import postImageStyle from '@c-shared-style/PostImage.module.css';
 import Title from '@c-c/headings/title/Title';
-import Image from '@c-c/image/Image';
+import Image from '@image';
 import EngagementPanel from '@c-c/engagement-panel/EngagementPanel';
 import PostContext from '@post-context';
 import EditedPostContext from '@edited-post-context';
@@ -15,22 +16,17 @@ const defaultImages = [
     defaultImage3,
     defaultImage4,
 ];
-import { createFileURL } from '@helpers';
 import { debug } from '@debug';
-import GeneralLoadingContext from '@general-loading-context';
-import AlertContext from '@alert-context';
+import useLoadImage from '@use-load-image';
 
 const FrontCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode, defaultImageIndex } = props;
     const { renderPost } = useContext(PostContext);
     const { editedPost, setEditedPost } = useContext(EditedPostContext);
-    const { addLoadingPoint, removeLoadingPoint } = useContext(
-        GeneralLoadingContext,
-    );
-    const { addAlert } = useContext(AlertContext);
     const [previewImage, setPreviewImage] = useState(editedPost.data.imageUrl);
     const firstRenderRef = useRef(true);
+    const { loadImage } = useLoadImage(true);
 
     /**
      * Clears the preview image when interacting with the `defaultImageIndex`
@@ -60,53 +56,43 @@ const FrontCard = (props) => {
     }, [defaultImageIndex]);
 
     const updateImage = (e) => {
-        addLoadingPoint();
-        try {
-            const file = e.target.files[0];
-            if (editMode && file) {
-                const fileUrl = createFileURL(file);
-                setPreviewImage(fileUrl);
-                debug('d', showDebugging, 'Post preview image updated.', '');
+        const loadedImage = loadImage(e);
+        if (loadedImage) {
+            setPreviewImage(loadedImage.url);
+
+            try {
                 setEditedPost((prev) => ({
                     ...prev,
-                    draft: { ...prev.draft, image: file },
-                    data: { ...prev.data, imageUrl: fileUrl },
+                    draft: { ...prev.draft, image: loadedImage.file },
+                    data: { ...prev.data, imageUrl: loadedImage.url },
                 }));
+            } catch (error) {
                 debug(
-                    'd',
+                    'e',
                     showDebugging,
-                    'Edited post draft updated (image)' +
-                        ' and saved the edited post image url' +
-                        'used for resetting the image after a component unmount.',
-                    '',
+                    "Couldn't update edityed post data.",
+                    error,
                 );
             }
-        } catch (error) {
-            addAlert(
-                'Something went wrong when adding your custom image, ' +
-                    'try refreshing your browser. Note that your edits ' +
-                    'will be erased after a browser refresh.',
-                'Error',
-            );
             debug(
-                'e',
+                'd',
                 showDebugging,
-                'Error when attempting to add a custom post image.',
-                error,
+                'Edited post draft updated (image)' +
+                    ' and saved the edited post image url' +
+                    'used for resetting the image after a component unmount.',
+                '',
             );
-        } finally {
-            removeLoadingPoint();
         }
     };
 
     const imageProps = {
         editMode,
-        standalone,
         defaultImage: defaultImages[defaultImageIndex],
         image: {
             src: editMode ? previewImage : post?.image,
         },
         inputProps: {
+            id: `post-image-${post.id}`,
             // Reset the value onClick to trigger renders even when
             // chosing the same image after interacting with the
             // `defaultImageIndex` (`PickerPanel`).
@@ -116,16 +102,17 @@ const FrontCard = (props) => {
             onChange: updateImage,
         },
         previewImg: editMode ? previewImage : null,
+        customStyle: postImageStyle,
     };
 
     return (
-        <div className={`flex-row-absolute ${sharedStyles.post}`}>
+        <div className={`flex-row-absolute ${sharedStyle.post}`}>
             <div
                 className={
                     'flex-column-relative ' +
-                    sharedStyles['card-button'] +
+                    sharedStyle['card-button'] +
                     ' ' +
-                    sharedStyles['card-padding']
+                    sharedStyle['card-padding']
                 }
                 onClick={() => {
                     if (!standalone && !editMode) {

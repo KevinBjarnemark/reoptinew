@@ -8,7 +8,7 @@ const Image = (props) => {
         previewImg = null,
         editMode,
         defaultImage,
-        standalone,
+        customStyle = style, // Allow custom style import
     } = props;
     const [showCustomImageHint, setShowCustomImageHint] = useState(false);
 
@@ -16,7 +16,7 @@ const Image = (props) => {
         let timeId;
         let timeId2;
 
-        if (editMode && standalone) {
+        if (editMode) {
             timeId = setTimeout(() => {
                 setShowCustomImageHint(true);
             }, 3000);
@@ -30,18 +30,20 @@ const Image = (props) => {
             clearTimeout(timeId2);
         };
 
-        // Both editMode and standalone mode won't change unless the
+        // Both editMode mode won't change unless the
         // component unmounts.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <button className={`flex-column-relative ${style['image-container']}`}>
+        <button
+            className={`flex-column-relative ${customStyle['image-container']}`}
+        >
             {editMode ? (
                 <>
-                    <input {...inputProps} id="image" type="file" hidden />
+                    <input {...inputProps} type="file" hidden />
                     <label
-                        htmlFor="image"
+                        htmlFor={inputProps.id}
                         className={'flex-column-absolute'}
                         style={{
                             backgroundColor: showCustomImageHint
@@ -58,13 +60,13 @@ const Image = (props) => {
 
             {!previewImg ? (
                 <img
-                    className={`flex-column-relative ${style['image']}`}
+                    className={`flex-column-relative ${customStyle['image']}`}
                     src={image.src ? image.src : defaultImage}
                     alt="Preview image"
                 />
             ) : (
                 <img
-                    className={`flex-column-relative ${style['image']}`}
+                    className={`flex-column-relative ${customStyle['image']}`}
                     src={previewImg}
                     alt="Preview image"
                 />

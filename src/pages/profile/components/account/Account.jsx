@@ -1,29 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import style from './Account.module.css';
+import profileImageStyle from './ProfileImage.module.css';
 import defaultAvatarImage from '@images/user/default-avatar.webp';
 import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
 import { debug } from '@debug';
 import useAPI from '@use-api';
-
-const ProfileImage = ({ src }) => {
-    return (
-        <div className={`flex-column-relative ${style['image-container']}`}>
-            <img
-                className={`flex-column-relative ${style['image']}`}
-                // Fallback to default image
-                src={src ? src : defaultAvatarImage}
-                alt="Profile image"
-            />
-        </div>
-    );
-};
+import UserContext from '../../../../context/UserContext';
+import Image from '@image';
+import useLoadImage from '@use-load-image';
+import NotificationContext from '@notification-context';
 
 const Account = () => {
     const showDebugging = true;
     const { identifier } = useParams();
     const { apiRequest } = useAPI(showDebugging);
     const [userProfile, setUserProfile] = useState(null);
+    const { isAuthenticated, profile } = useContext(UserContext);
+    const { loadImage } = useLoadImage(true);
+    const { addNotification } = useContext(NotificationContext);
+    const isOwnProfile = userProfile?.user_id === profile?.user_id;
+    const [previewImage, setPreviewImage] = useState(null);
 
     useEffect(() => {
         const loadUserProfileByIdentifier = async (identifier) => {
@@ -73,10 +70,75 @@ const Account = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [identifier]);
 
+    useEffect(() => {
+        if (isOwnProfile && profile?.image) {
+            setPreviewImage(profile.image);
+        }
+    }, [profile]);
+
+    const validateForm = () => {
+        return true;
+    };
+
+    const updateImage = async (e) => {
+        const init = async () => {
+            const loadedImage = loadImage(e);
+            if (loadedImage) {
+                setPreviewImage(loadedImage.url);
+                const response = await apiRequest({
+                    method: 'PATCH',
+                    authorizationHeader: true,
+                    validateForm,
+                    formDataDraft: { image: loadedImage.file },
+                    relativeURL: '/users/profile/update-image/',
+                    debugMessages: {
+                        error: "Couldn't update user's profile image",
+                        successfulBackEndResponse:
+                            'Profile image update successful',
+                    },
+                    uxMessages: {
+                        error:
+                            "Couldn't update your profile image, try " +
+                            'refreshing your browser.',
+                    },
+                });
+                if (response) {
+                    debug(
+                        's',
+                        showDebugging,
+                        'Profile update successful:',
+                        response,
+                    );
+                    await addNotification(true, 'Image updated!');
+                } else {
+                    await addNotification(
+                        false,
+                        "Couldn't update your image :(",
+                    );
+                }
+            }
+        };
+        await init();
+    };
+
+    const imageProps = {
+        editMode: isAuthenticated,
+        defaultImage: isAuthenticated ? previewImage : defaultAvatarImage,
+        image: {
+            src: isAuthenticated ? previewImage : userProfile?.image,
+        },
+        inputProps: {
+            id: 'Account-page-profile-image',
+            onChange: updateImage,
+        },
+        previewImg: isAuthenticated ? previewImage : null,
+        customStyle: profileImageStyle,
+    };
+
     return (
         <div className={'flex-row-relative w-100 ' + `${style.container}`}>
             <h5 className={`${style['title']} mt-3`}>Profile</h5>
-            <ProfileImage src={userProfile?.image} />
+            <Image {...imageProps} />
             <p className="text-white">{userProfile?.username}</p>
             <DeleteAccount />
         </div>

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import sharedStyles from '../../../../SharedStyles.module.css';
+import sharedStyle from '@c-shared-style/Shared.module.css';
 import checkboxBuilderStyle from '@c-builder/CheckboxBuilder.module.css';
 import Title from '@c-c/headings/title/Title';
 import Subtitle from '@c-c/headings/subtitle/Subtitle';
@@ -29,8 +29,8 @@ const SafetyCard = (props) => {
     return (
         <div
             className={
-                `flex-column-absolute ${sharedStyles.post} ` +
-                sharedStyles['card-padding']
+                `flex-column-absolute ${sharedStyle.post} ` +
+                sharedStyle['card-padding']
             }
         >
             <Title {...{ editMode, standalone, title: post.title }} />
