@@ -5,7 +5,7 @@ import ScreenContext from '@screen-context';
 
 const CardToggler = (props) => {
     const { show, setCardIndex, editMode } = props;
-    const cardsAmount = editMode ? 8 : 5;
+    const cardsAmount = editMode ? 8 : 6;
     const { screenWidth } = useContext(ScreenContext);
 
     const leftToggle = () => {

@@ -23,7 +23,10 @@ const Menu = (props) => {
         handleToggle();
         // Pre-fill values
         const targetedPost = posts.find((i) => i.id === post.id);
-        setEditedPost({ data: {}, draft: { ...targetedPost } });
+        setEditedPost({
+            data: { imageUrl: targetedPost.image },
+            draft: { ...targetedPost },
+        });
         // Set editing post id
         openEditor(post.id);
         // Avoid showing the info message immediately

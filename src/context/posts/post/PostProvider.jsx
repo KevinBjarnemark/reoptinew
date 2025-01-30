@@ -26,7 +26,7 @@ const PostProvider = ({ children }) => {
 
     // The post that is currently being edited (post id)
     const [editingPost, setEditingPost] = useState('');
-    const [previewImage, setPreviewImage] = useState(null);
+    const [creatingPost, setCreatingPost] = useState(false);
 
     // Hooks
     const navigate = useNavigate();
@@ -194,10 +194,11 @@ const PostProvider = ({ children }) => {
                 updateLikes,
                 editingPost,
                 setEditingPost,
-                previewImage,
-                setPreviewImage,
                 openEditor,
                 updateSinglePost,
+                loadSinglePost,
+                creatingPost,
+                setCreatingPost,
             }}
         >
             {children}

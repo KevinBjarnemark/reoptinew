@@ -13,7 +13,7 @@ const MaterialsCard = (props) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} standalone={standalone} />
+            <Title {...{ editMode, standalone, title: post.title }} />
             <Subtitle subtitle="Materials" />
             <ResourceBuilder
                 {...{

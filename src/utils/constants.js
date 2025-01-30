@@ -1,29 +1,59 @@
+/**
+ * This unique post id helps with distinguishing between edit and
+ * create mode.
+ */
+export const POST_UNIQUE_ID_CREATE = 'CREATE_MODE';
+
 export const DEFAULT_POST = {
+    id: POST_UNIQUE_ID_CREATE,
     title: '',
     description: '',
     instructions: '',
+    created_at: '',
+    author: {
+        // Example:
+        /* 
+        id: 0,
+        username: 'username',
+        image: null, 
+        */
+    },
     default_image_index: 1,
     harmful_post: false,
     tags: null,
-    harmful_tool_categories: [],
-    harmful_material_categories: [],
+    image: null,
+    harmful_tool_categories: [
+        /* Example:
+            "Sharp or Cutting Tools" 
+        */
+    ],
+    harmful_material_categories: [
+        /* Example:
+            "Radioactive Materials" 
+        */
+    ],
     tools: [
-        // Example:
-        /* {
-            quantity: '',
-            name: '',
-            description: '',
-        }, */
+        /* Example 
+            {
+                "quantity": "1",
+                "name": "Screw driver",
+                "description": "Manual or electric"
+            }
+        */
     ],
     materials: [
-        // Example:
-        /* {
-            quantity: '',
-            name: '',
-            description: '',
-        }, */
+        /* Example: 
+            {
+                "quantity": "10",
+                "name": "wooden boards",
+                "description": "Any wood type will do"
+            } 
+        */
     ],
-    image: null,
+    likes: {
+        user_has_liked: false,
+        count: 0,
+    },
 };
 
 /**

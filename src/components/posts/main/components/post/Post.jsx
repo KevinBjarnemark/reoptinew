@@ -19,6 +19,7 @@ import UserProfile from '@c-c/buttons/user-profile/UserProfile';
 import AgeRestriction from '@c-c/buttons/age-restriction/AgeRestriction';
 import ModeLabel from '@c-c/labels/mode-label/ModeLabel';
 import PickerPanel from '@c-c/panels/picker-panel/PickerPanel';
+import { POST_UNIQUE_ID_CREATE } from '@constants';
 
 const CardChoser = (props) => {
     const { cardIndex, post, standalone, editMode, defaultImageIndex } = props;
@@ -48,10 +49,7 @@ const CardChoser = (props) => {
             return <InstructionsCard {...sharedProps} />;
         }
         case 5: {
-            if (editMode) {
-                return <TagsCard {...sharedProps} />;
-            }
-            return null;
+            return <TagsCard {...sharedProps} />;
         }
         case 6: {
             if (editMode) {
@@ -71,7 +69,7 @@ const CardChoser = (props) => {
 const Post = ({ standalone, post, settings = {}, postsMaxLength = 0 }) => {
     // Contexts
     const { profile } = useContext(UserContext);
-    const { editingPost } = useContext(PostContext);
+    const { editingPost, creatingPost } = useContext(PostContext);
     const { screenWidth } = useContext(ScreenContext);
     // States
     const [cardIndex, setCardIndex] = useState(0);
@@ -82,7 +80,9 @@ const Post = ({ standalone, post, settings = {}, postsMaxLength = 0 }) => {
     );
     // Variables
     const isAuthor = profile?.user_id === post?.author?.id;
-    const editMode = editingPost === post?.id;
+    const editMode =
+        (standalone && editingPost === post?.id) ||
+        post.id === POST_UNIQUE_ID_CREATE;
 
     // Enlarge the component when in standalone mode
     const standaloneStyle = standalone
@@ -139,8 +139,11 @@ const Post = ({ standalone, post, settings = {}, postsMaxLength = 0 }) => {
 
             {/* Edit mode label, only visible when editing in 
                 standalone */}
-            {standalone && editingPost === post.id ? (
-                <ModeLabel labelText="Edit Mode" />
+            {editMode ? (
+                <ModeLabel
+                    labelText={creatingPost ? 'Create mode' : 'Edit Mode'}
+                    color={creatingPost ? '#a0e2f1' : '#ffc073'}
+                />
             ) : null}
 
             {/* Default images toggler */}

@@ -51,7 +51,7 @@ const InstructionsCard = (props) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} standalone={standalone} />
+            <Title {...{ editMode, standalone, title: post.title }} />
             <Subtitle subtitle="Instructions" />
             <div
                 className={

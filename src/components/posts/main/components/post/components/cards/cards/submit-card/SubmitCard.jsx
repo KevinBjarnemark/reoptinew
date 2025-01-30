@@ -20,7 +20,7 @@ const SubmitButton = () => {
     const showDebugging = true;
     // Contexts
     const { editedPost } = useContext(EditedPostContext);
-    const { updateSinglePost } = useContext(PostContext);
+    const { updateSinglePost, creatingPost } = useContext(PostContext);
     const { addNotification } = useContext(NotificationContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
@@ -62,10 +62,12 @@ const SubmitButton = () => {
                 };
 
                 const response = await apiRequest({
-                    method: 'PUT',
+                    method: creatingPost ? 'POST' : 'PUT',
                     validateForm,
                     formDataDraft,
-                    relativeURL: `/posts/posts/${editedPost.draft.id}/`,
+                    relativeURL: creatingPost
+                        ? '/posts/posts/'
+                        : `/posts/posts/${editedPost.draft.id}/`,
                     debugMessages: {
                         error: 'Error when creating a post',
                         successfulBackEndResponse: 'Created post successfully',
@@ -147,7 +149,7 @@ const SubmitButton = () => {
 };
 
 const SubmitCard = (props) => {
-    const { post, standalone } = props;
+    const { post, standalone, editMode } = props;
 
     return (
         <div
@@ -156,8 +158,8 @@ const SubmitCard = (props) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} standalone={standalone} />
-            <SubmitButton {...{ post }} />
+            <Title {...{ editMode, standalone, title: post.title }} />
+            <SubmitButton {...{ editMode }} />
         </div>
     );
 };

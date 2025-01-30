@@ -4,7 +4,7 @@ import Logo from '../../logo/Logo';
 import NotificationContext from '@notification-context';
 import style from './Header.module.css';
 import PageDimContext from '../../../context/page-dim/PageDimContext';
-import AppLoadingContext from '../../../context/loading/app-loading/AppLoadingContext';
+import AppLoadingContext from '@app-loading-context';
 
 const Notification = () => {
     const { currentNotification } = useContext(NotificationContext);

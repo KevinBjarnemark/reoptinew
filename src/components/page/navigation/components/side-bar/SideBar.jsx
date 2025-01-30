@@ -1,12 +1,16 @@
 import { useState, useContext } from 'react';
 import BorderSeparator from '@border-separator';
-import useAPI from '@use-api';
-import useSimulateLoading from '@use-simulate-loading';
 import NotificationContext from '@notification-context';
-import { debug } from '@debug';
 import BasicMenu from '../../../../menus/basic-menu/BasicMenu';
 import UserContext from '../../../../../context/UserContext';
 import NavButton from '../buttons/nav-button/NavButton';
+import { DEFAULT_POST } from '@constants';
+import AlertContext from '@alert-context';
+import PostContext from '@post-context';
+import EditedPostContext from '@edited-post-context';
+import PageDimContext from '../../../../../context/page-dim/PageDimContext';
+import AppCloseButtonContext from '@app-close-button-context';
+import { debug } from '@debug';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
@@ -61,78 +65,71 @@ const Links = (props) => {
 const Create = (props) => {
     const showDebugging = true;
     const { toggled, setToggled } = props;
-    const { apiRequest } = useAPI(true);
-    const { simulateLoading } = useSimulateLoading(showDebugging);
     const { addNotification } = useContext(NotificationContext);
+    const { setSinglePost, setCreatingPost, setEditingPost } =
+        useContext(PostContext);
+    const { setEditedPost } = useContext(EditedPostContext);
+    const { addAlert } = useContext(AlertContext);
+    const { isAuthenticated, profile } = useContext(UserContext);
+    const { setDim } = useContext(PageDimContext);
+    const { setShowAppCloseButton } = useContext(AppCloseButtonContext);
 
     const handleToggle = () => {
         setToggled((prev) => (prev === 'Create' ? '' : 'Create'));
     };
 
-    const validateForm = () => {
-        return true;
-    };
-
-    // TEMPORARY
-    const formDataDraft = {
-        title: 'Test post 10',
-        description: 'Test description',
-        instructions: 'Test instructions',
-        harmful_material_categories: JSON.stringify([
-            'Corrosive Materials',
-            'Flammable Materials',
-            'Chemical Substances',
-            'Radioactive Materials',
-        ]),
-        harmful_tool_categories: JSON.stringify(['Sharp or Cutting Tools']),
-        materials: JSON.stringify([
-            {
-                quantity: '10',
-                name: 'wooden boards',
-                description: 'Any wood type will do',
-            },
-            {
-                quantity: 'A couple of',
-                name: 'nails',
-                description: 'Stainless 2 inches long',
-            },
-        ]),
-        tools: JSON.stringify([
-            {
-                quantity: '1',
-                name: 'Screw driver',
-                description: 'Manual or electric',
-            },
-        ]),
-    };
-
-    const createPost = async () => {
-        await simulateLoading();
-        const response = await apiRequest({
-            validateForm,
-            formDataDraft,
-            relativeURL: '/posts/posts/',
-            debugMessages: {
-                error: 'Error when creating a post',
-                successfulBackEndResponse: 'Created post successfully',
-            },
-            uxMessages: {
-                error: "Couldn't create post",
-            },
-            authorizationHeader: true,
-        });
-
-        if (response) {
-            debug('s', showDebugging, 'Post posted successfully:', response);
-            await addNotification(true, 'Posted!');
-        } else {
+    const handleCreateButton = async () => {
+        try {
+            debug(
+                't',
+                showDebugging,
+                'User clicked the create post button.',
+                '',
+            );
+            if (!isAuthenticated) {
+                addAlert('You must log in to create a post.', 'Info');
+                await addNotification(false, 'You must log in!');
+                return null;
+            }
+            // Pre-fill values and set the single post data
+            const postTemplate = {
+                ...DEFAULT_POST,
+                author: {
+                    id: profile.id,
+                    username: profile.username,
+                    image: profile.image,
+                },
+            };
+            setEditedPost({ data: {}, draft: { ...postTemplate } });
+            setSinglePost({ ...postTemplate });
+            setEditingPost(postTemplate.id);
+            // Dim the app and load the close button
+            setDim(true);
+            setShowAppCloseButton(true);
+            // Turn create mode ON
+            setCreatingPost(true);
+            await addNotification(true, 'Template loaded');
+            // Avoid showing the info message immediately
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(true);
+                }, 200);
+            });
+            // Guide the user
+            addAlert('Go to the last card to submit you edits.', 'Info');
+        } catch (error) {
+            addAlert(
+                'Something went wrong when trying to load the ' +
+                    'create post template. Try refreshing your browser.',
+                'Error',
+            );
             debug(
                 'e',
                 showDebugging,
-                "Couldn't create post (backend):",
-                response,
+                "Couln't load the create post template",
+                error,
             );
-            await addNotification(false, "Couldn't create post :(");
+            await addNotification(false, 'Error...');
         }
     };
 
@@ -146,7 +143,7 @@ const Create = (props) => {
                     icon="fa-solid fa-plus"
                     props={{
                         onClick: () => {
-                            createPost();
+                            handleCreateButton();
                             handleToggle();
                         },
                     }}

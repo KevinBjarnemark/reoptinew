@@ -28,8 +28,13 @@ const AppCloseButton = () => {
         AppCloseButtonContext,
     );
     const { clearEditedPost } = useContext(EditedPostContext);
-    const { setEditingPost, setPreviewImage, editingPost, handleClosePost } =
-        useContext(PostContext);
+    const {
+        setEditingPost,
+        editingPost,
+        handleClosePost,
+        creatingPost,
+        setCreatingPost,
+    } = useContext(PostContext);
 
     /**
      * This useEffect is listening to a useState existing in the
@@ -61,8 +66,10 @@ const AppCloseButton = () => {
         if (editingPost) {
             clearEditedPost(); // Clear edits
             setEditingPost(''); // Clear editing post id
-            setPreviewImage(null); // Clear preview image
             debug('d', showDebugging, 'Editor data was cleared.', '');
+        }
+        if (creatingPost) {
+            setCreatingPost(false);
         }
     };
 

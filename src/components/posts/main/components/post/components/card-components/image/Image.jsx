@@ -10,20 +10,24 @@ const Image = (props) => {
         defaultImage,
         standalone,
     } = props;
-    const [showCustomImageHint, setShowCustomImageHint] = useState(true);
+    const [showCustomImageHint, setShowCustomImageHint] = useState(false);
 
     useEffect(() => {
         let timeId;
+        let timeId2;
 
         if (editMode && standalone) {
-            setShowCustomImageHint(true);
             timeId = setTimeout(() => {
-                setShowCustomImageHint(false);
+                setShowCustomImageHint(true);
             }, 3000);
+            timeId2 = setTimeout(() => {
+                setShowCustomImageHint(false);
+            }, 8000);
         }
 
         return () => {
             clearTimeout(timeId);
+            clearTimeout(timeId2);
         };
 
         // Both editMode and standalone mode won't change unless the
@@ -35,9 +39,9 @@ const Image = (props) => {
         <button className={`flex-column-relative ${style['image-container']}`}>
             {editMode ? (
                 <>
-                    <input {...inputProps} type="file" hidden />
+                    <input {...inputProps} id="image" type="file" hidden />
                     <label
-                        htmlFor={inputProps.id}
+                        htmlFor="image"
                         className={'flex-column-absolute'}
                         style={{
                             backgroundColor: showCustomImageHint

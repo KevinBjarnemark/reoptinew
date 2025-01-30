@@ -33,7 +33,7 @@ const SafetyCard = (props) => {
                 sharedStyles['card-padding']
             }
         >
-            <Title title={post.title} standalone={standalone} />
+            <Title {...{ editMode, standalone, title: post.title }} />
             <Subtitle subtitle="Safety" />
 
             <h6 className="mt-4 text-center w-100">Dangerous outcome</h6>

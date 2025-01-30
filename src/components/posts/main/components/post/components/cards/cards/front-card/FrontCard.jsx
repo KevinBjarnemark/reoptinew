@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import sharedStyles from '../../../../SharedStyles.module.css';
 import Title from '@c-c/headings/title/Title';
 import Image from '@c-c/image/Image';
@@ -23,15 +23,41 @@ import AlertContext from '@alert-context';
 const FrontCard = (props) => {
     const showDebugging = true;
     const { post, standalone, editMode, defaultImageIndex } = props;
-    const { renderPost, previewImage, setPreviewImage } =
-        useContext(PostContext);
+    const { renderPost } = useContext(PostContext);
     const { editedPost, setEditedPost } = useContext(EditedPostContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
     );
-    const [firstRender, setFirstRender] = useState(true);
-    const [imageDynamicKey, setImageDynamicKey] = useState(false);
     const { addAlert } = useContext(AlertContext);
+    const [previewImage, setPreviewImage] = useState(editedPost.data.imageUrl);
+    const firstRenderRef = useRef(true);
+
+    /**
+     * Clears the preview image when interacting with the `defaultImageIndex`
+     * (`PickerPanel`) while retaining the initial image.
+     */
+    useEffect(() => {
+        if (!firstRenderRef.current) {
+            setPreviewImage(null);
+            setEditedPost((prev) => ({
+                ...prev,
+                draft: { ...prev.draft, image: null },
+                data: { ...prev.data, imageUrl: null },
+            }));
+        }
+
+        const timeId = setTimeout(() => {
+            firstRenderRef.current = false;
+        }, 1000);
+
+        return () => {
+            clearTimeout(timeId);
+        };
+
+        // Ignoring dependency warning because the editedPost
+        // state is only necessary the first render.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultImageIndex]);
 
     const updateImage = (e) => {
         addLoadingPoint();
@@ -44,26 +70,16 @@ const FrontCard = (props) => {
                 setEditedPost((prev) => ({
                     ...prev,
                     draft: { ...prev.draft, image: file },
-                }));
-                debug(
-                    'd',
-                    showDebugging,
-                    'Edited post draft updated (image).',
-                    '',
-                );
-                setEditedPost((prev) => ({
-                    ...prev,
                     data: { ...prev.data, imageUrl: fileUrl },
                 }));
                 debug(
                     'd',
                     showDebugging,
-                    'Saved the edited post image url, ' +
-                        'used for resetting the image after a component ' +
-                        'unmount.',
+                    'Edited post draft updated (image)' +
+                        ' and saved the edited post image url' +
+                        'used for resetting the image after a component unmount.',
                     '',
                 );
-                setImageDynamicKey((prev) => !prev);
             }
         } catch (error) {
             addAlert(
@@ -83,69 +99,6 @@ const FrontCard = (props) => {
         }
     };
 
-    /** Manages the firstRender state and ensures the preview
-     * image is retained when revisiting this card.
-     */
-    useEffect(() => {
-        let timeId;
-        // This is the first render
-        setFirstRender(false);
-
-        // Use saved edited post data to update the preview image after
-        // allowing the component to mount.
-        if (editedPost.data.imageUrl || post.image) {
-            timeId = setTimeout(() => {
-                // Prioritize edited post data
-                const imageUrl = editedPost.data.imageUrl || post.image;
-                setPreviewImage(imageUrl);
-            }, 100);
-        }
-
-        return () => {
-            clearTimeout(timeId);
-        };
-
-        // This `useEffect` is intended to run only when the
-        // component mounts.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    /**
-     * This useEffect clears the preview image when interacting
-     * with the defaultImageIndex managed by the `PickerPanel`.
-     */
-    useEffect(() => {
-        if (!firstRender && editMode) {
-            setPreviewImage(null);
-            // Clear the custom image and set `defaultImageIndex`
-            setEditedPost((prev) => ({
-                // Spread previous values
-                ...prev,
-                // Target the draft entry
-                draft: {
-                    // Spread previous draft
-                    ...prev.draft,
-                    // Clear the image
-                    image: null,
-                    // Set default image index
-                    default_image_index: defaultImageIndex,
-                },
-                // Target the data entry
-                data: {
-                    // Spread previous data
-                    ...prev.data,
-                    // Clear the image url
-                    imageUrl: null,
-                },
-            }));
-        }
-
-        // Both setEditedPost and setPreviewImage are in themselves not
-        // dependencies, but since they're imported from context, ES Lint
-        // is flagging them as such, unnecessarily.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [firstRender, defaultImageIndex, editMode]);
-
     const imageProps = {
         editMode,
         standalone,
@@ -154,7 +107,12 @@ const FrontCard = (props) => {
             src: editMode ? previewImage : post?.image,
         },
         inputProps: {
-            id: `post-image-${post.id}`,
+            // Reset the value onClick to trigger renders even when
+            // chosing the same image after interacting with the
+            // `defaultImageIndex` (`PickerPanel`).
+            onClick: (e) => {
+                e.target.value = '';
+            },
             onChange: updateImage,
         },
         previewImg: editMode ? previewImage : null,
@@ -175,18 +133,8 @@ const FrontCard = (props) => {
                     }
                 }}
             >
-                <Title title={post.title} standalone={standalone} />
-                <Image
-                    // This dynamic key fixes the following issue:
-                    // 1. Uploading an image.
-                    // 2. Selecting a default image from the picker panel.
-                    // 3. Re-uploading the same image as before.
-                    //
-                    // A state change will not trigger a re-render in this
-                    // case.
-                    key={`image-${imageDynamicKey}`}
-                    {...imageProps}
-                />
+                <Title {...{ editMode, standalone, title: post.title }} />
+                <Image {...imageProps} />
             </div>
 
             <EngagementPanel
