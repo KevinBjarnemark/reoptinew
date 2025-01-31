@@ -58,7 +58,7 @@ const Profile = () => {
         // but since it's imported from a context, ES Lint is flagging
         // it as one unnecessarily.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAuthenticated]);
+    }, [isAuthenticated, identifier]);
 
     return (
         <>

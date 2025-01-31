@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import style from './SubmitCard.module.css';
 import sharedStyle from '@c-shared-style/Shared.module.css';
 // Card components
@@ -14,12 +14,14 @@ import useAPI from '@use-api';
 // Logging
 import { debug } from '@debug';
 import AppCloseButtonContext from '@app-close-button-context';
+import { POST_UNIQUE_ID_CREATE } from '@constants';
 
 const SubmitButton = () => {
     const showDebugging = true;
     // Contexts
     const { editedPost } = useContext(EditedPostContext);
-    const { updateSinglePost, creatingPost } = useContext(PostContext);
+    const { updateSinglePost, addSinglePost, creatingPost } =
+        useContext(PostContext);
     const { addNotification } = useContext(NotificationContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
@@ -57,7 +59,16 @@ const SubmitButton = () => {
                     ),
                     tools: JSON.stringify(editedPost.draft.tools),
                     materials: JSON.stringify(editedPost.draft.materials),
-                    image: editedPost.draft.image,
+                    // NOT SUPPORTED!
+                    // Remove the image from the request when the user
+                    // editing an already created post and chosing not to
+                    // upload an image.
+                    // This is not supported in the backend.
+                    ...(!creatingPost &&
+                    !editedPost.data.imageHasBeenSelected &&
+                    editedPost.draft.image
+                        ? { image: editedPost.draft.image }
+                        : {}),
                 };
 
                 const response = await apiRequest({
@@ -79,7 +90,14 @@ const SubmitButton = () => {
 
                 if (response) {
                     // Ensure the post is visible immediately
-                    await updateSinglePost(editedPost.draft.id);
+                    if (editedPost.draft.id === POST_UNIQUE_ID_CREATE) {
+                        // Add the newly created post
+                        addSinglePost(response);
+                    } else {
+                        // Fetch and replace the newly edited post
+                        await updateSinglePost(editedPost.draft.id);
+                    }
+
                     // Close edit mode/post
                     appCloseButton();
                     debug(
@@ -103,8 +121,6 @@ const SubmitButton = () => {
                     );
                     await addNotification(false, "Couldn't create post :(");
                 }
-
-                debug('d', showDebugging, '________', '________');
             } catch (error) {
                 addAlert(
                     'Hmm, something went wrong. You can try to ' +
@@ -149,6 +165,30 @@ const SubmitButton = () => {
 
 const SubmitCard = (props) => {
     const { post, standalone, editMode } = props;
+    const { creatingPost } = useContext(PostContext);
+    const { editedPost } = useContext(EditedPostContext);
+    const { addAlert } = useContext(AlertContext);
+
+    useEffect(() => {
+        if (
+            !creatingPost &&
+            !editedPost.data.imageHasBeenSelected &&
+            editedPost.draft.image
+        ) {
+            addAlert(
+                "Since you didn't upload an image, your already " +
+                    'chosen image will be deleted. Our system cannot ' +
+                    "handle this at the moment. If you've picked a " +
+                    "default image and don't want a custom image, " +
+                    "there's nothing to worry about.",
+                'Warning',
+            );
+        }
+        // `addAlert` is in itself not a dependency,
+        // but since it's imported from context, ES Lint is flagging
+        // it as one unnecessarily.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [creatingPost, editedPost]);
 
     return (
         <div

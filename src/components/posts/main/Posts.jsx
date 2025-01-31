@@ -14,13 +14,19 @@ const RenderPosts = ({ posts }) => {
         return (
             <>
                 {posts.map((post) => {
+                    // This key includes all values that might need a
+                    // re-render. Entries such as description, and tags
+                    // are not visible in the feed, so only the visible
+                    // entries that may change are necessary. This helps
+                    // JavaScript and React to efficiently identify and
+                    // re-render the component.
+                    const dynamicKey =
+                        `${post.id}-` +
+                        `${post.likes.count}` +
+                        `-${post.title}`;
                     return (
                         <Post
-                            // Use a key that includes all values that might
-                            // change during interactions to help JavaScript
-                            // and React efficiently identify and re-render the
-                            // component.
-                            key={`${post.id}-${post.likes.count}`}
+                            key={dynamicKey}
                             standalone={false}
                             post={{ ...post }}
                             settings={{

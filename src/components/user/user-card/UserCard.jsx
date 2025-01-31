@@ -11,7 +11,6 @@ import NotificationContext from '@notification-context';
 
 const UserCardButton = () => {
     const { isAuthenticated, profile } = useContext(UserContext);
-
     const url = useLocation();
 
     const [buttonText, setButtonText] = useState('Log in/sign up');
@@ -139,7 +138,7 @@ export const UserCard = () => {
                         }}
                     ></div>
                     {isAuthenticated
-                        ? 'Logged in as a ' +
+                        ? 'Logged in as ' +
                           `${profile?.username ? profile?.username : ''}`
                         : 'Viewing as a guest'}
                 </div>

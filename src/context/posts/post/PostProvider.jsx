@@ -76,6 +76,14 @@ const PostProvider = ({ children }) => {
         );
     };
 
+    const addSinglePost = async (post) => {
+        setPosts((prev) => [...prev, post]);
+    };
+
+    const removeSinglePost = async (id) => {
+        setPosts((prev) => prev.filter((post) => post.id !== id));
+    };
+
     const updateLikes = (id, increment) => {
         setPosts((prev) =>
             prev.map((post) =>
@@ -100,8 +108,8 @@ const PostProvider = ({ children }) => {
             };
 
             const response = await apiRequest({
-                relativeURL: '/posts/posts/',
                 authorizationHeader: true,
+                relativeURL: '/posts/posts/',
                 debugMessages: {
                     error: 'Error when fetching posts',
                     successfulBackEndResponse: 'Fetched posts successfully',
@@ -196,9 +204,10 @@ const PostProvider = ({ children }) => {
                 setEditingPost,
                 openEditor,
                 updateSinglePost,
-                loadSinglePost,
+                addSinglePost,
                 creatingPost,
                 setCreatingPost,
+                removeSinglePost,
             }}
         >
             {children}

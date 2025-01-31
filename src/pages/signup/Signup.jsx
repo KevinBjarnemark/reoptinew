@@ -2,25 +2,13 @@ import { useState, useContext } from 'react';
 import style from './Signup.module.css';
 import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
-import { debug } from '@debug';
 import { validateCommon } from '../../functions/validation/validate';
-import useAPI from '@use-api';
-import useSimulateLoading from '@use-simulate-loading';
-import NotificationContext from '@notification-context';
-import { useNavigate } from 'react-router-dom';
 import BorderSeparator from '@border-separator';
 import UserContext from '../../context/UserContext';
 
 const Signup = () => {
-    // Toggle dev logs & debugging
-    const showDebugging = true;
     // Contexts
-    const { setIsAuthenticated } = useContext(UserContext);
-    const { addNotification } = useContext(NotificationContext);
-    // Hooks
-    const { apiRequest } = useAPI(showDebugging);
-    const { simulateLoading } = useSimulateLoading(showDebugging);
-    const navigate = useNavigate();
+    const { signup } = useContext(UserContext);
     // UseStates
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [policyAccepted, setPolicyAccepted] = useState(false);
@@ -51,37 +39,9 @@ const Signup = () => {
         }
     };
 
-    /**
-     * Uses the onSubmit hook to submit the login form data to the
-     * backend.
-     */
     const handleSignup = async (e) => {
         e.preventDefault();
-        await simulateLoading();
-        const response = await apiRequest({
-            validateForm,
-            formDataDraft,
-            relativeURL: '/users/signup/',
-            debugMessages: {
-                error: 'Error when signing up',
-                successfulBackEndResponse: 'Sign up successful',
-            },
-            uxMessages: {
-                error: "Couldn't sign you up, try refreshing your browser. ",
-            },
-        });
-        if (response) {
-            // Save tokens
-            localStorage.setItem('access_token', response.access);
-            localStorage.setItem('refresh_token', response.refresh);
-            debug('s', showDebugging, 'Sign up successful:', response);
-            await addNotification(true, 'Welcome!');
-            setIsAuthenticated(true);
-            navigate(`/profile/${formDataDraft.username}`);
-            window.scrollTo(0, 0);
-        } else {
-            await addNotification(false, "Couldn't sign you up :(");
-        }
+        await signup(validateForm, formDataDraft);
     };
 
     return (

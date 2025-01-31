@@ -37,14 +37,29 @@ const FrontCard = (props) => {
             setPreviewImage(null);
             setEditedPost((prev) => ({
                 ...prev,
-                draft: { ...prev.draft, image: null },
-                data: { ...prev.data, imageUrl: null },
+                draft: {
+                    ...prev.draft,
+                    image: null,
+                    default_image_index: defaultImageIndex,
+                },
+                data: {
+                    ...prev.data,
+                    imageUrl: null,
+                    imageHasBeenSelected: false,
+                },
             }));
         }
 
         const timeId = setTimeout(() => {
             firstRenderRef.current = false;
         }, 1000);
+
+        debug(
+            'd',
+            showDebugging,
+            'post.default_image_index',
+            post.default_image_index,
+        );
 
         return () => {
             clearTimeout(timeId);
@@ -64,7 +79,11 @@ const FrontCard = (props) => {
                 setEditedPost((prev) => ({
                     ...prev,
                     draft: { ...prev.draft, image: loadedImage.file },
-                    data: { ...prev.data, imageUrl: loadedImage.url },
+                    data: {
+                        ...prev.data,
+                        imageUrl: loadedImage.url,
+                        imageHasBeenSelected: true,
+                    },
                 }));
             } catch (error) {
                 debug(

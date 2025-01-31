@@ -1,54 +1,42 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { debug } from '@debug';
 import UserContext from './UserContext';
 import useAPI from '@use-api';
-import useTokens from '../hooks/authentication/useTokens';
-import AlertContext from '@alert-context';
+import { validateCommon } from '../functions/validation/validate';
+import { useNavigate } from 'react-router-dom';
+import NotificationContext from '@notification-context';
 import { ACCESS_TOKEN_LIFETIME } from '@constants';
 
 const UserProvider = ({ children }) => {
     // Config
     const showDebugging = true;
-
     // Contexts
-    const { addAlert } = useContext(AlertContext);
     const { apiRequest } = useAPI(showDebugging);
-    const { refreshAccessToken, getAccessToken } = useTokens(showDebugging);
-
     // States
+    const userHasInitialized = useRef(false);
     const [profile, setProfile] = useState(null);
     // This is null when the user is loading
     const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-    /**
-     * Loads the user's profile and updates authentication state.
-     *
-     * This function attempts to retrieve the authenticated user's profile
-     * from the backend. It first ensures that a valid access token is
-     * available. If no valid token is found, the user is marked as
-     * unauthenticated. If the profile fetch is successful, the user's profile
-     * is stored in state and the user is marked as authenticated.
-     * @param {bool} refreshTokenBeforeStart Set this to true if you want to
-     * refresh the accesstoken before loading the profile.
-     * @returns {Promise<bool|null>} Resolves after updating the profile and
-     * authentication state.
-     * @throws Errors must be handled by the caller
-     */
-    const loadProfile = async (refreshTokenBeforeStart) => {
-        if (refreshTokenBeforeStart) {
-            await refreshAccessToken(showDebugging);
-        }
-        const accessToken = await getAccessToken();
-        if (!accessToken) {
-            debug(
-                'd',
-                showDebugging,
-                'No valid access token available user is not authenticated.',
-                '',
-            );
-            setIsAuthenticated(false);
-            return null; // Indicate guest mode
-        }
+    const navigate = useNavigate();
+    const { addNotification } = useContext(NotificationContext);
+
+    const removeTokens = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+    };
+    const setTokens = (access, refresh) => {
+        localStorage.setItem('access_token', access);
+        localStorage.setItem('refresh_token', refresh);
+    };
+    const getTokens = () => {
+        return {
+            access: localStorage.getItem('access_token'),
+            refresh: localStorage.getItem('refresh_token'),
+        };
+    };
+
+    const loadProfile = async () => {
         // Fetch the user profile
         debug('d', showDebugging, 'Fetching the user profile.', '');
         const response = await apiRequest({
@@ -59,57 +47,164 @@ const UserProvider = ({ children }) => {
                 error: 'Error when fetching user profile.',
                 successfulBackEndResponse: 'Fetched user profile successfully',
             },
-            // We'll try to load the profile 2 times, see frontend error
-            // handling in initLoadProfile.
-            skipUxErrors: true,
             uxMessages: null,
         });
         if (response) {
             debug('s', showDebugging, 'Fetched user profile:', response);
             setProfile(response);
             setIsAuthenticated(true);
-            return true; // Indicate success
         } else {
+            removeTokens();
             setIsAuthenticated(false);
-            return false; // Indicate failure
         }
     };
 
-    const initLoadProfile = async () => {
-        const loadedProfile = await loadProfile(false);
-        if (loadedProfile === false) {
-            // The user may have outdated tokens, refresh and reload
-            // the profile
-            const loadedProfileSecondAttempt = await loadProfile(true);
-            if (loadedProfileSecondAttempt === false) {
-                addAlert(
-                    'An unexpected error occurred, when trying to keep ' +
-                        'you authenticated, try refreshing the browser.',
-                    'Error',
+    const initializeUser = async () => {
+        const init = async () => {
+            const tokens = getTokens();
+
+            // User is guest because there's no access token
+            if (!tokens.access || !tokens.refresh) {
+                debug(
+                    'd',
+                    showDebugging,
+                    'No valid access token available user is not ' +
+                        'authenticated.',
+                    '',
                 );
+                // Make sure localstorage is cleared
+                removeTokens();
+                setIsAuthenticated(false);
             }
+            // User has tokens but they need to be validated
+            else {
+                debug('d', showDebugging, 'Tokens found, validating ...', '');
+                const response = await apiRequest({
+                    relativeURL: '/users/api/token/refresh/',
+                    method: 'POST',
+                    body: { refresh: tokens.refresh },
+                    debugMessages: {
+                        error: "Couldn't fetch access token",
+                        successfulBackEndResponse:
+                            'Fetched access token successfully',
+                    },
+                    uxMessages: {
+                        error:
+                            'Something went wrong in our  ' +
+                            'authentication system, please refresh ' +
+                            'your browser.',
+                    },
+                });
+                if (response) {
+                    // Update tokens token (local storage)
+                    setTokens(response.access, response.refresh);
+                    await loadProfile();
+                    setIsAuthenticated(true);
+
+                    debug(
+                        'd',
+                        showDebugging,
+                        'Refreshed both the access and refresh token ' +
+                            '(local storage).',
+                        '',
+                    );
+
+                    debug(
+                        'l',
+                        showDebugging,
+                        ' setIsAuthenticated(true);',
+                        response,
+                    );
+                } else {
+                    debug(
+                        'e',
+                        showDebugging,
+                        "Couldn't refresh tokens removing clearing tokens ...",
+                        response,
+                    );
+                    // Make sure localstorage is cleared
+                    removeTokens();
+                    setIsAuthenticated(false);
+                }
+            }
+        };
+
+        await init();
+    };
+
+    const login = async (formDataDraft) => {
+        const response = await apiRequest({
+            validateForm: () => {
+                validateCommon(formDataDraft);
+            },
+            formDataDraft,
+            relativeURL: '/users/login/',
+            debugMessages: {
+                error: "Couldn't log in user",
+                successfulBackEndResponse: 'Log in successful',
+            },
+            uxMessages: {
+                error: "Couldn't log you in, try refreshing your browser.",
+            },
+        });
+        if (response) {
+            setTokens(response.access, response.refresh);
+            await loadProfile();
+            // Mark the user as authenticated
+            setIsAuthenticated(true);
+            navigate('/');
+            window.scrollTo(0, 0);
+            await addNotification(true, 'Authenticated!');
+        } else {
+            debug(
+                'd',
+                showDebugging,
+                "Backend didn't accept user log in request.",
+                response,
+            );
+            await addNotification(false, 'Authentication failed.');
         }
     };
 
-    const initRefreshAccessToken = async () => {
-        const refreshToken = await refreshAccessToken(showDebugging);
-        if (!refreshToken) {
-            addAlert(
-                'An unexpected error occurred, when trying to keep ' +
-                    'you authenticated, try refreshing the browser.',
-                'Error',
-            );
+    const signup = async (validateForm, formDataDraft) => {
+        const response = await apiRequest({
+            validateForm,
+            formDataDraft,
+            relativeURL: '/users/signup/',
+            debugMessages: {
+                error: "Couldn't sign up user",
+                successfulBackEndResponse: 'Sign up successful',
+            },
+            uxMessages: {
+                error: "Couldn't sign you up, try refreshing your browser. ",
+            },
+        });
+        if (response) {
+            setTokens(response.access, response.refresh);
+            await loadProfile();
+            await addNotification(true, 'Welcome!');
+            setIsAuthenticated(true);
+            navigate(`/profile/${formDataDraft.username}`);
+            window.scrollTo(0, 0);
+        } else {
+            await addNotification(false, "Couldn't sign you up :(");
         }
     };
 
     useEffect(() => {
-        let timeId;
-
-        // Load profile
-        if (isAuthenticated !== false) {
-            initLoadProfile();
+        if (isAuthenticated === null) {
+            if (!userHasInitialized.current) {
+                userHasInitialized.current = true;
+                initializeUser();
+            }
         }
 
+        // `initializeUser` is a stable function in itself not a dependency.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated]);
+
+    useEffect(() => {
+        let timeId;
         /**
          * Refreshes the access token before expiration
          *
@@ -121,38 +216,38 @@ const UserProvider = ({ children }) => {
 
             timeId = setTimeout(
                 () => {
-                    if (isAuthenticated) {
-                        debug(
-                            'd',
-                            true,
-                            'Refreshing the access token before expiring.',
-                            '',
-                        );
-                        initRefreshAccessToken();
-                        // Re-execute the interval
-                        refreshTokenPeriodically();
-                    }
+                    debug(
+                        'd',
+                        true,
+                        'Refreshing the access token before expiring.',
+                        '',
+                    );
+                    initializeUser();
+                    refreshTokenPeriodically();
                 }, // Refresh slightly less than the ACCESS_TOKEN_LIFETIME
                 (ACCESS_TOKEN_LIFETIME - bufferTime) * 60 * 1000,
             );
         };
-        if (isAuthenticated) {
+        if (isAuthenticated !== null) {
             refreshTokenPeriodically();
         }
 
         return () => {
             clearTimeout(timeId);
         };
-
-        // initLoadProfile is a stable function that doesn't need to be
-        // tracked as a dependency. Including it here could cause unnecessary
-        // re-renders and unexpected authentication issues.
+        // `initializeUser` is a stable function in itself not a dependency.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated]);
 
     return (
         <UserContext.Provider
-            value={{ profile, isAuthenticated, setIsAuthenticated }}
+            value={{
+                profile,
+                isAuthenticated,
+                setIsAuthenticated,
+                login,
+                signup,
+            }}
         >
             {children}
         </UserContext.Provider>

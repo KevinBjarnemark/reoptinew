@@ -23,7 +23,7 @@ const AgeRestriction = ({
      * @throws Errors must be handled by the caller
      */
     const fireAlert = (name, contentArray) => {
-        if (isArray(contentArray)) {
+        if (isArray(contentArray, true)) {
             const length = contentArray.length;
 
             const concatenatedString = contentArray

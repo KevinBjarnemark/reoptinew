@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import style from './Account.module.css';
-import profileImageStyle from './ProfileImage.module.css';
 import defaultAvatarImage from '@images/user/default-avatar.webp';
 import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
@@ -10,17 +9,22 @@ import UserContext from '../../../../context/UserContext';
 import Image from '@image';
 import useLoadImage from '@use-load-image';
 import NotificationContext from '@notification-context';
+import { useLocation } from 'react-router';
 
 const Account = () => {
     const showDebugging = true;
     const { identifier } = useParams();
     const { apiRequest } = useAPI(showDebugging);
     const [userProfile, setUserProfile] = useState(null);
-    const { isAuthenticated, profile } = useContext(UserContext);
+    const { profile } = useContext(UserContext);
     const { loadImage } = useLoadImage(true);
     const { addNotification } = useContext(NotificationContext);
-    const isOwnProfile = userProfile?.user_id === profile?.user_id;
     const [previewImage, setPreviewImage] = useState(null);
+    const url = useLocation();
+
+    const isOwnProfile =
+        url.pathname === `/profile/${profile?.username}` ||
+        url.pathname === `/profile/${profile?.user_id}`;
 
     useEffect(() => {
         const loadUserProfileByIdentifier = async (identifier) => {
@@ -74,7 +78,11 @@ const Account = () => {
         if (isOwnProfile && profile?.image) {
             setPreviewImage(profile.image);
         }
-    }, [profile]);
+        // Ignoring exhaustive-deps here because tracking `url`
+        // (from useLocation) ensures the effect runs when the
+        // route changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url]);
 
     const validateForm = () => {
         return true;
@@ -122,17 +130,16 @@ const Account = () => {
     };
 
     const imageProps = {
-        editMode: isAuthenticated,
-        defaultImage: isAuthenticated ? previewImage : defaultAvatarImage,
+        editMode: isOwnProfile,
+        defaultImage: defaultAvatarImage,
         image: {
-            src: isAuthenticated ? previewImage : userProfile?.image,
+            src: isOwnProfile ? previewImage : userProfile?.image,
         },
         inputProps: {
-            id: 'Account-page-profile-image',
+            id: `account-page-profile-image-${url}`,
             onChange: updateImage,
         },
-        previewImg: isAuthenticated ? previewImage : null,
-        customStyle: profileImageStyle,
+        previewImg: isOwnProfile ? previewImage || userProfile?.image : null,
     };
 
     return (

@@ -37,6 +37,11 @@ const AlertProvider = ({ children }) => {
                 faColor = 'var(--color-success)';
                 break;
             }
+            case 'Warning': {
+                faClass = 'fa-solid fa-triangle-exclamation';
+                faColor = 'var(--color-warning)';
+                break;
+            }
         }
         setAlerts((prev) => [
             ...prev,

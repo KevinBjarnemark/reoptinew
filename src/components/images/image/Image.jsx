@@ -37,7 +37,9 @@ const Image = (props) => {
 
     return (
         <button
-            className={`flex-column-relative ${customStyle['image-container']}`}
+            className={
+                'flex-column-relative ' + customStyle['image-container']
+            }
         >
             {editMode ? (
                 <>
@@ -58,19 +60,11 @@ const Image = (props) => {
                 </>
             ) : null}
 
-            {!previewImg ? (
-                <img
-                    className={`flex-column-relative ${customStyle['image']}`}
-                    src={image.src ? image.src : defaultImage}
-                    alt="Preview image"
-                />
-            ) : (
-                <img
-                    className={`flex-column-relative ${customStyle['image']}`}
-                    src={previewImg}
-                    alt="Preview image"
-                />
-            )}
+            <img
+                className={`flex-column-relative ${customStyle['image']}`}
+                src={previewImg || image?.src || defaultImage}
+                alt="Preview image"
+            />
         </button>
     );
 };

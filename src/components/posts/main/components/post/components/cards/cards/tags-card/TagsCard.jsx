@@ -37,11 +37,11 @@ const TagsCard = (props) => {
     const textareaProps = !editMode
         ? {
               disabled: true,
-              value: post.tags,
+              value: post?.tags || '',
           }
         : {
               disabled: false,
-              defaultValue: editedPost.draft.tags,
+              defaultValue: editedPost.draft.tags || '',
           };
 
     return (

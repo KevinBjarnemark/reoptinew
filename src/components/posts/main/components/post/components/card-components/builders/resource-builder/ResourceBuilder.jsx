@@ -2,7 +2,6 @@ import { useRef, useContext, useEffect, useState } from 'react';
 import style from './ResourceBuilder.module.css';
 import { debug } from '@debug';
 import AlertContext from '@alert-context';
-import { isArray } from '@helpers';
 import EditedPostContext from '@edited-post-context';
 
 const AddResource = (props) => {
