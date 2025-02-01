@@ -31,6 +31,8 @@ export const PATH_ALIASES = {
     'edited-post-context': './src/context/posts/edited-post/EditedPostContext',
     'screen-context': './src/context/screen-context/ScreenContext',
     'screen-provider': './src/context/screen-context/ScreenProvider',
+    'pop-up-context': './src/context/pop-up/PopUpContext',
+    'pop-up-provider': './src/context/pop-up/PopUpProvider',
     // Components
     image: './src/components/images/image/Image',
     'border-separator':

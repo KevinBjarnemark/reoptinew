@@ -10,10 +10,10 @@ import { validateCommon } from '../../../../functions/validation/validate';
 import useSimulateLoading from '@use-simulate-loading';
 import useAPI from '@use-api';
 import { debug } from '@debug';
-import PopUp from '../../../../components/pop-ups/pop-up/PopUp';
 import BasicButton from '@basic-button';
 import { clearAuthTokens } from '@authentication/accessToken';
 import { useNavigate } from 'react-router-dom';
+import PopUpContext from '../../../../context/pop-up/PopUpContext';
 
 const FormContent = () => {
     const showDebugging = true;
@@ -31,20 +31,8 @@ const FormContent = () => {
         password: '',
         confirm_password: '',
     });
-
     const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
-
-    /* Submit button props */
-    const submitButtonProps = {
-        text: 'Delete account',
-        className: style['delete-button'],
-        style: {
-            backgroundColor: '#fe5a5a',
-            cursor: deleteButtonDisabled ? 'not-allowed' : 'pointer',
-        },
-        onClick: handleAccountDeletion,
-        disabled: deleteButtonDisabled,
-    };
+    const { closePopUp } = useContext(PopUpContext);
 
     /**
      * Checks if the username is available and adds it to the draft
@@ -98,13 +86,9 @@ const FormContent = () => {
         }
     };
 
-    /**
-     * Uses the onSubmit hook to submit the login form data to the
-     * backend.
-     */
     const handleAccountDeletion = async (e) => {
         e.preventDefault();
-        if (!deleteButtonDisabled) {
+        if (deleteButtonDisabled) {
             return;
         }
 
@@ -136,7 +120,7 @@ const FormContent = () => {
         });
         if (response) {
             clearAuthTokens();
-            await addNotification(true, 'Account deleted.');
+            closePopUp();
             debug(
                 's',
                 showDebugging,
@@ -146,11 +130,24 @@ const FormContent = () => {
             setIsAuthenticated(false);
             navigate('/');
             window.scrollTo(0, 0);
+            addAlert('Your account has been deleted.', 'Done');
         } else {
             debug('e', showDebugging, "Couldn't delete account:", response);
             await addNotification(false, "Couldn't delete your account.");
         }
         setDeleteButtonDisabled(false);
+    };
+
+    /* Submit button props */
+    const submitButtonProps = {
+        text: 'Delete account',
+        className: style['delete-button'],
+        style: {
+            backgroundColor: '#fe5a5a',
+            cursor: deleteButtonDisabled ? 'not-allowed' : 'pointer',
+        },
+        onClick: handleAccountDeletion,
+        disabled: deleteButtonDisabled,
     };
 
     return (
@@ -187,11 +184,7 @@ const FormContent = () => {
 };
 
 const DeleteAccount = () => {
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-
-    const handleClosePasswordConfirm = () => {
-        setShowPasswordConfirm(false);
-    };
+    const { openPopUp } = useContext(PopUpContext);
 
     return (
         <>
@@ -201,18 +194,10 @@ const DeleteAccount = () => {
                     className:
                         'flex-column-absolute ' + `${style['delete-button']}`,
                     onClick: () => {
-                        setShowPasswordConfirm(true);
+                        openPopUp('Confirm password', <FormContent />);
                     },
                 }}
             />
-
-            <PopUp
-                title={'Confirm password'}
-                show={showPasswordConfirm}
-                handleClose={handleClosePasswordConfirm}
-            >
-                <FormContent />
-            </PopUp>
         </>
     );
 };

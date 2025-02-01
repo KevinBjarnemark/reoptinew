@@ -13,60 +13,28 @@ import BorderSeparator from '@border-separator';
 import useAPI from '@use-api';
 // Functions
 import { debug } from '@debug';
+import PopUpContext from '@pop-up-context';
+import PopUp from '../../../../../../../../pop-ups/pop-up/PopUp';
 
-/**
- * A small menu displayed when interacting with the classic
- * tree-dots menu.
- *
- * @returns {JSX.Element} A typical react component
- */
-const Menu = (props) => {
+const DeleteContent = ({ postId }) => {
     const showDebugging = true;
-    const { toggled, handleToggle, post } = props;
-    const { openEditor, posts, removeSinglePost } = useContext(PostContext);
-    const { setEditedPost } = useContext(EditedPostContext);
+    const { removeSinglePost } = useContext(PostContext);
     const { addAlert } = useContext(AlertContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
     );
     const { apiRequest } = useAPI(true);
     const { addNotification } = useContext(NotificationContext);
-
-    const handleEdit = async () => {
-        // Close the menu
-        handleToggle();
-        // Pre-fill values
-        const targetedPost = posts.find((i) => i.id === post.id);
-        setEditedPost({
-            data: {
-                imageUrl: targetedPost.image,
-                imageHasBeenSelected: false,
-            },
-            draft: { ...targetedPost },
-        });
-        // Set editing post id
-        openEditor(post.id);
-        // Avoid showing the info message immediately
-        await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(true);
-            }, 1000);
-        });
-        // Guide the user
-        addAlert('Go to the last card to submit you edits.', 'Info');
-    };
+    const { closePopUp } = useContext(PopUpContext);
 
     const handleDelete = async () => {
         const init = async () => {
             addLoadingPoint();
             try {
-                // Close the menu
-                handleToggle();
-
                 const response = await apiRequest({
                     authorizationHeader: true,
                     method: 'DELETE',
-                    relativeURL: `/posts/post/delete-post/${post.id}/`,
+                    relativeURL: `/posts/post/delete-post/${postId}/`,
                     debugMessages: {
                         error: "Couldn't delete post",
                         successfulBackEndResponse: 'Deleted post successfully',
@@ -78,7 +46,7 @@ const Menu = (props) => {
 
                 if (response) {
                     // Ensure the post gets removed immediately
-                    removeSinglePost(post.id);
+                    removeSinglePost(postId);
                     debug(
                         's',
                         showDebugging,
@@ -86,7 +54,8 @@ const Menu = (props) => {
                         response,
                     );
                     addAlert('Your post should be deleted now', 'Done');
-                    await addNotification(true, 'Deleted!');
+                    closePopUp();
+                    await addNotification(true, 'Post deleted!');
                 } else {
                     debug(
                         'e',
@@ -118,6 +87,69 @@ const Menu = (props) => {
     };
 
     return (
+        <PopUp.YesOrNo
+            {...{
+                title: 'Are you sure you want to delete?',
+                yes: {
+                    name: 'Delete',
+                    color: 'rgb(255, 114, 114)',
+
+                    onClick: handleDelete,
+                },
+                no: {
+                    name: 'Close',
+                    color: 'rgb(129, 154, 160)',
+
+                    onClick: closePopUp,
+                },
+            }}
+        />
+    );
+};
+
+/**
+ * A small menu displayed when interacting with the classic
+ * tree-dots menu.
+ *
+ * @returns {JSX.Element} A typical react component
+ */
+const Menu = (props) => {
+    const { toggled, handleToggle, post } = props;
+    const { openEditor, posts } = useContext(PostContext);
+    const { setEditedPost } = useContext(EditedPostContext);
+    const { addAlert } = useContext(AlertContext);
+    const { openPopUp } = useContext(PopUpContext);
+
+    const handleEdit = async () => {
+        // Close the menu
+        handleToggle();
+        // Pre-fill values
+        const targetedPost = posts.find((i) => i.id === post.id);
+        setEditedPost({
+            data: {
+                imageUrl: targetedPost.image,
+                imageHasBeenSelected: false,
+            },
+            draft: { ...targetedPost },
+        });
+        // Set editing post id
+        openEditor(post.id);
+        // Avoid showing the info message immediately
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 1000);
+        });
+        // Guide the user
+        addAlert('Go to the last card to submit you edits.', 'Info');
+    };
+
+    const handleDeleteButton = () => {
+        handleToggle();
+        openPopUp('Delete post', <DeleteContent postId={post?.id} />);
+    };
+
+    return (
         <BasicMenu.Wrapper
             props={{
                 toggled: toggled,
@@ -131,7 +163,7 @@ const Menu = (props) => {
             <BasicMenu.ButtonItem
                 name="Delete"
                 icon="fa-solid fa-trash"
-                props={{ onClick: handleDelete }}
+                props={{ onClick: handleDeleteButton }}
             />
             <BorderSeparator />
             <BasicMenu.ButtonItem

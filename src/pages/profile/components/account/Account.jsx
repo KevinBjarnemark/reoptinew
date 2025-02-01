@@ -147,7 +147,7 @@ const Account = () => {
             <h5 className={`${style['title']} mt-3`}>Profile</h5>
             <Image {...imageProps} />
             <p className="text-white">{userProfile?.username}</p>
-            <DeleteAccount />
+            {isOwnProfile ? <DeleteAccount /> : null}
         </div>
     );
 };

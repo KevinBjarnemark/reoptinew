@@ -1,18 +1,6 @@
-.background {
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 50px;
-    background-color: #2e3234;
-}
-
 .container {
-    top: var(--header-height);
+    z-index: 1;
+    top: calc(var(--header-height) - 5vh);
     right: 0;
     width: calc(100vw - var(--sidebar-width));
     height: calc(100vh - var(--header-height));
@@ -27,15 +15,15 @@
     background-color: #34383a;
     min-height: 65vh;
     max-height: 65vh;
-    width: 80%;
+    width: 90%;
     padding: 20px 0;
     box-shadow: 0 0 10px 5px #3d3f40;
     overflow: auto;
 }
 
 .close-button {
-    top: calc(13vh + var(--header-height));
-    right: 13vw;
+    top: calc(11vh + var(--header-height));
+    right: 8vw;
     width: 40px;
     height: 40px;
     align-items: center;
@@ -52,6 +40,51 @@
 
 .title {
     color: #ffffff;
+}
+
+.component {
+    padding: 30px 0;
+    justify-content: flex-start;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+}
+
+.accept-or-cancel-container {
+    width: 100%;
+}
+
+.yes-or-no-title {
+    width: 100%;
+    align-items: center;
+    background-color: #d5e0e2;
+    border-radius: 5px;
+    padding: 20px 0;
+}
+
+.yes-or-no-buttons-container {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.accept-or-cancel-container button {
+    justify-content: center;
+    margin: 50px 30px 0 30px;
+    padding: 10px 40px;
+    border-radius: 100px;
+    color: #d3dfe1;
+    font-weight: 500;
+}
+
+.accept-or-cancel-container button:hover {
+    box-shadow: 0 0 7px 3px #ffffff;
+}
+
+.accept-or-cancel-container h6 {
+    margin: 0;
+    text-align: center;
+    color: #5e6769;
 }
 
 /* When screens are smaller than 730px */
