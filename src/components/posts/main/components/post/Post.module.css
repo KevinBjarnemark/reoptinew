@@ -8,17 +8,6 @@
     aspect-ratio: 16 / 9;
 }
 
-.placeholder {
-    z-index: 100;
-    width: 280px;
-    height: 20px;
-    background-color: #00000082;
-    border: 3.5px solid #4c555a;
-    border-radius: 6px;
-    margin: 30px 10px;
-    aspect-ratio: 16 / 9;
-}
-
 /* When screens are larger than 400px */
 @media (min-width: 400px) {
     .post-under {

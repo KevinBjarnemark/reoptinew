@@ -1,3 +1,4 @@
+import style from './FrontCard.module.css';
 import { useContext, useEffect, useState, useRef } from 'react';
 import sharedStyle from '@c-shared-style/Shared.module.css';
 import postImageStyle from '@c-shared-style/PostImage.module.css';
@@ -18,6 +19,38 @@ const defaultImages = [
 ];
 import { debug } from '@debug';
 import useLoadImage from '@use-load-image';
+import AlertContext from '@alert-context';
+import { env } from '../../../../../../../../../../env.js';
+
+const ShareButton = ({ show }) => {
+    const { addAlert } = useContext(AlertContext);
+
+    const handleShare = () => {
+        if (env.MODE === 'development') {
+            addAlert(
+                "Didn't copy URL to clipboard because " +
+                    'this operation requires an HTTPS connection.',
+                'Info',
+            );
+        } else {
+            navigator.clipboard.writeText(window.location.pathname);
+            addAlert('URL has been copied to clipboard!', 'Done');
+        }
+    };
+
+    if (show) {
+        return (
+            <button
+                className={'flex-row-absolute ' + style['copy-url-button']}
+                onClick={handleShare}
+            >
+                <i className="fa-solid fa-share"></i>
+                <p className="flex-column-absolute">Share</p>
+            </button>
+        );
+    }
+    return null;
+};
 
 const FrontCard = (props) => {
     const showDebugging = true;
@@ -126,6 +159,8 @@ const FrontCard = (props) => {
 
     return (
         <div className={`flex-row-absolute ${sharedStyle.post}`}>
+            <ShareButton show={standalone && !editMode} />
+
             <div
                 className={
                     'flex-column-relative ' +

@@ -1,0 +1,29 @@
+.copy-url-button {
+    z-index: 1;
+    align-items: center;
+    right: 0;
+    top: 0;
+    background-color: #d5dde0;
+    height: 30px;
+    width: 63px;
+    padding: 0 20px;
+    border-radius: 5px;
+    margin: 3px 3px 0 0;
+}
+.copy-url-button:hover {
+    background-color: #c9d2d6;
+    box-shadow: 0 0 5px 2px #c3c8c9;
+}
+
+.copy-url-button p {
+    right: 8%;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    justify-content: flex-end;
+}
+
+.copy-url-button i {
+    position: absolute;
+    left: 5%;
+}
