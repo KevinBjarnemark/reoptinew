@@ -74,6 +74,7 @@ const PostProvider = ({ children }) => {
         setPosts((prev) =>
             prev.map((post) => (post.id === id ? fetchedPost : post)),
         );
+        setSinglePost(fetchedPost);
     };
 
     const addSinglePost = async (post) => {
@@ -208,6 +209,7 @@ const PostProvider = ({ children }) => {
                 creatingPost,
                 setCreatingPost,
                 removeSinglePost,
+                loadSinglePost,
             }}
         >
             {children}

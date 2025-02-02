@@ -12,6 +12,7 @@ import useAPI from '@use-api';
 // Logging
 import { debug } from '@debug';
 import PostContext from '@post-context';
+import { isArray } from '@helpers';
 
 const Title = ({ text }) => {
     return (
@@ -111,11 +112,10 @@ const RatingItem = (props) => {
 const RatingWindow = () => {
     const showDebugging = true;
     const { setDim } = useContext(PageDimContext);
-    const { updateSinglePost } = useContext(PostContext);
+    const { loadSinglePost, singlePost } = useContext(PostContext);
 
     const { show, closeRatingWindow, ratings, postId } =
         useContext(RatePostContext);
-    debug('l', true, '----->', postId);
     const { addNotification } = useContext(NotificationContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
@@ -123,6 +123,19 @@ const RatingWindow = () => {
     // Custom hooks
     const { addAlert } = useContext(AlertContext);
     const { apiRequest } = useAPI(true);
+
+    useEffect(() => {
+        if (show) {
+            setDim(true);
+        }
+    }, [show]);
+
+    const handleClose = () => {
+        if (!isArray(singlePost, true)) {
+            setDim(false);
+        }
+        closeRatingWindow();
+    };
 
     const handleSubmit = async () => {
         const init = async () => {
@@ -149,7 +162,8 @@ const RatingWindow = () => {
                         'Submitted rating successfully',
                         response,
                     );
-                    updateSinglePost(postId);
+                    loadSinglePost(postId);
+                    closeRatingWindow();
                     addAlert('Your rating is submitted.', 'Done');
                     await addNotification(true, 'Rating submitted!');
                 } else {
@@ -179,15 +193,6 @@ const RatingWindow = () => {
         };
 
         await init();
-    };
-
-    useEffect(() => {
-        setDim(show);
-    }, [show]);
-
-    const handleClose = () => {
-        setDim(false);
-        closeRatingWindow();
     };
 
     if (show) {
