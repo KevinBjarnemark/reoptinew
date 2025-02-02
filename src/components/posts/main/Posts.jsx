@@ -23,7 +23,10 @@ const RenderPosts = ({ posts }) => {
                     const dynamicKey =
                         `${post.id}-` +
                         `${post.likes.count}` +
-                        `-${post.title}`;
+                        `-${post.title}` +
+                        `-${post.ratings.saves_money}` +
+                        `-${post.ratings.saves_time}` +
+                        `-${post.ratings.is_useful}`;
                     return (
                         <Post
                             key={dynamicKey}

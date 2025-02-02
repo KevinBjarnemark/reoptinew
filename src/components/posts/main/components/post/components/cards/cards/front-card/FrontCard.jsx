@@ -179,13 +179,13 @@ const FrontCard = (props) => {
             </div>
 
             <EngagementPanel
-                savesMoney={0}
-                savesTime={0}
-                isUseful={0}
-                postId={post?.id}
-                likes={post?.likes}
-                comments={post?.comments?.length}
-                editMode={editMode}
+                {...{
+                    postId: post?.id,
+                    likes: post?.likes,
+                    comments: post?.comments?.length,
+                    ratings: post.ratings,
+                    editMode,
+                }}
             />
         </div>
     );

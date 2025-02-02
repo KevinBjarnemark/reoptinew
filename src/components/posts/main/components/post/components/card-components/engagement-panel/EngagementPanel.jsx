@@ -4,8 +4,11 @@ import useAPI from '@use-api';
 import { debug } from '@debug';
 import PostContext from '@post-context';
 import AlertContext from '@alert-context';
+import RatePostContext from '@rate-post-context';
 
-const RatingProgressBar = ({ icon, value }) => {
+const RatingProgressBar = (props) => {
+    const { icon, initialValue } = props;
+
     return (
         <div className={`flex-row-relative ${style['ratings-container']}`}>
             <div
@@ -31,11 +34,47 @@ const RatingProgressBar = ({ icon, value }) => {
                             'flex-column-relative ' +
                             `${style['rating-bar-filled']}`
                         }
-                        style={{ width: `${value}%` }}
+                        style={{ width: `${initialValue}%` }}
                     ></div>
                 </div>
             </div>
         </div>
+    );
+};
+
+const RatingsButton = (props) => {
+    const { postId, ratings } = props;
+    const { openRatingWindow } = useContext(RatePostContext);
+
+    return (
+        <button
+            className="flex-column-relative"
+            style={{
+                width: '100%',
+            }}
+            onClick={() => {
+                openRatingWindow(postId, ratings);
+            }}
+        >
+            <RatingProgressBar
+                {...{
+                    icon: 'fa-solid fa-dollar-sign',
+                    initialValue: ratings.saves_money,
+                }}
+            />
+            <RatingProgressBar
+                {...{
+                    icon: 'fa-regular fa-clock',
+                    initialValue: ratings.saves_time,
+                }}
+            />
+            <RatingProgressBar
+                {...{
+                    icon: 'fa-solid fa-hand-fist',
+                    initialValue: ratings.is_useful,
+                }}
+            />
+        </button>
     );
 };
 
@@ -144,26 +183,19 @@ const EngageButtons = ({ postId, likes, comments, editMode }) => {
     );
 };
 
-const EngagementPanel = ({
-    savesMoney = 0,
-    savesTime = 0,
-    isUseful = 0,
-    postId = null,
-    likes = { count: 0, user_has_liked: false },
-    comments = 0,
-    editMode,
-}) => {
+const EngagementPanel = (props) => {
+    const {
+        ratings,
+        postId,
+        likes = { count: 0, user_has_liked: false },
+        editMode,
+        comments,
+    } = props;
+
     return (
         <div className={`flex-column-relative ${style.container}`}>
             <div className={style['horizontal-separator']}></div>
-
-            <RatingProgressBar
-                icon="fa-solid fa-dollar-sign"
-                value={savesMoney}
-            />
-            <RatingProgressBar icon="fa-regular fa-clock" value={savesTime} />
-            <RatingProgressBar icon="fa-solid fa-hand-fist" value={isUseful} />
-
+            <RatingsButton {...{ ratings, postId }} />
             <div className={style['horizontal-separator']}></div>
             <EngageButtons {...{ postId, likes, comments, editMode }} />
             <div className={style['horizontal-separator']}></div>
