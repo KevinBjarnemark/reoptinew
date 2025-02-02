@@ -8,7 +8,7 @@ import { DEFAULT_POST } from '@constants';
 import AlertContext from '@alert-context';
 import PostContext from '@post-context';
 import EditedPostContext from '@edited-post-context';
-import PageDimContext from '../../../../../context/page-dim/PageDimContext';
+import PageDimContext from '@page-dim-context';
 import AppCloseButtonContext from '@app-close-button-context';
 import { debug } from '@debug';
 

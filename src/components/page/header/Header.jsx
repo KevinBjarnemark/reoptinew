@@ -3,7 +3,7 @@ import GeneralLoadingContext from '@general-loading-context';
 import Logo from '../../logo/Logo';
 import NotificationContext from '@notification-context';
 import style from './Header.module.css';
-import PageDimContext from '../../../context/page-dim/PageDimContext';
+import PageDimContext from '@page-dim-context';
 import AppLoadingContext from '@app-loading-context';
 
 const Notification = () => {

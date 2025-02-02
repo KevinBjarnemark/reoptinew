@@ -1,12 +1,12 @@
 import { useContext, useEffect } from 'react';
-import style from './RatingWindow.module.css';
+import style from './CommentWindow.module.css';
 import BasicButton from '@basic-button';
 // Contexts
 import AlertContext from '@alert-context';
 import NotificationContext from '@notification-context';
 import GeneralLoadingContext from '@general-loading-context';
 import PageDimContext from '@page-dim-context';
-import RatePostContext from '@rate-post-context';
+import CommentPostContext from '@comment-post-context';
 // Custom hooks
 import useAPI from '@use-api';
 // Logging
@@ -19,7 +19,7 @@ const Title = ({ text }) => {
         <div
             className={
                 'flex-column-relative ' +
-                style['text-section-container'] +
+                style['title'] +
                 ' ' +
                 style['light-gray-background']
             }
@@ -29,93 +29,75 @@ const Title = ({ text }) => {
     );
 };
 
-const Description = ({ text }) => {
+const CommentsArea = ({ comments }) => {
     return (
         <div
             className={
                 'flex-column-relative ' +
-                style['text-section-container'] +
+                style['comments-area-container'] +
                 ' ' +
-                style['dark-gray-background'] +
-                ' ' +
-                style['border-bottom']
+                style['dark-gray-background']
             }
         >
-            <p>{text}</p>
-        </div>
-    );
-};
-
-const Icon = ({ icon }) => {
-    return (
-        <div
-            className={
-                'flex-column-absolute ' + `${style['rating-icon-container']}`
-            }
-        >
-            <i className={icon}></i>
-        </div>
-    );
-};
-
-const Slider = ({ name, min = 0, max = 100, step = 1 }) => {
-    const { ratings, setRatings } = useContext(RatePostContext);
-
-    const handleChange = (event) => {
-        setRatings((prev) => ({
-            ...prev,
-            [name]: parseInt(event.target.value),
-        }));
-    };
-
-    return (
-        <div
-            className={
-                'flex-column-relative ' + `${style['rating-bar-container']}`
-            }
-        >
-            <div className={`flex-column-relative ${style['rating-bar']}`}>
-                <input
+            {comments.map((comment, index) => (
+                <div
+                    key={index}
                     className={
                         'flex-column-relative ' +
-                        `${style['rating-bar-filled']}`
+                        style['comment-item-container']
                     }
-                    style={{ width: '100%' }}
-                    type="range"
-                    min={min}
-                    max={max}
-                    step={step}
-                    value={ratings[name]}
-                    onChange={handleChange}
-                ></input>
-            </div>
+                >
+                    <div
+                        className={
+                            'flex-row-relative ' + style['comment-top-row']
+                        }
+                    >
+                        <p className={style['username']}>
+                            {comment?.author.username}
+                        </p>
+                        <p className={style['created-at']}>
+                            {comment.created_at.split('T')[0] +
+                                ' ' +
+                                comment.created_at
+                                    .split('T')[1]
+                                    .split('.')[0] +
+                                ' (UTC)'}
+                        </p>
+                    </div>
+                    <div className={'flex-row-relative ' + style['comment']}>
+                        <p className={style['comment']}>{comment.text}</p>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };
 
-const RatingItem = (props) => {
-    const { name, icon, title, description } = props;
+const WriteCommentArea = () => {
+    const { setComment } = useContext(CommentPostContext);
 
     return (
-        <div className={'flex-column-relative ' + style['ratings-container']}>
-            <Title text={title} />
-            <Description text={description} />
-
-            <div className="flex-row-relative w-100">
-                <Icon {...{ icon }} />
-                <Slider {...{ name }} />
-            </div>
+        <div
+            className={
+                'flex-column-relative ' + style['write-comment-area-container']
+            }
+        >
+            <textarea
+                className={'flex-column-relative ' + style['textarea']}
+                name="comment"
+                type="text"
+                onChange={(e) => setComment(e.target.value)}
+            ></textarea>
         </div>
     );
 };
 
-const RatingWindow = () => {
+const CommentWindow = () => {
     const showDebugging = true;
     const { setDim } = useContext(PageDimContext);
     const { loadSinglePost, singlePost } = useContext(PostContext);
-
-    const { show, closeRatingWindow, ratings, postId } =
-        useContext(RatePostContext);
+    const { show, closeCommentWindow, postId, comment, comments } =
+        useContext(CommentPostContext);
     const { addNotification } = useContext(NotificationContext);
     const { addLoadingPoint, removeLoadingPoint } = useContext(
         GeneralLoadingContext,
@@ -133,10 +115,7 @@ const RatingWindow = () => {
     }, [show, singlePost]);
 
     const handleClose = () => {
-        /*  if (!isArray(singlePost, true)) {
-            setDim(false);
-        } */
-        closeRatingWindow();
+        closeCommentWindow();
     };
 
     const handleSubmit = async () => {
@@ -145,15 +124,15 @@ const RatingWindow = () => {
             try {
                 const response = await apiRequest({
                     authorizationHeader: true,
-                    body: ratings,
-                    relativeURL: `/posts/ratings/${postId}/`,
+                    body: { text: comment },
+                    relativeURL: `/posts/comments/${postId}/`,
                     debugMessages: {
-                        error: "Couln't submit rating",
+                        error: "Couln't submit comment",
                         successfulBackEndResponse:
-                            'Created rating successfully',
+                            'Created comment successfully',
                     },
                     uxMessages: {
-                        error: "Couldn't submit rating",
+                        error: "Couldn't submit comment",
                     },
                 });
 
@@ -161,24 +140,23 @@ const RatingWindow = () => {
                     debug(
                         's',
                         showDebugging,
-                        'Submitted rating successfully',
+                        'Submitted comment successfully',
                         response,
                     );
                     if (isObject(singlePost, true)) {
                         loadSinglePost(postId);
                     }
-
-                    closeRatingWindow();
-                    addAlert('Your rating is submitted.', 'Done');
-                    await addNotification(true, 'Rating submitted!');
+                    closeCommentWindow();
+                    addAlert('Your comment is submitted.', 'Done');
+                    await addNotification(true, 'Comment submitted!');
                 } else {
                     debug(
                         'e',
                         showDebugging,
-                        "Couldn't submit rating (backend):",
+                        "Couldn't submit comment (backend):",
                         response,
                     );
-                    await addNotification(false, "Couldn't submit rating :(");
+                    await addNotification(false, "Couldn't submit comment :(");
                 }
             } catch (error) {
                 addAlert(
@@ -189,7 +167,7 @@ const RatingWindow = () => {
                     'e',
                     showDebugging,
                     '(Frontend) Something went wrong when  ' +
-                        'submitting a rating',
+                        'submitting a comment',
                     error,
                 );
             } finally {
@@ -223,33 +201,18 @@ const RatingWindow = () => {
                             style['content-container']
                         }
                     >
-                        <RatingItem
-                            {...{
-                                name: 'saves_money',
-                                title: 'Cost-effective',
-                                description:
-                                    'Set this value high if this post saved you money',
-                                icon: 'fa-solid fa-dollar-sign',
-                            }}
-                        />
-                        <RatingItem
-                            {...{
-                                name: 'saves_time',
-                                title: 'Time-saving',
-                                description:
-                                    'Set this slider high if this post saved you time',
-                                icon: 'fa-regular fa-clock',
-                            }}
-                        />
-                        <RatingItem
-                            {...{
-                                name: 'is_useful',
-                                title: 'Useful',
-                                description:
-                                    'Set this slider high if you found this post useful',
-                                icon: 'fa-solid fa-hand-fist',
-                            }}
-                        />
+                        <div
+                            className={
+                                'flex-column-relative ' +
+                                style['comments-container']
+                            }
+                        >
+                            <Title text="Comments" />
+
+                            <CommentsArea {...{ comments }} />
+                            <WriteCommentArea />
+                        </div>
+
                         <div
                             className={
                                 'flex-column-relative ' +
@@ -263,7 +226,7 @@ const RatingWindow = () => {
                                 }
                                 onClick={handleSubmit}
                             >
-                                Submit
+                                Publish comment
                             </button>
                         </div>
                     </div>
@@ -273,4 +236,4 @@ const RatingWindow = () => {
     }
 };
 
-export default RatingWindow;
+export default CommentWindow;

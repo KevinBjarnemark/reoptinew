@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import style from './PageDim.module.css';
-import PageDimContext from '../../../context/page-dim/PageDimContext';
+import PageDimContext from '@page-dim-context';
 
 const PageDim = () => {
     const { dim } = useContext(PageDimContext);

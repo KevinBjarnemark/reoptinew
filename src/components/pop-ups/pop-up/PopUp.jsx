@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import style from './PopUp.module.css';
 import BasicButton from '@basic-button';
 import PopUpContext from '@pop-up-context';
-import PageDimContext from '../../../context/page-dim/PageDimContext';
+import PageDimContext from '@page-dim-context';
 
 const YesOrNo = (props) => {
     const showDebugging = true;

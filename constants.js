@@ -35,6 +35,12 @@ export const PATH_ALIASES = {
     'pop-up-provider': './src/context/pop-up/PopUpProvider',
     'rate-post-context': './src/context/posts/rate-post/RatePostContext',
     'rate-post-provider': './src/context/posts/rate-post/RatePostProvider',
+    'comment-post-context':
+        './src/context/posts/comment-post/CommentPostContext',
+    'comment-post-provider':
+        './src/context/posts/comment-post/CommentPostProvider',
+    'page-dim-context': './src/context/page-dim/PageDimContext',
+    'page-dim-provider': './src/context/page-dim/PageDimProvider',
     // Components
     image: './src/components/images/image/Image',
     'border-separator':

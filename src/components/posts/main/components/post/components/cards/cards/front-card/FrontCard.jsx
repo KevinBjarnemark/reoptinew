@@ -182,7 +182,7 @@ const FrontCard = (props) => {
                 {...{
                     postId: post?.id,
                     likes: post?.likes,
-                    comments: post?.comments?.length,
+                    comments: post?.comments,
                     ratings: post.ratings,
                     editMode,
                 }}

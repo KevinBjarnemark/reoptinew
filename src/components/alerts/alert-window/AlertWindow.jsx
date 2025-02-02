@@ -140,6 +140,7 @@ const AlertWindow = () => {
                             `${transformTranslate}` +
                             'translate(3%, 8%) rotate(-7deg)',
                         boxShadow,
+                        zIndex: 0,
                     }}
                 >
                     <div className={`flex-row-relative ${style['top-bar']}`}>

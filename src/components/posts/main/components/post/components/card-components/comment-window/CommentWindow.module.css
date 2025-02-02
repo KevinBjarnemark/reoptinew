@@ -30,7 +30,6 @@
 .inner-container {
     align-items: center;
     justify-content: flex-start;
-
     min-height: 100vh;
     max-height: 100vh;
     width: 100%;
@@ -62,6 +61,11 @@
     height: 100%;
 }
 
+.comments-container {
+    align-items: center;
+    width: 100%;
+}
+
 .horizontal-separator {
     height: 2px;
     width: 100%;
@@ -75,48 +79,7 @@
     border-radius: 1px;
 }
 
-.ratings-container {
-    align-items: center;
-    width: 100%;
-    padding: 18px 0;
-}
-
-.rating-icon-container {
-    z-index: 1;
-    left: 7%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.rating-icon-container i {
-    font-size: 30px;
-    color: #b0bbbe;
-}
-
-.rating-bar-container {
-    width: 100%;
-    align-items: center;
-}
-
-.rating-bar {
-    width: 80%;
-    border: var(--border);
-    background-color: var(--dark-gray);
-    border-radius: 5px;
-    margin: 5px 0;
-    height: 55px;
-    border-radius: 500px;
-}
-
-.rating-bar-filled {
-    width: 0%;
-    height: 100%;
-    border-radius: 3px;
-    background-color: #ffffff;
-    border-radius: 500px;
-}
-
-.text-section-container {
+.title {
     text-align: center;
     align-items: center;
     color: #ffffff;
@@ -146,4 +109,52 @@
     background-color: #8df295;
     transform: scale(1.1);
     box-shadow: 0 0 8px 2px #ffffff;
+}
+
+.comments-area-container {
+    width: 80%;
+    border: var(--border);
+    max-height: 300px;
+    height: 200px;
+    overflow: auto;
+}
+
+.comment-item-container {
+    padding: 10px 20px;
+}
+
+.comment {
+    margin: 0;
+    padding: 5px 5px;
+    background-color: #ffffff;
+    border-radius: 100px;
+}
+
+.username {
+    margin: 0 80px 5px 0;
+    padding: 5px 20px;
+    color: #ffffff;
+    background-color: #2f3234;
+    border-radius: 5px;
+}
+
+.created-at {
+    color: #798284;
+}
+
+.textarea {
+    resize: none;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 1.5% 3%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: 20px;
+}
+
+.write-comment-area-container {
+    margin-top: 10px;
+    width: 80%;
+    min-height: 110px;
 }

@@ -14,6 +14,7 @@ import Header from './components/page/header/Header';
 import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 import RatePostProvider from '@rate-post-provider';
+import CommentPostProvider from '@comment-post-provider';
 import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from '@app-close-button';
 import AppCloseButtonProvider from '@app-close-button-provider';
@@ -57,9 +58,10 @@ const AppBody = ({ children }) => {
                 <UserCard />
             </main>
             <Navigation />
-            <AlertWindow />
+
             <PageDim />
             <PopUp />
+            <AlertWindow />
             <AppCloseButton />
             {appLoading ? <AppLoading /> : null}
         </>
@@ -71,27 +73,29 @@ export function AppContextWrap({ children }) {
         <Router>
             <PopUpProvider>
                 <RatePostProvider>
-                    <ScreenProvider>
-                        <GeneralLoadingProvider>
-                            <PageDimProvider>
-                                <AppCloseButtonProvider>
-                                    <AlertProvider>
-                                        <NotificationProvider>
-                                            <UserProvider>
-                                                <AppLoadingProvider>
-                                                    <PostProvider>
-                                                        <EditedPostProvider>
-                                                            {children}
-                                                        </EditedPostProvider>
-                                                    </PostProvider>
-                                                </AppLoadingProvider>
-                                            </UserProvider>
-                                        </NotificationProvider>
-                                    </AlertProvider>
-                                </AppCloseButtonProvider>
-                            </PageDimProvider>
-                        </GeneralLoadingProvider>
-                    </ScreenProvider>
+                    <CommentPostProvider>
+                        <ScreenProvider>
+                            <GeneralLoadingProvider>
+                                <PageDimProvider>
+                                    <AppCloseButtonProvider>
+                                        <AlertProvider>
+                                            <NotificationProvider>
+                                                <UserProvider>
+                                                    <AppLoadingProvider>
+                                                        <PostProvider>
+                                                            <EditedPostProvider>
+                                                                {children}
+                                                            </EditedPostProvider>
+                                                        </PostProvider>
+                                                    </AppLoadingProvider>
+                                                </UserProvider>
+                                            </NotificationProvider>
+                                        </AlertProvider>
+                                    </AppCloseButtonProvider>
+                                </PageDimProvider>
+                            </GeneralLoadingProvider>
+                        </ScreenProvider>
+                    </CommentPostProvider>
                 </RatePostProvider>
             </PopUpProvider>
         </Router>

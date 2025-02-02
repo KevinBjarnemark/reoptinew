@@ -6,6 +6,8 @@ import style from './Profile.module.css';
 import PostContext from '@post-context';
 import { useParams, Outlet, useLocation } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
+import RatingWindow from '@c-c/rating-window/RatingWindow';
+import CommentWindow from '@c-c/comment-window/CommentWindow';
 
 /**
  * The profile page component.
@@ -69,6 +71,8 @@ const Profile = () => {
                 className={`flex-column-relative ${style['page-container']}`}
             >
                 <Posts postsArray={posts} singlePost={singlePost} />
+                <CommentWindow />
+                <RatingWindow />
             </section>
             <Outlet />
         </>

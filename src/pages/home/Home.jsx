@@ -5,6 +5,7 @@ import PostContext from '@post-context';
 import { useParams, Outlet } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import RatingWindow from '@c-c/rating-window/RatingWindow';
+import CommentWindow from '@c-c/comment-window/CommentWindow';
 
 const Home = () => {
     const { singlePost, posts, renderPosts, renderPost } =
@@ -40,7 +41,8 @@ const Home = () => {
                 className={`flex-column-relative ${style['page-container']}`}
             >
                 <Posts postsArray={posts} singlePost={singlePost} />
-                <RatingWindow {...{}} />
+                <CommentWindow />
+                <RatingWindow />
             </section>
             <Outlet />
         </>

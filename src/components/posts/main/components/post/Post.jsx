@@ -87,7 +87,7 @@ const Post = ({ standalone, post, settings = {}, postsMaxLength = 0 }) => {
     // Enlarge the component when in standalone mode
     const standaloneStyle = standalone
         ? {
-              zIndex: 2,
+              zIndex: 4,
               position: 'fixed',
               width: screenWidth <= 650 ? '90%' : '60%',
               top: screenWidth <= 650 ? '60%' : '50%',

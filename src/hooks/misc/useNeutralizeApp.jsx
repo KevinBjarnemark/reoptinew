@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import AppCloseButtonContext from '@app-close-button-context';
-import PageDimContext from '../../context/page-dim/PageDimContext';
+import PageDimContext from '@page-dim-context';
 /**
  * Brings the app back to a neutral state by getting rid of
  * components a scrolls to the top.

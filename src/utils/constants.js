@@ -54,6 +54,12 @@ export const DEFAULT_POST = {
         user_has_liked: false,
         count: 0,
     },
+    comments: [],
+    ratings: {
+        saves_time: 0,
+        saves_money: 0,
+        is_useful: 0,
+    },
 };
 
 /**

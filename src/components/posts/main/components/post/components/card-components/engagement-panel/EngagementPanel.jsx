@@ -4,7 +4,8 @@ import useAPI from '@use-api';
 import { debug } from '@debug';
 import PostContext from '@post-context';
 import AlertContext from '@alert-context';
-import RatePostContext from '@rate-post-context';
+import RatingPostContext from '@rate-post-context';
+import CommentPostContext from '@comment-post-context';
 
 const RatingProgressBar = (props) => {
     const { icon, initialValue } = props;
@@ -44,7 +45,7 @@ const RatingProgressBar = (props) => {
 
 const RatingsButton = (props) => {
     const { postId, ratings } = props;
-    const { openRatingWindow } = useContext(RatePostContext);
+    const { openRatingWindow } = useContext(RatingPostContext);
 
     return (
         <button
@@ -78,16 +79,21 @@ const RatingsButton = (props) => {
     );
 };
 
-const EngageButton = ({ onClick, value, icon }) => {
+const CommentButton = (props) => {
+    const { comments, postId } = props;
+    const { openCommentWindow } = useContext(CommentPostContext);
+
     return (
         <button
             className={
                 'flex-column-relative ' + `${style['engage-button-container']}`
             }
-            onClick={onClick}
+            onClick={() => {
+                openCommentWindow(postId, comments);
+            }}
         >
-            <i className={icon}></i>
-            <p className="flex-column-absolute">{value}</p>
+            <i className="fa-solid fa-comment"></i>
+            <p className="flex-column-absolute">{comments.length}</p>
         </button>
     );
 };
@@ -174,10 +180,11 @@ const EngageButtons = ({ postId, likes, comments, editMode }) => {
             <LikeButton {...{ postId, likes, editMode }} />
 
             <div className={style['vertical-separator']}></div>
-            <EngageButton
-                onClick={() => {}}
-                value={comments}
-                icon="fa-solid fa-comment"
+            <CommentButton
+                {...{
+                    postId,
+                    comments,
+                }}
             />
         </div>
     );
