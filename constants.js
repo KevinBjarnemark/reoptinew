@@ -43,6 +43,8 @@ export const PATH_ALIASES = {
     'page-dim-provider': './src/context/page-dim/PageDimProvider',
     'post-search-context': './src/context/posts/search/PostSearchContext',
     'post-search-provider': './src/context/posts/search/PostSearchProvider',
+    'user-context': './src/context/users/UserContext',
+    'user-provider': './src/context/users/UserProvider',
     // Components
     image: './src/components/images/image/Image',
     'border-separator':

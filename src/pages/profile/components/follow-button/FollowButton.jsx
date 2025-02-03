@@ -1,10 +1,12 @@
 import { useContext, useState, useEffect } from 'react';
 import style from './FollowButton.module.css';
-import UserContext from '../../../../context/UserContext';
+import UserContext from '@user-context';
 import BasicButton from '@basic-button';
 import { useLocation } from 'react-router';
+import { debug } from '@debug';
 
 const FollowButton = (props) => {
+    const showDebugging = true;
     const { userProfile, setUserProfile, isOwnProfile } = props;
     const { handleFollow, profile, setProfile } = useContext(UserContext);
     const [buttonText, setButtonText] = useState('Follow');
@@ -18,7 +20,13 @@ const FollowButton = (props) => {
 
     const handleClick = () => {
         if (buttonText === 'Follow') {
-            handleFollow('follow', userProfile.user_id);
+            debug(
+                'd',
+                showDebugging,
+                `Following a user (${userProfile.username})`,
+                '',
+            );
+            handleFollow('follow', userProfile?.user_id);
             setUserProfile((prev) => ({
                 ...prev,
                 followers: [...prev.followers, profile.username],
@@ -29,7 +37,13 @@ const FollowButton = (props) => {
             }));
             setButtonText('Unfollow');
         } else if (buttonText === 'Unfollow') {
-            handleFollow('unfollow', userProfile.user_id);
+            debug(
+                'd',
+                showDebugging,
+                `Unfollowing a user (${userProfile.username})`,
+                '',
+            );
+            handleFollow('unfollow', userProfile?.user_id);
             setUserProfile((prev) => ({
                 ...prev,
                 followers: prev.followers.filter(

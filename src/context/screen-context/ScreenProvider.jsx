@@ -5,7 +5,7 @@ import { debug } from '@debug';
 const ScreenProvider = ({ children }) => {
     const showDebugging = true;
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-    const breakpoints = [480, 650, 1024]; // Key screen sizes
+    const breakpoints = [469, 649, 1023]; // Key screen sizes
     const lastCheckpointRef = useRef(window.innerWidth);
 
     useEffect(() => {

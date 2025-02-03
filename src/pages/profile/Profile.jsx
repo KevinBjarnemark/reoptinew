@@ -5,7 +5,7 @@ import Posts from '../../components/posts/main/Posts';
 import style from './Profile.module.css';
 import PostContext from '@post-context';
 import { useParams, Outlet, useLocation } from 'react-router-dom';
-import UserContext from '../../context/UserContext';
+import UserContext from '@user-context';
 import RatingWindow from '@c-c/rating-window/RatingWindow';
 import CommentWindow from '@c-c/comment-window/CommentWindow';
 

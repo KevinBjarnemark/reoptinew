@@ -44,7 +44,7 @@ const Header = () => {
     const dimmedStyle =
         (currentNotification && dim) || (dim && generalLoading)
             ? {
-                  zIndex: 2,
+                  zIndex: 4,
                   background: 'transparent',
                   border: 'none',
               }

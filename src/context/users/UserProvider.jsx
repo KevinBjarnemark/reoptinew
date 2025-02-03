@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { debug } from '@debug';
 import UserContext from './UserContext';
 import useAPI from '@use-api';
-import { validateCommon } from '../functions/validation/validate';
+import { validateCommon } from '../../functions/validation/validate';
 import { useNavigate } from 'react-router-dom';
 import NotificationContext from '@notification-context';
 import { ACCESS_TOKEN_LIFETIME } from '@constants';

@@ -3,11 +3,10 @@
 }
 
 .container {
-    width: 45%;
+    width: 30%;
     height: 100%;
     align-items: center;
     justify-content: center;
-    padding: 0 2%;
     border-radius: 5px;
 }
 
@@ -97,4 +96,24 @@
     text-align: center;
     transform: translate(-50%, -95%);
     font-size: 75%;
+}
+
+/* When screens are larger than 850px */
+@media (min-width: 470px) {
+    :root {
+        .container {
+            width: 45%;
+            padding: 0 2%;
+        }
+    }
+}
+
+/* When screens are larger than 850px */
+@media (min-width: 281px) {
+    :root {
+        .container {
+            width: 40%;
+            padding: 0 2%;
+        }
+    }
 }

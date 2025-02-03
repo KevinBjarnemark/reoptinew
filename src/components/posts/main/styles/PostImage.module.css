@@ -1,9 +1,8 @@
 .image-container {
     aspect-ratio: 16 / 9;
     border-radius: 7px;
-    width: 96%;
+    width: 100%;
     background-color: #3a3e41;
-    max-height: 40vh;
 }
 .image {
     object-fit: contain;
@@ -25,4 +24,13 @@
     cursor: pointer;
     color: #000000;
     transition: background-color 1s;
+}
+
+/* When screens are larger than 470px */
+@media (min-width: 470px) {
+    :root {
+        .image-container {
+            width: 100%;
+        }
+    }
 }

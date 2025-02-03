@@ -2,7 +2,7 @@ import { useRef, useState, useContext } from 'react';
 import style from './DeleteAccount.module.css';
 import BasicForm from '../../../../components/forms/basic-form/BasicForm';
 import BorderSeparator from '@border-separator';
-import UserContext from '../../../../context/UserContext';
+import UserContext from '@user-context';
 import AlertContext from '@alert-context';
 import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
@@ -93,49 +93,65 @@ const FormContent = () => {
         }
 
         setDeleteButtonDisabled(true);
-        const formIsReady = await prepareForm();
-        const formIsValidated = validateForm();
+        try {
+            const formIsReady = await prepareForm();
+            const formIsValidated = validateForm();
 
-        // Stop further execution if it's prepared and validated
-        if (!formIsReady || !formIsValidated) {
-            return;
-        }
-        await simulateLoading();
-        const response = await apiRequest({
-            relativeURL: '/users/delete-account/',
-            method: 'DELETE',
-            authorizationHeader: true,
-            body: {
-                password: formDataDraft.current.password,
-            },
-            debugMessages: {
-                error: 'Error when deleting account',
-                successfulBackEndResponse: 'Account deletion successful',
-            },
-            uxMessages: {
-                error:
-                    'Something went wrong when attempting to delete your ' +
-                    'account. Try refreshing your browser.',
-            },
-        });
-        if (response) {
-            clearAuthTokens();
-            closePopUp();
+            // Stop further execution if it's prepared and validated
+            if (!formIsReady || !formIsValidated) {
+                return;
+            }
+            await simulateLoading();
+            const response = await apiRequest({
+                relativeURL: '/users/delete-account/',
+                method: 'DELETE',
+                authorizationHeader: true,
+                body: {
+                    password: formDataDraft.current.password,
+                },
+                debugMessages: {
+                    error: 'Error when deleting account',
+                    successfulBackEndResponse: 'Account deletion successful',
+                },
+                uxMessages: {
+                    error:
+                        'Something went wrong when attempting to delete your ' +
+                        'account. Try refreshing your browser.',
+                },
+            });
+            if (response) {
+                clearAuthTokens();
+                closePopUp();
+                debug(
+                    's',
+                    showDebugging,
+                    'Successfully deleted account:',
+                    response,
+                );
+                setIsAuthenticated(false);
+                navigate('/');
+                window.scrollTo(0, 0);
+                addAlert('Your account has been deleted.', 'Done');
+            } else {
+                debug(
+                    'e',
+                    showDebugging,
+                    "Couldn't delete account:",
+                    response,
+                );
+                await addNotification(false, "Couldn't delete your account.");
+            }
+        } catch (error) {
             debug(
-                's',
+                'd',
                 showDebugging,
-                'Successfully deleted account:',
-                response,
+                'Something went wrong when attempting to delete ' +
+                    'account, errors should already be logged.',
+                error,
             );
-            setIsAuthenticated(false);
-            navigate('/');
-            window.scrollTo(0, 0);
-            addAlert('Your account has been deleted.', 'Done');
-        } else {
-            debug('e', showDebugging, "Couldn't delete account:", response);
-            await addNotification(false, "Couldn't delete your account.");
+        } finally {
+            setDeleteButtonDisabled(false);
         }
-        setDeleteButtonDisabled(false);
     };
 
     /* Submit button props */

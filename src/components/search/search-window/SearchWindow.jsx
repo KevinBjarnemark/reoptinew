@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import style from './SearchWindow.module.css';
 import PostSearchContext from '@post-search-context';
 import { toSnakeCase, snakeToNormal } from '@helpers';
+import ScreenContext from '@screen-context';
 
 const BoolItem = ({ inputProps, name, icon = null }) => {
     return (
@@ -21,6 +22,8 @@ const BoolItem = ({ inputProps, name, icon = null }) => {
     );
 };
 const ButtonItem = ({ props, name, icon = null }) => {
+    const { screenWidth } = useContext(ScreenContext);
+
     return (
         <button
             className={
@@ -28,7 +31,9 @@ const ButtonItem = ({ props, name, icon = null }) => {
             }
             {...props}
         >
-            {icon ? <i className={`flex-column-absolute ${icon}`}></i> : null}
+            {icon && screenWidth > 500 ? (
+                <i className={`flex-column-absolute ${icon}`}></i>
+            ) : null}
             <h5>{name}</h5>
         </button>
     );

@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import BorderSeparator from '@border-separator';
 import NotificationContext from '@notification-context';
 import BasicMenu from '@basic-menu';
-import UserContext from '../../../../../context/UserContext';
+import UserContext from '@user-context';
 import NavButton from '../buttons/nav-button/NavButton';
 import { DEFAULT_POST } from '@constants';
 import AlertContext from '@alert-context';

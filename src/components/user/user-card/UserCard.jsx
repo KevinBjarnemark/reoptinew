@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import UserContext from '../../../context/UserContext';
+import UserContext from '@user-context';
 import { getRefreshToken, clearAuthTokens } from '@authentication/accessToken';
 import { debug } from '@debug';
 import style from './UserCard.module.css';

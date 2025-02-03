@@ -3,12 +3,14 @@ import style from './Title.module.css';
 import EditedPostContext from '@edited-post-context';
 import AlertContext from '@alert-context';
 import { debug } from '@debug';
+import ScreenContext from '@screen-context';
 
 const Title = ({ title, standalone, editMode }) => {
     const showDebugging = true;
     const { addAlert } = useContext(AlertContext);
     const { editedPost, setEditedPost } = useContext(EditedPostContext);
     const [localTitle, setLocalTitle] = useState('');
+    const { screenWidth } = useContext(ScreenContext);
 
     /**
      * Ensures the title is retained when toggling the cards
@@ -49,7 +51,9 @@ const Title = ({ title, standalone, editMode }) => {
               defaultValue: editedPost.draft.title,
           };
 
-    const titleStyle = standalone ? { fontSize: '150%' } : {};
+    const titleStyle = standalone
+        ? { fontSize: screenWidth < 470 ? '100%' : '150%' }
+        : {};
 
     return (
         <input

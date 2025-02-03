@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import style from './Post.module.css';
 import PostContext from '@post-context';
-import UserContext from '../../../../../context/UserContext';
+import UserContext from '@user-context';
 import ScreenContext from '@screen-context';
 // Cards
 import FrontCard from '@c/front-card/FrontCard';

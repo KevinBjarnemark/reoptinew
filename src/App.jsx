@@ -2,7 +2,7 @@ import './App.css';
 import { lazy, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Providers
-import UserProvider from './context/UserProvider';
+import UserProvider from '@user-provider';
 import PostSearchProvider from '@post-search-provider';
 import AppLoadingProvider from '@app-loading-provider';
 import GeneralLoadingProvider from '@general-loading-provider';
@@ -28,6 +28,7 @@ import PageDim from './components/backgrounds/page-dim/PageDim';
 import AppCloseButton from '@app-close-button';
 import PopUp from './components/pop-ups/pop-up/PopUp';
 import SearchWindow from '@search-window';
+import NotFound from './components/errors/not-found/NotFound';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
@@ -49,6 +50,9 @@ const AppRoutes = () => {
             </Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />}></Route>
         </Routes>
     );
 };

@@ -1,5 +1,5 @@
 .picker-panel-container {
-    bottom: -85px;
+    bottom: -115px;
     left: 0;
     width: 100%;
 }
@@ -37,4 +37,15 @@
     padding: 2px 20px;
     margin-top: 3px;
     width: fit-content;
+}
+
+/* When screens are larger than 470px */
+@media (min-width: 470px) {
+    :root {
+        .picker-panel-container {
+            bottom: -85px;
+            left: 0;
+            width: 100%;
+        }
+    }
 }

@@ -4,7 +4,7 @@ import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
 import { validateCommon } from '../../functions/validation/validate';
 import BorderSeparator from '@border-separator';
-import UserContext from '../../context/UserContext';
+import UserContext from '@user-context';
 
 const Signup = () => {
     // Contexts

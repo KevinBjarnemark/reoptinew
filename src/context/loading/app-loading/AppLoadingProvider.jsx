@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { debug } from '@debug';
-import UserContext from '../../UserContext';
+import UserContext from '@user-context';
 import AppLoadingContext from './AppLoadingContext';
 
 const AppLoadingProvider = ({ children }) => {

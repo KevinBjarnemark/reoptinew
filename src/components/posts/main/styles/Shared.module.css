@@ -3,7 +3,7 @@
     top: 0;
     transform: rotate(2deg);
     width: 100%;
-    height: 100%;
+    height: 115%;
     text-align: left;
     background-color: #ffffff;
     border: 3.5px solid #4c555a;
@@ -38,9 +38,22 @@
 
 .card-button {
     height: 100%;
-    width: 100%;
+    width: 60%;
     border-radius: 5px;
 }
 .card-button:hover {
     box-shadow: 0 0 12px 10px #939b9f;
+}
+
+/* When screens are larger than 850px */
+@media (min-width: 470px) {
+    :root {
+        .card-button {
+            width: 100%;
+        }
+        .post {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }

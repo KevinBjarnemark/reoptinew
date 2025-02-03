@@ -3,7 +3,7 @@ import style from './Home.module.css';
 import Posts from '../../components/posts/main/Posts';
 import PostContext from '@post-context';
 import { useParams, Outlet } from 'react-router-dom';
-import UserContext from '../../context/UserContext';
+import UserContext from '@user-context';
 import RatingWindow from '@c-c/rating-window/RatingWindow';
 import CommentWindow from '@c-c/comment-window/CommentWindow';
 

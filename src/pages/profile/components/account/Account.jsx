@@ -5,7 +5,7 @@ import DeleteAccount from '../delete-account/DeleteAccount';
 import { useParams } from 'react-router-dom';
 import { debug } from '@debug';
 import useAPI from '@use-api';
-import UserContext from '../../../../context/UserContext';
+import UserContext from '@user-context';
 import Image from '@image';
 import useLoadImage from '@use-load-image';
 import NotificationContext from '@notification-context';
@@ -18,7 +18,7 @@ const Account = () => {
     const { identifier } = useParams();
     const { apiRequest } = useAPI(showDebugging);
     const [userProfile, setUserProfile] = useState(null);
-    const { profile } = useContext(UserContext);
+    const { profile, isAuthenticated } = useContext(UserContext);
     const { loadImage } = useLoadImage(true);
     const { addNotification } = useContext(NotificationContext);
     const [previewImage, setPreviewImage] = useState(null);
@@ -160,7 +160,11 @@ const Account = () => {
 
             {isOwnProfile ? <DeleteAccount /> : null}
 
-            <FollowButton {...{ isOwnProfile, userProfile, setUserProfile }} />
+            {isAuthenticated ? (
+                <FollowButton
+                    {...{ isOwnProfile, userProfile, setUserProfile }}
+                />
+            ) : null}
         </div>
     );
 };

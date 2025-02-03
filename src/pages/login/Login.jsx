@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import BasicForm from '../../components/forms/basic-form/BasicForm';
 import PageSection from '../../components/page/page-section/PageSection';
-import UserContext from '../../context/UserContext';
+import UserContext from '@user-context';
 import BorderSeparator from '@border-separator';
 import { debug } from '@debug';
 

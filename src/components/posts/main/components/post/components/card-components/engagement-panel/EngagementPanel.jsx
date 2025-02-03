@@ -6,6 +6,7 @@ import PostContext from '@post-context';
 import AlertContext from '@alert-context';
 import RatingPostContext from '@rate-post-context';
 import CommentPostContext from '@comment-post-context';
+import { POST_UNIQUE_ID_CREATE } from '@constants';
 
 const RatingProgressBar = (props) => {
     const { icon, initialValue } = props;
@@ -46,6 +47,7 @@ const RatingProgressBar = (props) => {
 const RatingsButton = (props) => {
     const { postId, ratings } = props;
     const { openRatingWindow } = useContext(RatingPostContext);
+    const { addAlert } = useContext(AlertContext);
 
     return (
         <button
@@ -54,7 +56,11 @@ const RatingsButton = (props) => {
                 width: '100%',
             }}
             onClick={() => {
-                openRatingWindow(postId, ratings);
+                if (postId === POST_UNIQUE_ID_CREATE) {
+                    addAlert('You cannot rate a post in create mode.', 'Info');
+                } else {
+                    openRatingWindow(postId, ratings);
+                }
             }}
         >
             <RatingProgressBar
@@ -82,6 +88,7 @@ const RatingsButton = (props) => {
 const CommentButton = (props) => {
     const { comments, postId } = props;
     const { openCommentWindow } = useContext(CommentPostContext);
+    const { addAlert } = useContext(AlertContext);
 
     return (
         <button
@@ -89,7 +96,14 @@ const CommentButton = (props) => {
                 'flex-column-relative ' + `${style['engage-button-container']}`
             }
             onClick={() => {
-                openCommentWindow(postId, comments);
+                if (postId === POST_UNIQUE_ID_CREATE) {
+                    addAlert(
+                        'You cannot comment on a post in create mode.',
+                        'Info',
+                    );
+                } else {
+                    openCommentWindow(postId, comments);
+                }
             }}
         >
             <i className="fa-solid fa-comment"></i>
