@@ -50,6 +50,7 @@ const Wrapper = ({ children, props }) => {
         handleToggle,
         name,
         top,
+        left,
         hideTitle = false,
         hideShadow = false,
     } = props;
@@ -89,7 +90,7 @@ const Wrapper = ({ children, props }) => {
                 {!hideShadow ? <FadedBackgroundShadow show={show} /> : null}
                 <div
                     className={'flex-column-absolute ' + `${style.container}`}
-                    style={{ top }}
+                    style={{ top, left }}
                 >
                     {!hideTitle ? (
                         <>

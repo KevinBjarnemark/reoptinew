@@ -41,6 +41,8 @@ export const PATH_ALIASES = {
         './src/context/posts/comment-post/CommentPostProvider',
     'page-dim-context': './src/context/page-dim/PageDimContext',
     'page-dim-provider': './src/context/page-dim/PageDimProvider',
+    'post-search-context': './src/context/posts/search/PostSearchContext',
+    'post-search-provider': './src/context/posts/search/PostSearchProvider',
     // Components
     image: './src/components/images/image/Image',
     'border-separator':
@@ -52,6 +54,8 @@ export const PATH_ALIASES = {
     'faded-background-shadow':
         './src/components/backgrounds/faded-background-shadow/' +
         'FadedBackgroundShadow',
+    'search-window': './src/components/search/search-window/SearchWindow',
+    'basic-menu': './src/components/menus/basic-menu/BasicMenu',
     // Cards and card components
     c: './src/components/posts/main/components/post/components/cards/cards/',
     'c-c':

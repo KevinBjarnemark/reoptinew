@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import BorderSeparator from '@border-separator';
 import NotificationContext from '@notification-context';
-import BasicMenu from '../../../../menus/basic-menu/BasicMenu';
+import BasicMenu from '@basic-menu';
 import UserContext from '../../../../../context/UserContext';
 import NavButton from '../buttons/nav-button/NavButton';
 import { DEFAULT_POST } from '@constants';
@@ -11,6 +11,7 @@ import EditedPostContext from '@edited-post-context';
 import PageDimContext from '@page-dim-context';
 import AppCloseButtonContext from '@app-close-button-context';
 import { debug } from '@debug';
+import PostSearchContext from '@post-search-context';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
@@ -57,6 +58,49 @@ const Links = (props) => {
             <NavButton
                 buttonProps={{ onClick: handleToggle }}
                 icon="fa-solid fa-bars"
+            />
+        </>
+    );
+};
+
+const Search = (props) => {
+    const { toggled, setToggled } = props;
+    const { setShowSeachWindow } = useContext(PostSearchContext);
+
+    const handleToggle = () => {
+        setToggled((prev) => (prev === 'Search' ? '' : 'Search'));
+    };
+
+    return (
+        <>
+            <BasicMenu.Wrapper
+                props={{ toggled, handleToggle, top: '115px', name: 'Search' }}
+            >
+                <BasicMenu.ButtonItem
+                    name="Search"
+                    icon="fa-solid fa-magnifying-glass"
+                    props={{
+                        onClick: () => {
+                            setShowSeachWindow((prev) => !prev);
+                            handleToggle();
+                        },
+                    }}
+                />
+                <BorderSeparator />
+                <BasicMenu.ButtonItem
+                    name="Find a user"
+                    icon="fa-solid fa-magnifying-glass"
+                    props={{
+                        onClick: () => {
+                            handleToggle();
+                        },
+                    }}
+                />
+            </BasicMenu.Wrapper>
+
+            <NavButton
+                buttonProps={{ onClick: handleToggle }}
+                icon="fa-solid fa-magnifying-glass"
             />
         </>
     );
@@ -136,7 +180,7 @@ const Create = (props) => {
     return (
         <>
             <BasicMenu.Wrapper
-                props={{ toggled, handleToggle, top: '115px', name: 'Create' }}
+                props={{ toggled, handleToggle, top: '195px', name: 'Create' }}
             >
                 <BasicMenu.ButtonItem
                     name="Create post"
@@ -164,6 +208,7 @@ const SideBar = () => {
     return (
         <>
             <Links {...{ toggled, setToggled }} />
+            <Search {...{ toggled, setToggled }} />
             <Create {...{ toggled, setToggled }} />
         </>
     );

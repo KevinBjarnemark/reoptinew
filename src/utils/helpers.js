@@ -37,3 +37,25 @@ export const isArray = (value, requireContent = false) => {
 export const createFileURL = (file) => {
     return URL.createObjectURL(file);
 };
+
+export const toSnakeCase = (str) => {
+    return (
+        str
+            // Convert spaces and hyphens to underscores
+            .replace(/[\s-]+/g, '_')
+            // Insert an underscore between lowercase and uppercase letters
+            .replace(/([a-z])([A-Z])/g, '$1_$2')
+            // Convert everything to lowercase
+            .toLowerCase()
+    );
+};
+
+export const snakeToNormal = (str) => {
+    return (
+        str
+            // Replace underscores with spaces
+            .replace(/_/g, ' ')
+            // Capitalize the first letter
+            .replace(/^\w/, (c) => c.toUpperCase())
+    );
+};

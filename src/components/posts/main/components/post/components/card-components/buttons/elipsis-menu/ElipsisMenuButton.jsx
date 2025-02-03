@@ -7,7 +7,7 @@ import AlertContext from '@alert-context';
 import GeneralLoadingContext from '@general-loading-context';
 import NotificationContext from '@notification-context';
 // Components
-import BasicMenu from '../../../../../../../../menus/basic-menu/BasicMenu';
+import BasicMenu from '@basic-menu';
 import BorderSeparator from '@border-separator';
 // Custom hooks
 import useAPI from '@use-api';

@@ -1,28 +1,33 @@
 import './App.css';
 import { lazy, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Providers
 import UserProvider from './context/UserProvider';
-import AppLoadingContext from '@app-loading-context';
+import PostSearchProvider from '@post-search-provider';
 import AppLoadingProvider from '@app-loading-provider';
 import GeneralLoadingProvider from '@general-loading-provider';
 import PageDimProvider from './context/page-dim/PageDimProvider';
 import AlertProvider from './context/alert-context/AlertProvider';
-import AlertWindow from './components/alerts/alert-window/AlertWindow';
-import { UserCard } from './components/user/user-card/UserCard';
-import AppLoading from './components/loading/AppLoading';
-import Header from './components/page/header/Header';
-import Navigation from './components/page/navigation/Navigation';
 import NotificationProvider from '@notification-provider';
 import RatePostProvider from '@rate-post-provider';
 import CommentPostProvider from '@comment-post-provider';
-import PageDim from './components/backgrounds/page-dim/PageDim';
-import AppCloseButton from '@app-close-button';
 import AppCloseButtonProvider from '@app-close-button-provider';
 import PostProvider from '@post-provider';
 import EditedPostProvider from '@edited-post-provider';
 import ScreenProvider from '@screen-provider';
 import PopUpProvider from '@pop-up-provider';
+// Contexts
+import AppLoadingContext from '@app-loading-context';
+// Components
+import AlertWindow from './components/alerts/alert-window/AlertWindow';
+import { UserCard } from './components/user/user-card/UserCard';
+import AppLoading from './components/loading/AppLoading';
+import Header from './components/page/header/Header';
+import Navigation from './components/page/navigation/Navigation';
+import PageDim from './components/backgrounds/page-dim/PageDim';
+import AppCloseButton from '@app-close-button';
 import PopUp from './components/pop-ups/pop-up/PopUp';
+import SearchWindow from '@search-window';
 
 // Load pages lazily
 const Home = lazy(() => import('./pages/home/Home'));
@@ -57,6 +62,7 @@ const AppBody = ({ children }) => {
                 <article>{children}</article>
                 <UserCard />
             </main>
+            <SearchWindow />
             <Navigation />
 
             <PageDim />
@@ -84,7 +90,9 @@ export function AppContextWrap({ children }) {
                                                     <AppLoadingProvider>
                                                         <PostProvider>
                                                             <EditedPostProvider>
-                                                                {children}
+                                                                <PostSearchProvider>
+                                                                    {children}
+                                                                </PostSearchProvider>
                                                             </EditedPostProvider>
                                                         </PostProvider>
                                                     </AppLoadingProvider>
