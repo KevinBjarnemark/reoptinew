@@ -191,6 +191,35 @@ const UserProvider = ({ children }) => {
         }
     };
 
+    const handleFollow = async (action, userId) => {
+        const response = await apiRequest({
+            authorizationHeader: true,
+            method: action === 'follow' ? 'POST' : 'DELETE',
+            relativeURL: `/users/follow/${userId}/`,
+            debugMessages: {
+                error: `Couldn't ${action} user`,
+                successfulBackEndResponse: `User ${action} successful`,
+            },
+            uxMessages: {
+                error: `Couldn't ${action} this user, try refreshing your browser.`,
+            },
+        });
+        if (response) {
+            await addNotification(
+                true,
+                action === 'follow' ? 'Followed!' : 'Unfollowed',
+            );
+        } else {
+            debug(
+                'd',
+                showDebugging,
+                `Backend didn't accept user ${action}.`,
+                response,
+            );
+            await addNotification(false, `User ${action} failed.`);
+        }
+    };
+
     useEffect(() => {
         if (isAuthenticated === null) {
             if (!userHasInitialized.current) {
@@ -247,6 +276,8 @@ const UserProvider = ({ children }) => {
                 setIsAuthenticated,
                 login,
                 signup,
+                handleFollow,
+                setProfile,
             }}
         >
             {children}

@@ -187,18 +187,16 @@ const DeleteAccount = () => {
     const { openPopUp } = useContext(PopUpContext);
 
     return (
-        <>
-            <BasicButton
-                text={'Delete account'}
-                buttonProps={{
-                    className:
-                        'flex-column-absolute ' + `${style['delete-button']}`,
-                    onClick: () => {
-                        openPopUp('Confirm password', <FormContent />);
-                    },
-                }}
-            />
-        </>
+        <BasicButton
+            text={'Delete account'}
+            buttonProps={{
+                className:
+                    'flex-column-absolute ' + `${style['delete-button']}`,
+                onClick: () => {
+                    openPopUp('Confirm password', <FormContent />);
+                },
+            }}
+        />
     );
 };
 

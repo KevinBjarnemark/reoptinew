@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import PostSearchContext from './PostSearchContext';
-import { debug } from '@debug';
 import PostContext from '@post-context';
+import UserContext from '../../UserContext';
 
 const PostSearchProvider = ({ children }) => {
     const showDebugging = true;
@@ -12,8 +12,8 @@ const PostSearchProvider = ({ children }) => {
     const [alsoSearchIn, setAlsoSearchIn] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [userId, setUserId] = useState(null);
-
     const { renderPosts } = useContext(PostContext);
+    const { profile } = useContext(UserContext);
 
     const [body, setBody] = useState({
         action: 'filter',
@@ -28,6 +28,7 @@ const PostSearchProvider = ({ children }) => {
                 view: view,
                 also_search_in: alsoSearchIn,
                 search_query: searchQuery.split(' '), // API expects an array
+                followers: profile?.following,
             },
         }));
     }, [sortBy, view, searchQuery, alsoSearchIn, userId]);

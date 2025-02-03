@@ -12,20 +12,16 @@
     font-weight: 300;
     margin: 0 80px 0 30px;
 }
-
-.delete-button {
-    right: 20px;
-    bottom: 0;
-    padding: 10px 20px;
-    margin: 38px 0;
-    border-radius: 5px;
-    background-color: #e15a5a;
-    color: #ffffff;
-    box-shadow: 0 0 5px 2px #3b3d3d;
+.username-and-ranks {
+    align-items: center;
+    margin: 0 15px;
 }
+.username-and-ranks p {
+    margin: 5px 0;
+    background-color: #3b3d3d;
+    padding: 0 20px;
 
-.delete-button:hover {
-    box-shadow: 0 0 3px 2px #bdbdbd;
+    border-radius: 5px;
 }
 
 /* When screens are larger than 740px */

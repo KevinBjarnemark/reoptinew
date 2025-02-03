@@ -86,16 +86,6 @@ const Search = (props) => {
                         },
                     }}
                 />
-                <BorderSeparator />
-                <BasicMenu.ButtonItem
-                    name="Find a user"
-                    icon="fa-solid fa-magnifying-glass"
-                    props={{
-                        onClick: () => {
-                            handleToggle();
-                        },
-                    }}
-                />
             </BasicMenu.Wrapper>
 
             <NavButton

@@ -2,9 +2,11 @@ import { useContext } from 'react';
 import style from './Logo.module.css';
 import { Link } from 'react-router-dom';
 import NotificationContext from '@notification-context';
+import PostContext from '../../context/posts/post/PostContext';
 
 const Logo = ({ loading = false, hide = false, link = null }) => {
     const { addNotification } = useContext(NotificationContext);
+    const { renderPosts } = useContext(PostContext);
 
     const animationCSS = {
         'outer-circle': loading ? style['outer-circle-animation'] : '',
@@ -19,7 +21,8 @@ const Logo = ({ loading = false, hide = false, link = null }) => {
 
     const handleClick = async () => {
         if (window.location.pathname === '/') {
-            await addNotification(true, 'Click here to start over');
+            await addNotification(true, 'Reloading posts...');
+            renderPosts();
         }
     };
 

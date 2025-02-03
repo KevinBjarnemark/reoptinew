@@ -277,6 +277,10 @@ const SearchWindow = () => {
                                         name: 'Likes',
                                         icon: 'fa-solid fa-heart',
                                     },
+                                    {
+                                        name: 'Comments',
+                                        icon: 'fa-solid fa-comment',
+                                    },
                                 ],
                             }}
                         />
@@ -295,7 +299,7 @@ const SearchWindow = () => {
                                         icon: null,
                                     },
                                     {
-                                        name: 'Only people you follow',
+                                        name: 'Only users you follow',
                                         icon: null,
                                     },
                                 ],

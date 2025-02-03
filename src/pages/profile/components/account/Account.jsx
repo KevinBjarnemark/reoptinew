@@ -10,6 +10,8 @@ import Image from '@image';
 import useLoadImage from '@use-load-image';
 import NotificationContext from '@notification-context';
 import { useLocation } from 'react-router';
+import FollowButton from '../follow-button/FollowButton';
+import Ranks from '../ranks/Ranks';
 
 const Account = () => {
     const showDebugging = true;
@@ -146,8 +148,19 @@ const Account = () => {
         <div className={'flex-row-relative w-100 ' + `${style.container}`}>
             <h5 className={`${style['title']} mt-3`}>Profile</h5>
             <Image {...imageProps} />
-            <p className="text-white">{userProfile?.username}</p>
+
+            <div
+                className={
+                    'flex-column-relative ' + style['username-and-ranks']
+                }
+            >
+                <p className="text-white">{userProfile?.username}</p>
+                <Ranks {...{ userProfile }} />
+            </div>
+
             {isOwnProfile ? <DeleteAccount /> : null}
+
+            <FollowButton {...{ isOwnProfile, userProfile, setUserProfile }} />
         </div>
     );
 };
