@@ -8,6 +8,7 @@
 - 📉 [Agile](#agile)
 - ❌ [Error handling](#error-handling)
 - 🛠️ [Technologies](#technologies)
+- 🔧 [Testing](#testing)
 - 🌌 [Philosophy](#philosophy)
 - 🖥️ [Code Documentation](#code-documentation)
 - ✨ [Credits](#credits)
@@ -207,6 +208,71 @@ React Testing Library focuses on testing components as users interact with them,
 This library simplifies testing components that rely on CSS Modules by mapping class names to their string equivalents. This ensures CSS imports in your tests don’t break and allows you to verify that the correct class names are applied without worrying about the actual CSS.
 
 </details>
+
+## Known Issues
+
+Let's list some known issues that should be prioritized. 
+
+⛔️ **Post Pagination**  
+Right now all posts are returned to the user. This is a serious issue and should be easy to implement, given the current systems in place. 
+
+## Testing
+
+### 📱 Testing on Physical Devices
+
+Ensuring **Reoptinew** delivers a seamless experience across devices is a critical part of development. The following section outlines the methods and tools used for responsive design testing, including media queries and Vite-specific optimizations.
+
+#### Configuration
+
+To mimic a similar setup as Reoptinew, some configuration is needed. 
+
+- **Bind Server to Local Network's IPv4 Address**
+
+First we'll need to enable other devices to access your network and app by binding the server to your local network's IPv4 address.
+
+> ⚠️ **NOTE**  
+>Binding to your private IPv4 address (e.g., 192.168.x.x) means only devices on the same local network can access it. This is generally safe for testing.
+>
+>However, binding to 0.0.0.0 listens on all interfaces, which could expose the server to unintended connections if you're on an unsecured or public network. Never expose .env files containing sensitive information like API keys or credentials.
+
+In this repository, the local development IP is stored in [.env.development](.env.development) (not publicly visible). If you store yours as an environment variable, it should be configured in [vite.config.js](vite.config.js) like in the example below.
+
+```js
+server: {
+    host: env.VITE_API_HOST,
+    port: 5173,
+},
+```
+
+- **Backend setup**
+
+In the backend, when running the development server locally, the following environment variables ensure accessibility from various devices within the network.
+
+> ❕ **Note**
+> You cannot have both the API and frontend on the same port, in our case, the `DEV_SERVER_HOST` is set to `8000`.   
+
+```python
+# settings.py
+dev_server_host = config("DEV_SERVER_HOST")
+dev_server_frontend_port = config("DEV_SERVER_FRONTEND_PORT")
+
+if DEBUG:
+    # Allow localhost in development
+    CORS_ALLOWED_ORIGINS = [
+        f"http://{dev_server_host}:{int(dev_server_frontend_port)}"
+    ]
+    ALLOWED_HOSTS = [dev_server_host]
+else:
+    # Allow the deployed frontend in production
+    CORS_ALLOWED_ORIGINS = [
+        "https://reoptinew-09d333f23d8e.herokuapp.com",
+    ]
+    ALLOWED_HOSTS = ["reoptinew-api-c16dc2520739.herokuapp.com"]
+```
+
+- **Test on a mobile device** 
+
+Open the development app on mobile via `http://your-local-ip:5173/`.
 
 ## Philosophy
 
