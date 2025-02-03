@@ -38,3 +38,6 @@ Below you can find completion notes for all sprints.
 
 #### Sprint 1
 ![Sprint 1 completion notes](../assets/iteration-1/sprints/sprint-1/sprint-1-completion-notes.webp "An illustration with calculations from the first sprint.")
+
+#### Sprint 2
+![Sprint 2 completion notes](../assets/iteration-1/sprints/sprint-2/sprint-2-completion-notes.webp "An illustration with calculations from the second sprint.")
