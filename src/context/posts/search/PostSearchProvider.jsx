@@ -34,6 +34,7 @@ const PostSearchProvider = ({ children }) => {
 
     const applyFilter = async () => {
         renderPosts(body.filters);
+        setShowSeachWindow(false);
     };
 
     return (

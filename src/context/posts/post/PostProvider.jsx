@@ -68,13 +68,15 @@ const PostProvider = ({ children }) => {
         await addNotification(false, "Couldn't load post :(");
     };
 
-    const updateSinglePost = async (id) => {
+    const updateSinglePost = async (id, onlyUpdateFeed = false) => {
         const fetchedPost = await fetchSinglePost(id);
 
         setPosts((prev) =>
             prev.map((post) => (post.id === id ? fetchedPost : post)),
         );
-        setSinglePost(fetchedPost);
+        if (!onlyUpdateFeed) {
+            setSinglePost(fetchedPost);
+        }
     };
 
     const addSinglePost = async (post) => {

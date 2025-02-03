@@ -112,7 +112,8 @@ const RatingItem = (props) => {
 const RatingWindow = () => {
     const showDebugging = true;
     const { setDim } = useContext(PageDimContext);
-    const { loadSinglePost, singlePost } = useContext(PostContext);
+    const { loadSinglePost, singlePost, updateSinglePost } =
+        useContext(PostContext);
 
     const { show, closeRatingWindow, ratings, postId } =
         useContext(RatePostContext);
@@ -167,6 +168,9 @@ const RatingWindow = () => {
                     if (isObject(singlePost, true)) {
                         loadSinglePost(postId);
                     }
+                    // Update the post in the feed without triggering a
+                    // standalone post
+                    updateSinglePost(postId, true);
 
                     closeRatingWindow();
                     addAlert('Your rating is submitted.', 'Done');

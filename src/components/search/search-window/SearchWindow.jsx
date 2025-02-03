@@ -184,7 +184,7 @@ const Options = (props) => {
 };
 
 const SearchBar = (props) => {
-    const { setState, onClick } = props;
+    const { state, setState, onClick } = props;
 
     const handleChange = (e) => {
         setState(e.target.value);
@@ -196,6 +196,7 @@ const SearchBar = (props) => {
                 className={'flex-column-absolute ' + style['text-input']}
                 name="comment"
                 type="text"
+                defaultValue={state}
                 onChange={handleChange}
             ></input>
 
@@ -214,6 +215,7 @@ const SearchWindow = () => {
         showSeachWindow,
         setShowSeachWindow,
         setAlsoSearchIn,
+        searchQuery,
         setSearchQuery,
         sortBy,
         setSortBy,
@@ -331,7 +333,11 @@ const SearchWindow = () => {
                 </section>
 
                 <SearchBar
-                    {...{ setState: setSearchQuery, onClick: applyFilter }}
+                    {...{
+                        state: searchQuery,
+                        setState: setSearchQuery,
+                        onClick: applyFilter,
+                    }}
                 />
             </section>
         );
