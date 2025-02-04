@@ -1,9 +1,12 @@
 # Reoptinew
 
+![Loading Post](docs/assets/live-app//loading-a-post.gif) 
+
 ## Table of Contents
 
 - 🗺️ [Project Map](#map)
 - 💡 [Introduction](#introduction)
+- ⭐️ [Features](#features)
 - 🌐 [API and GitHub Projects](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
@@ -12,6 +15,9 @@
 - 🔧 [Testing](#testing)
 - 🌌 [Philosophy](#philosophy)
 - 🖥️ [Code Documentation](#code-documentation)
+- ☁️ [Deployment with Github Actions](#deployment-with-github-actions)
+- 🧬 [Cloning the repository](#cloning-the-repository)
+- 🍴 [Forking the repository](#forking-the-repository)
 - ✨ [Credits](#credits)
 - 🖊️ [References](#references)
 
@@ -58,6 +64,29 @@ The philosophy of building for reusability with React has deeply been followed. 
 The `<Post />` component with all its related components is a single component whether it's viewed enlarged, iterated as smaller posts, in edit mode, or however else. This ensures a seamless system that transfers to all areas of the app. An update applied to the `<Post />` component will cause a ripple-effect of updates throughout the app. This not only saves time in the long run, it also provides continuity and theme.
 
 Reoptinew's components are not all fully reusable, this is partly due to the time constraint of the project, but also to maintain a balance of flexibility and practicality. Forcing some components into a reusable structure could introduce more overhead than efficiency in some cases. Especially in a project like this where every component is brand new and designed from scratch. By not over-engineering reusability from the start, the project remains open to adaptation and change as new needs arise.
+
+## Features
+
+### Loading Spinners
+![Loading Screen](docs/assets/live-app//loading-screen.gif) 
+
+### CRUD Posts
+![Loading Post](docs/assets/live-app//loading-a-post.gif) 
+
+### Follow/Unfollow
+![Follow](docs/assets/live-app/follow.gif) 
+
+### Comments and Likes 
+![Like](docs/assets/live-app/like.gif) 
+
+### More features:
+- URL Based Rendering
+- Age restriction system
+- Ratings
+- Delete Account
+- Search and Filter Posts
+- Loading spinners
+- Alerts and Notification System
 
 ## UX-Design
 
@@ -282,7 +311,7 @@ I chose to work with Jest in this project due to its maturity and widespread ado
 That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
 
 
-### 📱 Testing on Physical Devices
+## 📱 Testing on Physical Devices
 
 Ensuring **Reoptinew** delivers a seamless experience across devices is a critical part of development. The following section outlines the methods and tools used for responsive design testing, including media queries and Vite-specific optimizations.
 
@@ -361,7 +390,7 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
 
     The goal is to achieve a more distinctive design that enhances brand awareness by emphasizing elements unique to Reoptinew.
 
-## Code Documentation
+### Code Documentation
 
 ### Debugging
 
@@ -454,7 +483,7 @@ Many techniques have been used to centralize functionality, avoid repetition, an
 - Contexts
 - [Global Functions](src/functions)
 
-## Credits
+### Credits
 
 ### Code
 
@@ -468,6 +497,140 @@ Many techniques have been used to centralize functionality, avoid repetition, an
 
 - [Niramit](https://fonts.google.com/specimen/Niramit)
 
+### Images
+
+All images used for posts and profile avatars have been generated with [DALL-E](https://openai.com/) an image generation AI system.
+
 ## References
 
 - [Bootstrap](https://www.npmjs.com/package/bootstrap)
+
+
+
+
+## Automated Testing
+
+There are various methods to automate testing, and in this chapter, we'll explore configurations specifically used in the development of this project.
+
+### GitHub Actions
+
+By setting up GitHub Actions, you can run automated tests directly within GitHub's environment. In this project, these tests are triggered only during deployments. This is because local testing is already automated using Git hooks.
+
+> ⚠️ **NOTE**  
+>When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
+>- Execute read and write actions within GitHub Actions.  
+>- Access and utilize your environment secrets.  
+
+To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
+
+Additionally, you need to submit your environment secrets to GitHub.
+
+1. Navigate to your repository.
+2. Click on settings
+3. Select `Actions` under the `Secrets and variables tab`.
+4. Click on `Add new repository secret`. 
+
+Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
+
+Before proceeding with deployment, it's advisable to push your latest changes normally.
+
+But before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
+
+1. Create a tag
+    - **`git tag v0.1`**
+2. Push the new version
+    - **`git push origin v0.1`**
+
+If everything is set up correctly, your automated tests will execute within GitHub Actions. If all tests pass, the project should be deployed to Heroku. More details are covered in [Deployment and Github Actions](#deployment-and-github-actions).
+
+![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
+
+#### Local Git Hooks (Optional) ⭐️
+
+> ⚠️ **NOTE**  
+> This is a local setup and does not affect the official GitHub repository!
+
+For automatic local testing, you can configure a custom script that runs before pushing any changes. This ensures that only tested code reaches the remote repository, enhancing overall code quality and catching errors early.
+
+**Setting It Up**
+
+With the following setup, your tests will run automatically before pushing to GitHub. If any test fails, the git push command will be terminated, preventing unverified code from being pushed.
+
+Create a `pre-push` file inside your `.git/hooks` directory.
+
+Add the following script to automate testing:
+
+#### Here's how to set it up
+
+With the following setup, you'll be able to automatically run whichever tests you like before pushing to GitHub. The Git hook will terminate your `git push` command if any of your tests fail, and only push locally tested changes to your remote repository.
+
+1. Create a `pre-push` file in your `.git` folder.
+2. Configure your custom testing script, example below.
+
+```bash
+#!/bin/bash
+echo "Running tests before pushing..."
+
+# Activate virtual environment for Python
+source venv/bin/activate
+
+# Run pytest for Django tests
+pytest
+PYTHON_STATUS=$?
+
+# Run Jest for JavaScript tests
+npx jest
+JS_STATUS=$?
+
+# Check if any tests failed
+if [ $PYTHON_STATUS -ne 0 ] || [ $JS_STATUS -ne 0 ]; then
+    echo "Tests failed. Push aborted."
+    exit 1
+else
+    echo "All tests passed! Proceeding with push."
+    exit 0
+fi
+```
+
+3. Make it executable: **`chmod +x .git/hooks/pre-push`**
+
+#### Will this force each developer to configure this individually?
+
+Will Every Developer Need to Set This Up Individually?
+
+Yes, but rather than being a limitation, this setup enhances each developer’s workflow. Additionally, GitHub Actions ensure that only tested changes get deployed. Even if untested code reaches the remote repository, it won’t pass deployment. This provides developers the flexibility to configure their own local environments while maintaining project-wide testing standards.
+
+## Cloning the repository 
+
+To explore, develop, or experiment with this project, you can clone the repository to create a local copy. Cloning allows you to contribute, test new features, or modify the project within your own environment.
+
+#### Steps to clone
+
+Before cloning, ensure you have [Git](https://git-scm.com/) installed on your system.
+
+1. Navigate to the repository on GitHub.
+2. Click on the green Code button.
+3. Copy the repository URL (choose HTTPS, SSH, or GitHub CLI as preferred).
+4. Open your terminal or command line and type
+
+```bash
+git clone <repository-url>
+```
+
+5. Navigate into the project directory:
+```bash
+cd bottle-post-recipes
+```
+
+## Forking the repository 
+
+Forking allows you to create your own version of the repository under your GitHub account. This is useful for personalizing the project and proposing changes.
+
+#### Steps to fork
+
+1. Navigate to the repository on GitHub.
+2. Click on the Fork button at the top right corner of the page.
+3. The repository is now available in your GitHub account.
+4. Clone your forked version using the cloning steps outlined above.
+
+Once you've forked and cloned, feel free to explore and enhance the project! Check out the [README.md](README.md) for guidance on running the project locally.

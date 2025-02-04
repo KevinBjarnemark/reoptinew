@@ -4,9 +4,6 @@
 ## Table of Contents
 
 - 👮 [Authentication](#authentication)
-- 🧭 [Navigation](#navigation)
-- 👋 [System feedback](#system-feedback)
-- ❌ [Account deletion](#account-deletion)
 
 ## Authentication
 
@@ -18,10 +15,3 @@ Relevant files:
 
 
 ![Submit forms and data](../../../assets/development-process/diagrams/submit-forms-and-data.webp "A flowchart explaining the event flow of submitting data and forms.")
-
-
-## Navigation
-
-## System feedback
-
-## Account deletion
