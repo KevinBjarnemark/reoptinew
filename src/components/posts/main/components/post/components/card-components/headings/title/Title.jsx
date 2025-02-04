@@ -17,6 +17,9 @@ const Title = ({ title, standalone, editMode }) => {
      */
     useEffect(() => {
         setLocalTitle(editedPost.draft.title);
+
+        // This should only update when toggling.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleChange = (e) => {
@@ -53,7 +56,7 @@ const Title = ({ title, standalone, editMode }) => {
 
     const titleStyle = standalone
         ? { fontSize: screenWidth < 470 ? '100%' : '150%' }
-        : {};
+        : { fontSize: screenWidth < 470 ? '50%' : '85%' };
 
     return (
         <input

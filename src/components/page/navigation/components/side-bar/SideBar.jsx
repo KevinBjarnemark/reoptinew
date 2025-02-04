@@ -12,10 +12,14 @@ import PageDimContext from '@page-dim-context';
 import AppCloseButtonContext from '@app-close-button-context';
 import { debug } from '@debug';
 import PostSearchContext from '@post-search-context';
+import PopUpContext from '@pop-up-context';
+import TermsOfService from '../terms/terms-and-privacy/TermsOfService';
+import PrivacyPolicy from '../terms/terms-and-privacy/PrivacyPolicy';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
     const { profile } = useContext(UserContext);
+    const { openPopUp } = useContext(PopUpContext);
 
     const handleToggle = () => {
         setToggled((prev) => (prev === 'Navigation' ? '' : 'Navigation'));
@@ -53,6 +57,30 @@ const Links = (props) => {
                         handleClose={handleToggle}
                     />
                 ) : null}
+                <BorderSeparator />
+                <BasicMenu.ButtonItem
+                    props={{
+                        onClick: () => {
+                            openPopUp('Terms of Service', <TermsOfService />);
+                        },
+                    }}
+                    name="Terms of Service"
+                    icon="fa-solid fa-file"
+                    link="/terms-of-service"
+                    handleClose={handleToggle}
+                />
+                <BorderSeparator />
+                <BasicMenu.ButtonItem
+                    props={{
+                        onClick: () => {
+                            openPopUp('Privacy Policy', <PrivacyPolicy />);
+                        },
+                    }}
+                    name="Privacy Policy"
+                    icon="fa-solid fa-shield-halved"
+                    link="/privacy-policy"
+                    handleClose={handleToggle}
+                />
             </BasicMenu.Wrapper>
 
             <NavButton
