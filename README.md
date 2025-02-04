@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - 🗺️ [Project Map](#map)
+- 💡 [Introduction](#introduction)
 - 🌐 [API and GitHub Projects](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
@@ -29,9 +30,34 @@ The "map" below provides an overview of key resources in this project.
 - 📉 [Sprints](docs/iteration-1/sprints)  
 - 📃 [GitHub Projects (Kanban)](https://github.com/users/KevinBjarnemark/projects/10).
 
+
+## Introduction
+
+**Reoptinew** is a library of **new ideas**, **crafts**, **life-hacks**, and **more**. Big ideas and small ideas, **all are welcome!** 💡
+
+If you tick any of the boxes below, you might feel right at home when visiting **Reoptinew**.
+
+You want to:   
+- explore DIY crafts
+- share life-hacks like washing dishes like a pro, or make your own potato chips
+- showcase advanced builds like soapboxes or homemade robots
+- find something to do on a Saturday afternoon
+- discover alternative ways of doing everyday stuff
+- find a solution to a specific problem
+
+A couple of wooden boards. A metal wire. An old wheel from a discarded bicycle. To most, these are scraps, forgotten, insignificant, not worth a second thought. But to a mind trained to see potential, these are the seeds of something greater. At **Reoptinew** you see the extraordinary in the ordinary and get to be a part of it too. Share your own builds and follow your favorite crafters.
+
 ## API
 
-The Reoptinew web app uses a decoupled architecture, separating the frontend and backend repositories. The **backend API repository** can be found [**here**](https://github.com/KevinBjarnemark/reoptinew-api). Both of these repositories share the same [Kanban board](https://github.com/users/KevinBjarnemark/projects/10).
+The Reoptinew web app uses a decoupled architecture, separating the frontend and backend repositories. The **backend API repository** can be found [**here**](https://github.com/KevinBjarnemark/reoptinew-api). 
+
+## React and Reusability
+
+The philosophy of building for reusability with React has deeply been followed. To showcase this, let's start with the `<Post />` component. 
+
+The `<Post />` component with all its related components is a single component whether it's viewed enlarged, iterated as smaller posts, in edit mode, or however else. This ensures a seamless system that transfers to all areas of the app. An update applied to the `<Post />` component will cause a ripple-effect of updates throughout the app. This not only saves time in the long run, it also provides continuity and theme.
+
+Reoptinew's components are not all fully reusable, this is partly due to the time constraint of the project, but also to maintain a balance of flexibility and practicality. Forcing some components into a reusable structure could introduce more overhead than efficiency in some cases. Especially in a project like this where every component is brand new and designed from scratch. By not over-engineering reusability from the start, the project remains open to adaptation and change as new needs arise.
 
 ## UX-Design
 
@@ -213,10 +239,48 @@ This library simplifies testing components that rely on CSS Modules by mapping c
 
 Let's list some known issues that should be prioritized. 
 
-⛔️ **Post Pagination**  
+ 
+⛔️ **Post Pagination**   
 Right now all posts are returned to the user. This is a serious issue and should be easy to implement, given the current systems in place. 
 
+⛔️ **Flexible Image system**  
+> ⚠️ **NOTE**  
+> A temporary fix has been applied here to enable users to still use all the app's features.  
+More info below.  
+
+While users are able to upload and change their images, there is a problematic scenario that should be fixed ASAP.  
+
+**Here's how to test it.** 
+
+1. Create a post with a custom image
+2. Edit the post without uploading a new image
+3. Submit edit
+
+What would happen here is that the back end would receive a URL (str) while it expects a file. This error occurs early, before entering the serializer (in the model itself). 
+
+**Potential solution:**  
+An edit request should be a PATCH request and only update the fields that have changed. 
+
+**Temporary fix:**  
+This fix has been applied in the frontend. The system detects this flow of events and does the following:
+
+1. Displays warnings to the user that their image will be deleted if they submit the edit. 
+2. If the user submits the edit, the image will be removed from the request (frontend) and deleted in the backend. This is because the user might have chosen a default image and expected their previously selected image (if they had one) to be discarded.
+
+**Summary**
+The app still has all features available but with some drawbacks in terms of user experience.
+
+⛔️ **Cloudinary Image Removals**  
+When a user e.g,. changes their profile image, the image won't be cleared in Cloudinary. This problem should be fixed ASAP to clear unnecessary data and to provide a flawless automatic system.
+
 ## Testing
+
+### [Jest](https://jestjs.io/) vs [Vitest](https://vitest.dev/)
+
+I chose to work with Jest in this project due to its maturity and widespread adoption. The list of big and successful companies that use Jest is massive. Jest is trusted by a large number of big and successful companies, making it a well-established and reliable choice. 
+
+That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
+
 
 ### 📱 Testing on Physical Devices
 
@@ -296,14 +360,6 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
     By focusing on custom implementations, this approach opens the door for **long-term flexibility**. As needs evolve, these components can be iteratively improved or expanded without the constraints of prebuilt structures. This philosophy prioritizes flexibility and scalability, allowing the design and functionality to grow naturally over time.
 
     The goal is to achieve a more distinctive design that enhances brand awareness by emphasizing elements unique to Reoptinew.
-
-### Testing
-
-#### [Jest](https://jestjs.io/) vs [Vitest](https://vitest.dev/)
-
-I choose to work with Jest in this project due to its maturity and widespread adoption. The list of big and successful companies that use Jest is massive. Jest is trusted by a large number of big and successful companies, making it a well-established and reliable choice. 
-
-That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
 
 ## Code Documentation
 

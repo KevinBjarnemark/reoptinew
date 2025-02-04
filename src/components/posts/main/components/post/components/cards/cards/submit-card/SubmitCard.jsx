@@ -67,8 +67,8 @@ const SubmitButton = () => {
                     ...(!creatingPost &&
                     !editedPost.data.imageHasBeenSelected &&
                     editedPost.draft.image
-                        ? { image: editedPost.draft.image }
-                        : {}),
+                        ? {}
+                        : { image: editedPost.draft.image }),
                 };
 
                 const response = await apiRequest({
