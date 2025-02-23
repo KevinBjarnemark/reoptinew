@@ -17,7 +17,7 @@
 - 🖥️ [Code Documentation](#code-documentation)
 - ☁️ [Deployment with Github Actions](#deployment-with-github-actions)
 - 🧬 [Cloning the repository](#cloning-the-repository)
-- 🍴 [Forking the repository](#forking-the-repository)
+- 🍴  [Forking the repository](#forking-the-repository)
 - ✨ [Credits](#credits)
 - 🖊️ [References](#references)
 
@@ -51,7 +51,7 @@ You want to:
 - discover alternative ways of doing everyday stuff
 - find a solution to a specific problem
 
-A couple of wooden boards. A metal wire. An old wheel from a discarded bicycle. To most, these are scraps, forgotten, insignificant, not worth a second thought. But to a mind trained to see potential, these are the seeds of something greater. At **Reoptinew** you see the extraordinary in the ordinary and get to be a part of it too. Share your own builds and follow your favorite crafters.
+A couple of wooden boards. A metal wire. An old wheel from a discarded bicycle. To most, these are scraps, forgotten, insignificant, not worth a second thought. But to a mind trained to see potential, these are the seeds of something greater. At **Reoptinew** you see the extraordinary in the ordinary and get to be a part of it too. Share your own builds and follow your favorite crafters at **Reoptinew**.
 
 ## API
 
@@ -296,7 +296,7 @@ This fix has been applied in the frontend. The system detects this flow of event
 1. Displays warnings to the user that their image will be deleted if they submit the edit. 
 2. If the user submits the edit, the image will be removed from the request (frontend) and deleted in the backend. This is because the user might have chosen a default image and expected their previously selected image (if they had one) to be discarded.
 
-**Summary**
+**Summary**  
 The app still has all features available but with some drawbacks in terms of user experience.
 
 ⛔️ **Cloudinary Image Removals**  
@@ -304,14 +304,95 @@ When a user e.g,. changes their profile image, the image won't be cleared in Clo
 
 ## Testing
 
+
 ### [Jest](https://jestjs.io/) vs [Vitest](https://vitest.dev/)
 
 I chose to work with Jest in this project due to its maturity and widespread adoption. The list of big and successful companies that use Jest is massive. Jest is trusted by a large number of big and successful companies, making it a well-established and reliable choice. 
 
 That said, Vitest offers some compelling advantages, such as faster performance and seamless integration with `Vite`, which is used in this project. Using Vite with Jest requires Babel for ES Module support, which adds unnecessary dependencies compared to Vitest, which works natively with Vite.
 
+### Automated Testing
 
-## 📱 Testing on Physical Devices
+There are various methods to automate testing, and in this chapter, we'll explore configurations specifically used in the development of this project.
+
+> ❕ **Info**  
+> The automatic testing occurs as a step in the `CI/CD pipeline` when deploying the app. If you're unfamilliar with `CI/CD pipelines`, please refer to the [Deployment with Github Actions](#deployment-with-github-actions) chapter. 
+
+For a standardized workflow, we've added the following entry in the [package.json](package.json) file.
+
+```json
+"scripts": {
+        "test": "jest"
+    }
+```
+
+This enables the developer to run `npm test`, which will run the `Jest` testing process. With this configuration in place, the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)) should be able to run your `Jest` tests within the Github Actions environment using the code below.  
+
+```yml
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+      - name: Run tests
+        run: |
+          npm test
+```
+
+In this project, these tests are triggered only during deployments. This is because testing is already automated using Git hooks locally. Continue reading to find out how to configure such hook.
+
+#### Local Git Hooks (Optional) ⭐️
+
+> ⚠️ **NOTE**  
+> This is a local setup and does not affect the official GitHub repository!
+
+For automatic local testing, you can configure a custom script that runs before pushing any changes. This ensures that only tested code reaches the remote repository, enhancing overall code quality and catching errors early.
+
+**Setting It Up**
+
+With the following setup, your tests will run automatically before pushing to GitHub. If any test fails, the git push command will be terminated, preventing unverified code from being pushed.
+
+Create a `pre-push` file inside your `.git/hooks` directory.
+
+Add the following script to automate testing:
+
+#### Here's how to set it up
+
+With the following setup, you'll be able to automatically run whichever tests you like before pushing to GitHub. The Git hook will terminate your `git push` command if any of your tests fail, and only push locally tested changes to your remote repository.
+
+1. Create a `pre-push` file in your `.git` folder.
+2. Configure your custom testing script, example below.
+
+```bash
+#!/bin/bash
+echo "Running tests before pushing..."
+
+# Activate virtual environment for Python
+source venv/bin/activate
+
+# Run pytest for Django tests
+pytest
+PYTHON_STATUS=$?
+
+# Run Jest for JavaScript tests
+npx jest
+JS_STATUS=$?
+
+# Check if any tests failed
+if [ $PYTHON_STATUS -ne 0 ] || [ $JS_STATUS -ne 0 ]; then
+    echo "Tests failed. Push aborted."
+    exit 1
+else
+    echo "All tests passed! Proceeding with push."
+    exit 0
+fi
+```
+
+3. Make it executable: **`chmod +x .git/hooks/pre-push`**
+
+#### Will this force each developer to configure this individually?
+
+Yes, but rather than being a limitation, this setup enhances each developer’s workflow. Additionally, GitHub Actions ensure that only tested changes get deployed. Even if untested code reaches the remote repository, it won’t pass deployment. This provides developers the flexibility to configure their own local environments while maintaining project-wide testing standards.
+
+### 📱 Testing on Physical Devices
 
 Ensuring **Reoptinew** delivers a seamless experience across devices is a critical part of development. The following section outlines the methods and tools used for responsive design testing, including media queries and Vite-specific optimizations.
 
@@ -390,7 +471,67 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
 
     The goal is to achieve a more distinctive design that enhances brand awareness by emphasizing elements unique to Reoptinew.
 
-### Code Documentation
+## Code Documentation
+
+## Deployment with Github Actions
+
+If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heruko.
+
+1. #### Create the Heruko App
+    - Click `New` and then select `Create new app`. 
+    - Follow the instructions.
+    - Go to the `Settings` tab.
+    - Add buildpacks
+        - `Node.js` is used in this project
+
+2. #### Find the Heroku API Key
+    - Log in to [Heroku](https://www.heroku.com/)
+    - Click on the account button (upper right corner)
+    - Click on your name
+    - Scroll down and reveal your API key
+    > ⚠️ **NOTE**  
+    > This is not supposed to be shared with anyone. Do not expose this key in the live GitHub repository.
+
+#### Now you have:   
+✔️ A Heroku account  
+✔️ A Heroku app   
+✔️ The Heroku API key  
+
+You should now be ready to configure a `CI/CD pipeline` to automate the deploying process. We use a `CI/CD pipeline` to make sure the app is propely tested before publishing a new version. **Continue reading to find out how to configure such system.**
+
+### GitHub Actions
+
+In order to automate the deploy process we'll use GitHub Actions.  
+
+> ⚠️ **NOTE**  
+> When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
+> - Execute read and write actions within GitHub Actions.  
+> - Access and utilize your environment secrets.  
+
+To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
+
+Additionally, you need to submit your environment secrets to GitHub.
+
+1. Navigate to your repository.
+2. Click on settings
+3. Select `Actions` under the `Secrets and variables tab`.
+4. Click on `Add new repository secret`. 
+
+Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
+
+> ❕ **Info**  
+> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](automated-testing) section if you're unfamilliar with how to set this up.
+
+Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
+
+1. Create a tag
+    - **`git tag v0.1`**
+2. Push the new version
+    - **`git push origin v0.1`**
+
+If everything is set up correctly and if all your steps/tests pass, the project should be deployed to Heroku. You can follow the process by navigating to the `Actions` tab on GitHub.
+
+![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
 
 ### Debugging
 
@@ -501,104 +642,6 @@ Many techniques have been used to centralize functionality, avoid repetition, an
 
 All images used for posts and profile avatars have been generated with [DALL-E](https://openai.com/) an image generation AI system.
 
-## References
-
-- [Bootstrap](https://www.npmjs.com/package/bootstrap)
-
-
-
-
-## Automated Testing
-
-There are various methods to automate testing, and in this chapter, we'll explore configurations specifically used in the development of this project.
-
-### GitHub Actions
-
-By setting up GitHub Actions, you can run automated tests directly within GitHub's environment. In this project, these tests are triggered only during deployments. This is because local testing is already automated using Git hooks.
-
-> ⚠️ **NOTE**  
->When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
->- Execute read and write actions within GitHub Actions.  
->- Access and utilize your environment secrets.  
-
-To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
-
-Additionally, you need to submit your environment secrets to GitHub.
-
-1. Navigate to your repository.
-2. Click on settings
-3. Select `Actions` under the `Secrets and variables tab`.
-4. Click on `Add new repository secret`. 
-
-Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
-
-Before proceeding with deployment, it's advisable to push your latest changes normally.
-
-But before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
-
-1. Create a tag
-    - **`git tag v0.1`**
-2. Push the new version
-    - **`git push origin v0.1`**
-
-If everything is set up correctly, your automated tests will execute within GitHub Actions. If all tests pass, the project should be deployed to Heroku. More details are covered in [Deployment and Github Actions](#deployment-and-github-actions).
-
-![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
-
-#### Local Git Hooks (Optional) ⭐️
-
-> ⚠️ **NOTE**  
-> This is a local setup and does not affect the official GitHub repository!
-
-For automatic local testing, you can configure a custom script that runs before pushing any changes. This ensures that only tested code reaches the remote repository, enhancing overall code quality and catching errors early.
-
-**Setting It Up**
-
-With the following setup, your tests will run automatically before pushing to GitHub. If any test fails, the git push command will be terminated, preventing unverified code from being pushed.
-
-Create a `pre-push` file inside your `.git/hooks` directory.
-
-Add the following script to automate testing:
-
-#### Here's how to set it up
-
-With the following setup, you'll be able to automatically run whichever tests you like before pushing to GitHub. The Git hook will terminate your `git push` command if any of your tests fail, and only push locally tested changes to your remote repository.
-
-1. Create a `pre-push` file in your `.git` folder.
-2. Configure your custom testing script, example below.
-
-```bash
-#!/bin/bash
-echo "Running tests before pushing..."
-
-# Activate virtual environment for Python
-source venv/bin/activate
-
-# Run pytest for Django tests
-pytest
-PYTHON_STATUS=$?
-
-# Run Jest for JavaScript tests
-npx jest
-JS_STATUS=$?
-
-# Check if any tests failed
-if [ $PYTHON_STATUS -ne 0 ] || [ $JS_STATUS -ne 0 ]; then
-    echo "Tests failed. Push aborted."
-    exit 1
-else
-    echo "All tests passed! Proceeding with push."
-    exit 0
-fi
-```
-
-3. Make it executable: **`chmod +x .git/hooks/pre-push`**
-
-#### Will this force each developer to configure this individually?
-
-Will Every Developer Need to Set This Up Individually?
-
-Yes, but rather than being a limitation, this setup enhances each developer’s workflow. Additionally, GitHub Actions ensure that only tested changes get deployed. Even if untested code reaches the remote repository, it won’t pass deployment. This provides developers the flexibility to configure their own local environments while maintaining project-wide testing standards.
 
 ## Cloning the repository 
 
@@ -634,3 +677,7 @@ Forking allows you to create your own version of the repository under your GitHu
 4. Clone your forked version using the cloning steps outlined above.
 
 Once you've forked and cloned, feel free to explore and enhance the project! Check out the [README.md](README.md) for guidance on running the project locally.
+
+## References
+
+- [Bootstrap](https://www.npmjs.com/package/bootstrap)
