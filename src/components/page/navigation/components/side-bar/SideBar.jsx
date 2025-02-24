@@ -15,6 +15,7 @@ import PostSearchContext from '@post-search-context';
 import PopUpContext from '@pop-up-context';
 import TermsOfService from '../terms/terms-and-privacy/TermsOfService';
 import PrivacyPolicy from '../terms/terms-and-privacy/PrivacyPolicy';
+import About from '../about/About';
 
 const Links = (props) => {
     const { toggled, setToggled } = props;
@@ -42,10 +43,14 @@ const Links = (props) => {
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
-                <BasicMenu.LinkItem
+                <BasicMenu.ButtonItem
+                    props={{
+                        onClick: () => {
+                            openPopUp('About', <About />);
+                        },
+                    }}
                     name="About"
                     icon="fa-solid fa-circle-info"
-                    link="/about"
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
@@ -66,7 +71,6 @@ const Links = (props) => {
                     }}
                     name="Terms of Service"
                     icon="fa-solid fa-file"
-                    link="/terms-of-service"
                     handleClose={handleToggle}
                 />
                 <BorderSeparator />
@@ -78,7 +82,6 @@ const Links = (props) => {
                     }}
                     name="Privacy Policy"
                     icon="fa-solid fa-shield-halved"
-                    link="/privacy-policy"
                     handleClose={handleToggle}
                 />
             </BasicMenu.Wrapper>
