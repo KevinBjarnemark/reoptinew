@@ -7,7 +7,7 @@
 - 🗺️ [Project Map](#map)
 - 💡 [Introduction](#introduction)
 - ⭐️ [Features](#features)
-- 🌐 [API and GitHub Projects](#api)
+- 🌐 [API](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
 - ❌ [Error handling](#error-handling)
@@ -15,9 +15,10 @@
 - 🔧 [Testing](#testing)
 - 🌌 [Philosophy](#philosophy)
 - 🖥️ [Code Documentation](#code-documentation)
-- ☁️ [Deployment with Github Actions](#deployment-with-github-actions)
 - 🧬 [Cloning the repository](#cloning-the-repository)
 - 🍴  [Forking the repository](#forking-the-repository)
+- 🏃‍♂️ [Run the App](#run-the-app)
+- ☁️ [Deployment with Github Actions](#deployment-with-github-actions)
 - ✨ [Credits](#credits)
 - 🖊️ [References](#references)
 
@@ -365,19 +366,12 @@ With the following setup, you'll be able to automatically run whichever tests yo
 #!/bin/bash
 echo "Running tests before pushing..."
 
-# Activate virtual environment for Python
-source venv/bin/activate
-
-# Run pytest for Django tests
-pytest
-PYTHON_STATUS=$?
-
-# Run Jest for JavaScript tests
-npx jest
+# Run tests
+npm test
 JS_STATUS=$?
 
 # Check if any tests failed
-if [ $PYTHON_STATUS -ne 0 ] || [ $JS_STATUS -ne 0 ]; then
+if [ $JS_STATUS -ne 0 ]; then
     echo "Tests failed. Push aborted."
     exit 1
 else
@@ -472,66 +466,6 @@ This project leverages [Bootstrap’s](https://getbootstrap.com/) CSS utilities 
     The goal is to achieve a more distinctive design that enhances brand awareness by emphasizing elements unique to Reoptinew.
 
 ## Code Documentation
-
-## Deployment with Github Actions
-
-If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heruko.
-
-1. #### Create the Heruko App
-    - Click `New` and then select `Create new app`. 
-    - Follow the instructions.
-    - Go to the `Settings` tab.
-    - Add buildpacks
-        - `Node.js` is used in this project
-
-2. #### Find the Heroku API Key
-    - Log in to [Heroku](https://www.heroku.com/)
-    - Click on the account button (upper right corner)
-    - Click on your name
-    - Scroll down and reveal your API key
-    > ⚠️ **NOTE**  
-    > This is not supposed to be shared with anyone. Do not expose this key in the live GitHub repository.
-
-#### Now you have:   
-✔️ A Heroku account  
-✔️ A Heroku app   
-✔️ The Heroku API key  
-
-You should now be ready to configure a `CI/CD pipeline` to automate the deploying process. We use a `CI/CD pipeline` to make sure the app is propely tested before publishing a new version. **Continue reading to find out how to configure such system.**
-
-### GitHub Actions
-
-In order to automate the deploy process we'll use GitHub Actions.  
-
-> ⚠️ **NOTE**  
-> When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
-> - Execute read and write actions within GitHub Actions.  
-> - Access and utilize your environment secrets.  
-
-To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
-
-Additionally, you need to submit your environment secrets to GitHub.
-
-1. Navigate to your repository.
-2. Click on settings
-3. Select `Actions` under the `Secrets and variables tab`.
-4. Click on `Add new repository secret`. 
-
-Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
-
-> ❕ **Info**  
-> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](automated-testing) section if you're unfamilliar with how to set this up.
-
-Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
-
-1. Create a tag
-    - **`git tag v0.1`**
-2. Push the new version
-    - **`git push origin v0.1`**
-
-If everything is set up correctly and if all your steps/tests pass, the project should be deployed to Heroku. You can follow the process by navigating to the `Actions` tab on GitHub.
-
-![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
 
 ### Debugging
 
@@ -662,7 +596,7 @@ git clone <repository-url>
 
 5. Navigate into the project directory:
 ```bash
-cd bottle-post-recipes
+cd reoptinew
 ```
 
 ## Forking the repository 
@@ -677,6 +611,102 @@ Forking allows you to create your own version of the repository under your GitHu
 4. Clone your forked version using the cloning steps outlined above.
 
 Once you've forked and cloned, feel free to explore and enhance the project! Check out the [README.md](README.md) for guidance on running the project locally.
+
+## Run the App
+
+After [Cloning](#cloning-the-repository) or [forking](#forking-the-repository) the repository, you are almost ready to run the app. Follow the steps below.
+
+- Configure environment variables
+    - Create **3** `.env` files with the following content.
+        - `.env`
+            - This can remain empty, for now. You may add variables here as the project grows. 
+        - `.env.production`
+            ```bash
+            # This is the URL to your deployed API.
+            VITE_API_URL=https://<your-deployed-api>.com
+            ```
+        - `.env.development` 
+            > ❕ **Info**  
+            > If you don't know your IP Adress, simply run `ipconfig` in the terminal and copy the `IPv4 Address`. 
+            ```bash
+            # This is a security feature
+            VITE_API_HOST=<your IP Address>
+            # This connects to the API that runs locally on port 8000 
+            VITE_API_PORT=8000
+            ```
+
+- Go to the project directory.
+    ```bash
+    cd reoptinew
+    ```
+- Install dependencies
+    ```bash
+    npm install
+    ```
+- Run the app
+    ```bash
+    npm run dev
+    ```
+
+## Deployment with Github Actions
+
+If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heruko.
+
+1. #### Create the Heruko App
+    - Click `New` and then select `Create new app`. 
+    - Follow the instructions.
+    - Go to the `Settings` tab.
+    - Add buildpacks
+        - `Node.js` is used in this project
+
+2. #### Find the Heroku API Key
+    - Log in to [Heroku](https://www.heroku.com/)
+    - Click on the account button (upper right corner)
+    - Click on your name
+    - Scroll down and reveal your API key
+    > ⚠️ **NOTE**  
+    > This is not supposed to be shared with anyone. Do not expose this key in the live GitHub repository.
+
+#### Now you have:   
+✔️ A Heroku account  
+✔️ A Heroku app   
+✔️ The Heroku API key  
+
+You should now be ready to configure a `CI/CD pipeline` to automate the deploying process. We use a `CI/CD pipeline` to make sure the app is propely tested before publishing a new version. **Continue reading to find out how to configure such system.**
+
+### GitHub Actions
+
+In order to automate the deploy process we'll use GitHub Actions.  
+
+> ⚠️ **NOTE**  
+> When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
+> - Execute read and write actions within GitHub Actions.  
+> - Access and utilize your environment secrets.  
+
+To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
+
+Additionally, you need to submit your environment secrets to GitHub.
+
+1. Navigate to your repository.
+2. Click on settings
+3. Select `Actions` under the `Secrets and variables tab`.
+4. Click on `Add new repository secret`. 
+
+Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
+
+> ❕ **Info**  
+> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](automated-testing) section if you're unfamilliar with how to set this up.
+
+Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
+
+1. Create a tag
+    - **`git tag v0.1`**
+2. Push the new version
+    - **`git push origin v0.1`**
+
+If everything is set up correctly and if all your steps/tests pass, the project should be deployed to Heroku. You can follow the process by navigating to the `Actions` tab on GitHub.
+
+![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
 
 ## References
 
