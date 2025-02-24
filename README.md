@@ -37,7 +37,6 @@ The "map" below provides an overview of key resources in this project.
 - 📉 [Sprints](docs/iteration-1/sprints)  
 - 📃 [GitHub Projects (Kanban)](https://github.com/users/KevinBjarnemark/projects/10).
 
-
 ## Introduction
 
 **Reoptinew** is a library of **new ideas**, **crafts**, **life-hacks**, and **more**. Big ideas and small ideas, **all are welcome!** 💡
@@ -53,6 +52,15 @@ You want to:
 - find a solution to a specific problem
 
 A couple of wooden boards. A metal wire. An old wheel from a discarded bicycle. To most, these are scraps, forgotten, insignificant, not worth a second thought. But to a mind trained to see potential, these are the seeds of something greater. At **Reoptinew** you see the extraordinary in the ordinary and get to be a part of it too. Share your own builds and follow your favorite crafters at **Reoptinew**.
+
+### Goals
+
+Reoptinew aims to:
+
+- Provide a curated space for innovative DIY projects, life-hacks, and creative builds.
+- Enable users to share and discover alternative solutions to everyday challenges.
+- Foster a community where people can learn, create, and inspire each other.
+- Encourage sustainability by repurposing materials and rethinking conventional approaches.
 
 ## API
 
@@ -650,9 +658,9 @@ After [Cloning](#cloning-the-repository) or [forking](#forking-the-repository) t
 
 ## Deployment with Github Actions
 
-If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heruko.
+If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heroku.
 
-1. #### Create the Heruko App
+1. #### Create the Heroku App
     - Click `New` and then select `Create new app`. 
     - Follow the instructions.
     - Go to the `Settings` tab.
@@ -695,7 +703,7 @@ Additionally, you need to submit your environment secrets to GitHub.
 Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
 
 > ❕ **Info**  
-> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](automated-testing) section if you're unfamilliar with how to set this up.
+> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](#automated-testing) section if you're unfamilliar with how to set this up.
 
 Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
 
