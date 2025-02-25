@@ -313,6 +313,122 @@ When a user e.g,. changes their profile image, the image won't be cleared in Clo
 
 ## Testing
 
+### Manual Testing
+
+#### 📱 Testing on Physical Devices
+
+Ensuring **Reoptinew** delivers a seamless experience across devices is a critical part of development. The following section outlines the methods and tools used for responsive design testing, including media queries and Vite-specific optimizations.
+
+#### Configuration
+
+To mimic a similar setup as Reoptinew, some configuration is needed. 
+
+- **Bind Server to Local Network's IPv4 Address**
+
+First we'll need to enable other devices to access your network and app by binding the server to your local network's IPv4 address.
+
+> ⚠️ **NOTE**  
+>Binding to your private IPv4 address (e.g., 192.168.x.x) means only devices on the same local network can access it. This is generally safe for testing.
+>
+>However, binding to 0.0.0.0 listens on all interfaces, which could expose the server to unintended connections if you're on an unsecured or public network. Never expose .env files containing sensitive information like API keys or credentials.
+
+In this repository, the local development IP is stored in [.env.development](.env.development) (not publicly visible). If you store yours as an environment variable, it should be configured in [vite.config.js](vite.config.js) like in the example below.
+
+```js
+server: {
+    host: env.VITE_API_HOST,
+    port: 5173,
+},
+```
+
+- **Backend setup**
+
+In the backend, when running the development server locally, the following environment variables ensure accessibility from various devices within the network.
+
+> ❕ **Note**
+> You cannot have both the API and frontend on the same port, in our case, the `DEV_SERVER_HOST` is set to `8000`.   
+
+```python
+# settings.py
+dev_server_host = config("DEV_SERVER_HOST")
+dev_server_frontend_port = config("DEV_SERVER_FRONTEND_PORT")
+
+if DEBUG:
+    # Allow localhost in development
+    CORS_ALLOWED_ORIGINS = [
+        f"http://{dev_server_host}:{int(dev_server_frontend_port)}"
+    ]
+    ALLOWED_HOSTS = [dev_server_host]
+else:
+    # Allow the deployed frontend in production
+    CORS_ALLOWED_ORIGINS = [
+        "https://reoptinew-09d333f23d8e.herokuapp.com",
+    ]
+    ALLOWED_HOSTS = ["reoptinew-api-c16dc2520739.herokuapp.com"]
+```
+
+- **Test on a mobile device** 
+
+Open the development app on mobile via `http://your-local-ip:5173/`.
+
+#### Test cases
+
+##### Users
+
+| **Test Case ID** | **Feature** | **Test Steps** | **Expected Result** | **Actual Result** | **Pass/Fail** | **Explanation** |
+|------------------|------------|---------------|--------------------|------------------|-------------| ------------|
+| TC-001 | **Login** | 1. Enter valid credentials <br> 2. Click login button | User should be logged in | User logs in successfully | ✅ Pass | |
+| TC-002 | **Login - Invalid Credentials** | 1. Enter incorrect email/password <br> 2. Click login button | "Invalid credentials" error should appear | Error message appears | ✅ Pass | |
+| TC-003 | **Signup** | 1. Enter valid details <br> 2. Click signup button | User should be registered and redirected to /profile/**username** | User successfully registered | ✅ Pass | |
+| TC-004 | **Signup  - Invalid Credentials** | 1. Enter valid details using a username with lowercase (eg. testUser) <br> 2. Log out and create another user with uppercase (eg. TestUser) | The following error should appear "This username is already taken" | The "This username is already taken" error appears | ✅ Pass | Since url-based rendering is in place, usernames must be case-sensitive. Otherwise, profile pages would collide. |
+| TC-005 | **CRUD - Delete Account** | 1. Log in <br> 2. Go to /profile/**username** <br> 3. Click Delete account button <br> 4. Confirm password <br> 5. Click delete account button | 1. User should be directed to the homepage (/) <br> 2. Confirmation message should confirm that the account is deleted 3. User should be logged out | 1. User is directed to the homepage (/) <br> 2. Confirmation message appears and confirms that the account is deleted <br> 3. User is logged out | ✅ Pass | |
+| TC-006 | **CRUD - Change Profile Picture** | 1. Log in <br> 2. Go to /profile/**username** <br> 3. Click on the profile image <br> 4. Select another image <br> 5. Refresh the browser | The new image should be visible after selecting it and after the browser refresh | The new image was visible after selecting it and still visible after a browser refresh | ✅ Pass | |
+| TC-007 | **Follow** | 1. Log in <br> 2. Go to a user's profile <br> 3. Click "Follow" <br> 4. Click "Followers" | 1. The follow button should transform into an orange unfollow button <br> 2. The followed user should experience a follow increase <br> 3. When opening the followers window, the currently logged in user should appear in the list | 1. The follow button transformed into an orange unfollow button <br> 2. The followed user experienced a follow increase <br> 3. When opening the followers window, the currently logged in user appeared in the list  | ✅ Pass | |
+| TC-008 | **Unfollow** | 1. Log in <br> 2. Go to a user's profile who is already followed <br> 3. Click "Unfollow" <br> 4. Click "Followers" | 1. The unfollow button should transform into a blue follow button <br> 2. The followed user should experience a follow decrease <br> 3. When opening the followers window, the currently logged in user should not appear in the list | 1. The follow button transformed into a blue follow button <br> 2. The followed user experienced a follow decrease <br> 3. When opening the followers window, the currently logged in user did not appear in the list  | ✅ Pass | |
+
+![Separator](docs/assets/separators/separator.png "A gray bar.")
+
+##### URL-based rendering
+| **Test Case ID** | **Feature** | **Test Steps** | **Expected Result** | **Actual Result** | **Pass/Fail** | **Explanation** |
+|------------------|------------|---------------|--------------------|------------------|-------------| ------------|
+| TC-001 | **Post (profile page)** | 1. Go to a user's profile (eg. /profile/**testUser**) <br> 3. Click on a post <br> 4. Copy the url <br> 5. Open another tab and paste the url <br> 6. Press enter <br> 7. Close the post | 1. When navigating to the copied URl, the previously viewed post should appear <br> 2. After closing the post, the user should be located at /profile/**testUser** | 1. When navigating to the copied URl, the previously viewed post appeared <br> 2. After closing the post, the user was located at /profile/**testUser** | ✅ Pass | |
+| TC-002 | **Post (feed)** | 1. Go to the main feed (/) <br> 3. Click on a post <br> 4. Copy the url <br> 5. Open another tab and paste the url <br> 6. Press enter <br> 7. Close the post | 1. When navigating to the copied URl, the previously viewed post should appear <br> 2. After closing the post, the user should be located at the main feed (**/**) | 1. When navigating to the copied URl, the previously viewed post appeared <br> 2. After closing the post, the user was located at the main feed (**/**) | ✅ Pass | |
+| TC-003 | **User profiles** | Navigate to a user's profile you know exists (eg. /profile/**testUser**) | The user's profile should appear| The user's profile appeared | ✅ Pass | |
+
+![Separator](docs/assets/separators/separator.png "A gray bar.")
+
+##### Age restriction
+| **Test Case ID** | **Feature** | **Test Steps** | **Expected Result** | **Actual Result** | **Pass/Fail** | **Explanation** |
+|------------------|------------|---------------|--------------------|------------------|-------------| ------------|
+| TC-001 | **Signup** | 1. Enter valid details but with a birthdate younger than 13 <br> 2. Click signup button | Error should appear, telling the user they must be older than 13 to proceed | Error appears, telling the user must be 13 years or older | ✅ Pass | |
+| TC-002 | **View Post (URl)** | 1. Log in as a user older than 16 years old <br> 2. Click on a post that is age restricted <br> 3. Ensure the +16 label is present <br> 4. Copy the url (eg. /posts/post/150) <br> 5. Log out. 6. Navigate to the previously copied URL. | Error should appear telling the user they must be older than 16 to create, edit and view post. The post should not be fetched and loaded in the app. | Error appeared telling the user they must be older than 16 to create, edit and view post. The post was either fetched or loaded in the app. | ✅ Pass | |
+| TC-003 | **View Post (feed)** | 1. Log in as a user older than 16 years old <br> 2. Click on age-restricted posts <br> 3. Ensure there is a 16+ label present. <br> 4. Re-authenticate with a user younger than 16 years old. <br> 5. Click on the posts that loads in the feed | 1. Age-restricted posts loaded by the older user shouls include a  +16 label. <br> 2. No age-restricted posts should load when logged in as the younger user.| 1. Age-restricted posts loaded by the older user had a +16 label. <br> 2. No age-restricted posts loaded when logged in as the younger user. | ✅ Pass | |
+| TC-004 | **Create Post** | 1. Log in as a user younger than than 16 years old <br> 2. Click on the "+" button and "Create post" <br> 3. Toggle to the safety card <br> 4. Enter valid details but also add any of the following: <br> Dangerous outcome <br> Harmful materials <br> Harmful tools. <br> 4. Toggle the submit card and click Submit. | Error should appear telling the user they must be older than 16 to create, edit and view post | Error appeared telling the user they must be older than 16 to create, edit and view post | ✅ Pass | |
+
+![Separator](docs/assets/separators/separator.png "A gray bar.")
+
+##### Posts
+
+| **Test Case ID** | **Feature** | **Test Steps** | **Expected Result** | **Actual Result** | **Pass/Fail** | **Explanation** |
+|------------------|------------|---------------|--------------------|------------------|-------------| ------------|
+| TC-001 | **CRUD - Create Post** | 1. Log in <br> 2. Click on the "+" button and "Create post" <br> 3. Toggle the last card and click "Submit" | Post should be created and visible on feed | Post successfully appeared in the feed | ✅ Pass | |
+| TC-002 | **CRUD - Edit** | 1. Log in <br> 2. Click on a post previously ceated by the currently logged in user <br> 3. Click the ellipsis menu and then "Edit post" <br> 4. Edit the post details | Post should be updated and visible | Post updates successfully | ✅ Pass | |
+| TC-003 | **CRUD - Like** | 1. Log in <br> 2. Click on the like button <br> 3. Click on the like button again | The like button should toggle on/off indicated by a increment/decrement in likes count and color change | The like button toggled on/off and indicated an increment/decrement in likes count and color change | ✅ Pass | |
+| TC-004 | **CRUD - Comment** | 1. Log in <br> 2. Click on a post <br> 3. Click on the comment button <br> 3. Write a comment <br> 4. Click "Publish comment" <br> 5. Click on the comment button again | 1. When publishing the comment, the window should close and a successful confirmation message should appear. The comment count should also increase <br> 2. When opening the comment window again, the comment should appear in view | 1. When publishing the comment, the window closed and a successful confirmation message appeared. The comment count increased <br> 2. When opening the comment window again, the comment appeared in view | ✅ Pass | |
+| TC-005 | **CRUD - Rate** | 1. Log in <br> 2. Click on the rating panel <br> 3. Enter ratings <br> 4. Click "Submit" | Post should be updated in the feed with applied ratings | Post was updated in the feed with the ratings applied | ✅ Pass | |
+| TC-006 | **CRUD - Delete** | 1. Log in <br> 2. Click on a post previously ceated by the currently logged in user <br> 3. Click the ellipsis menu and then "Delete post" <br> 4. Click "Delete" in the confirmation window | Post should be deleted and not visible in the feed and a successful confirmation message should appear | Post removes and is not visible in feed, a successful confirmation message appears | ✅ Pass | |
+| TC-007 | **CRUD - Share** | 1. Load a post, either in the main feed or ao a user's profile. <br> 2. Paste the url in the browser | The previously viewed post should appear | The previously viewed post appeared | ✅ Pass | |
+| TC-008 | **CRUD - Custom Image (EDGE CASE)** | 1. Log in as a user who've created post(s) with custom images. <br> 2. Enter edit mode for a post with a custom image <br> 3. Change details leaving the custom image as is. <br> 4. Toggle to the submission card | When toggling to the submission card a warning message should appear telling the user that editing without uploading a new image is not supported, a submission will result in a deleted image | When toggling to the submission card a warning message appears telling the user that editing without uploading a new image is not supported. The warning also inform that submission will result in a deleted image | ✅ Pass | |
+| TC-009 | **Search - Find Post(s)** | 1. Click on "search" <br> 2. Enter text that an already visible post has in their title <br> 3. Click the magnifying glass button | Only posts that include the text previously searched for should appear | Only posts that include the text previously searched for appeared | ✅ Pass | |
+| TC-010 | **Search - Filter by date** | 1. Click on "search" <br> 2. Open the "Sort by" dropdown <br> 3. Click "Date" <br> 4. Click the magnifying glass button | Posts should be sorted from newest to oldest | Posts correctly sorted by date | ✅ Pass | |
+| TC-011 | **Search - Filter by likes** | 1. Click on "search" <br> 2. Open the "Sort by" dropdown <br> 3. Click "Likes" <br> 4. Click the magnifying glass button | Posts should be sorted from most to least likes | Posts correctly sorted by like count | ✅ Pass | |
+| TC-012 | **Search - Filter by comments** | 1. Click on "search" <br> 2. Open the "Sort by" dropdown <br> 3. Click "Comments" <br> 4. Click the magnifying glass button | Posts should be sorted from most to least comments | Posts correctly sorted by comment count | ✅ Pass | |
+| TC-013 | **Search - Find Post(s) (followers)** | 1. Log in as a user who follows other users <br> 2. Click on "search" <br> 3. Select "Only users you follow" in the view options <br> 4. Enter text that an already visible post has in their title (there must be more than one posts with the same title and you must follow one of the authors) <br> 5. Click the magnifying glass button | Only posts that include the text previously searched for should appear and the logged in user should also already be following those authors | Only posts that include the text previously searched for appeared and the logged in user also already followed those authors | ✅ Pass | |
+| TC-014 | **Search - Also search for tags** | 1. Open the "Also search in" dropdown <br> 2. Select "Tags" checkbox <br> 3. Enter a tag-related keyword in the search bar <br> 4. Click the magnifying glass button | Only posts with the specified tag should appear | Posts correctly filtered by tags | ✅ Pass | |
+| TC-015 | **Search - Also search for materials** | 1. Open the "Also search in" dropdown <br> 2. Select "Materials" checkbox <br> 3. Enter a material-related keyword in the search bar <br> 4. Click the magnifying glass button | Only posts containing the specified material should appear | Posts correctly filtered by materials | ✅ Pass | |
+| TC-016 | **Search - Also search for tools** | 1. Open the "Also search in" dropdown <br> 2. Select "Tools" checkbox <br> 3. Enter a tool-related keyword in the search bar <br> 4. Click the magnifying glass button | Only posts containing the specified tool should appear | Posts correctly filtered by tools | ✅ Pass | |
+
+![Separator](docs/assets/separators/separator.png "A gray bar.")
 
 ### [Jest](https://jestjs.io/) vs [Vitest](https://vitest.dev/)
 
@@ -393,62 +509,6 @@ fi
 #### Will this force each developer to configure this individually?
 
 Yes, but rather than being a limitation, this setup enhances each developer’s workflow. Additionally, GitHub Actions ensure that only tested changes get deployed. Even if untested code reaches the remote repository, it won’t pass deployment. This provides developers the flexibility to configure their own local environments while maintaining project-wide testing standards.
-
-### 📱 Testing on Physical Devices
-
-Ensuring **Reoptinew** delivers a seamless experience across devices is a critical part of development. The following section outlines the methods and tools used for responsive design testing, including media queries and Vite-specific optimizations.
-
-#### Configuration
-
-To mimic a similar setup as Reoptinew, some configuration is needed. 
-
-- **Bind Server to Local Network's IPv4 Address**
-
-First we'll need to enable other devices to access your network and app by binding the server to your local network's IPv4 address.
-
-> ⚠️ **NOTE**  
->Binding to your private IPv4 address (e.g., 192.168.x.x) means only devices on the same local network can access it. This is generally safe for testing.
->
->However, binding to 0.0.0.0 listens on all interfaces, which could expose the server to unintended connections if you're on an unsecured or public network. Never expose .env files containing sensitive information like API keys or credentials.
-
-In this repository, the local development IP is stored in [.env.development](.env.development) (not publicly visible). If you store yours as an environment variable, it should be configured in [vite.config.js](vite.config.js) like in the example below.
-
-```js
-server: {
-    host: env.VITE_API_HOST,
-    port: 5173,
-},
-```
-
-- **Backend setup**
-
-In the backend, when running the development server locally, the following environment variables ensure accessibility from various devices within the network.
-
-> ❕ **Note**
-> You cannot have both the API and frontend on the same port, in our case, the `DEV_SERVER_HOST` is set to `8000`.   
-
-```python
-# settings.py
-dev_server_host = config("DEV_SERVER_HOST")
-dev_server_frontend_port = config("DEV_SERVER_FRONTEND_PORT")
-
-if DEBUG:
-    # Allow localhost in development
-    CORS_ALLOWED_ORIGINS = [
-        f"http://{dev_server_host}:{int(dev_server_frontend_port)}"
-    ]
-    ALLOWED_HOSTS = [dev_server_host]
-else:
-    # Allow the deployed frontend in production
-    CORS_ALLOWED_ORIGINS = [
-        "https://reoptinew-09d333f23d8e.herokuapp.com",
-    ]
-    ALLOWED_HOSTS = ["reoptinew-api-c16dc2520739.herokuapp.com"]
-```
-
-- **Test on a mobile device** 
-
-Open the development app on mobile via `http://your-local-ip:5173/`.
 
 ## Philosophy
 
