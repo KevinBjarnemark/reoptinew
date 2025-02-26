@@ -10,15 +10,16 @@
 - 🌐 [API](#api)
 - 🎨 [UX-Design](#ux-design)
 - 📉 [Agile](#agile)
-- ❌ [Error handling](#error-handling)
-- 🛠️ [Technologies](#technologies)
-- 🔧 [Testing](#testing)
-- 🌌 [Philosophy](#philosophy)
-- 🖥️ [Code Documentation](#code-documentation)
 - 🧬 [Cloning the repository](#cloning-the-repository)
 - 🍴  [Forking the repository](#forking-the-repository)
 - 🏃‍♂️ [Run the App](#run-the-app)
 - ☁️ [Deployment with Github Actions](#deployment-with-github-actions)
+- ❌ [Error handling](#error-handling)
+- 🛠️ [Technologies](#technologies)
+- ⛔️ [Known Issues](#known-issues)
+- 🔧 [Testing](#testing)
+- 🌌 [Philosophy](#philosophy)
+- 🖥️ [Code Documentation](#code-documentation)
 - ✨ [Credits](#credits)
 - 🖊️ [References](#references)
 
@@ -173,6 +174,137 @@ Features, such as the "Logged in as Joe" indicator, keep the user informed about
 ## Agile
 
 The Reoptinew project has been developed using an **Agile methodology** with only a single iteration so far. In-depth documentation for the first iteration, its sprints, diagrams, and more can be found [here](docs/iteration-1).
+
+## Cloning the repository 
+
+To explore, develop, or experiment with this project, you can clone the repository to create a local copy. Cloning allows you to contribute, test new features, or modify the project within your own environment.
+
+#### Steps to clone
+
+Before cloning, ensure you have [Git](https://git-scm.com/) installed on your system.
+
+1. Navigate to the repository on GitHub.
+2. Click on the green Code button.
+3. Copy the repository URL (choose HTTPS, SSH, or GitHub CLI as preferred).
+4. Open your terminal or command line and type
+
+```bash
+git clone <repository-url>
+```
+
+5. Navigate into the project directory:
+```bash
+cd reoptinew
+```
+
+## Forking the repository 
+
+Forking allows you to create your own version of the repository under your GitHub account. This is useful for personalizing the project and proposing changes.
+
+#### Steps to fork
+
+1. Navigate to the repository on GitHub.
+2. Click on the Fork button at the top right corner of the page.
+3. The repository is now available in your GitHub account.
+4. Clone your forked version using the cloning steps outlined above.
+
+Once you've forked and cloned, feel free to explore and enhance the project! Check out the [README.md](README.md) for guidance on running the project locally.
+
+## Run the App
+
+After [Cloning](#cloning-the-repository) or [forking](#forking-the-repository) the repository, you are almost ready to run the app. Follow the steps below.
+
+- Configure environment variables
+    - Create **3** `.env` files with the following content.
+        - `.env`
+            - This can remain empty, for now. You may add variables here as the project grows. 
+        - `.env.production`
+            ```bash
+            # This is the URL to your deployed API.
+            VITE_API_URL=https://<your-deployed-api>.com
+            ```
+        - `.env.development` 
+            > ❕ **Info**  
+            > If you don't know your IP Adress, simply run `ipconfig` in the terminal and copy the `IPv4 Address`. 
+            ```bash
+            # This is a security feature
+            VITE_API_HOST=<your IP Address>
+            # This connects to the API that runs locally on port 8000 
+            VITE_API_PORT=8000
+            ```
+
+- Go to the project directory.
+    ```bash
+    cd reoptinew
+    ```
+- Install dependencies
+    ```bash
+    npm install
+    ```
+- Run the app
+    ```bash
+    npm run dev
+    ```
+
+## Deployment with Github Actions
+
+If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heroku.
+
+1. #### Create the Heroku App
+    - Click `New` and then select `Create new app`. 
+    - Follow the instructions.
+    - Go to the `Settings` tab.
+    - Add buildpacks
+        - `Node.js` is used in this project
+
+2. #### Find the Heroku API Key
+    - Log in to [Heroku](https://www.heroku.com/)
+    - Click on the account button (upper right corner)
+    - Click on your name
+    - Scroll down and reveal your API key
+    > ⚠️ **NOTE**  
+    > This is not supposed to be shared with anyone. Do not expose this key in the live GitHub repository.
+
+#### Now you have:   
+✔️ A Heroku account  
+✔️ A Heroku app   
+✔️ The Heroku API key  
+
+You should now be ready to configure a `CI/CD pipeline` to automate the deploying process. We use a `CI/CD pipeline` to make sure the app is propely tested before publishing a new version. **Continue reading to find out how to configure such system.**
+
+### GitHub Actions
+
+In order to automate the deploy process we'll use GitHub Actions.  
+
+> ⚠️ **NOTE**  
+> When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
+> - Execute read and write actions within GitHub Actions.  
+> - Access and utilize your environment secrets.  
+
+To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
+
+Additionally, you need to submit your environment secrets to GitHub.
+
+1. Navigate to your repository.
+2. Click on settings
+3. Select `Actions` under the `Secrets and variables tab`.
+4. Click on `Add new repository secret`. 
+
+Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
+
+> ❕ **Info**  
+> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](#automated-testing) section if you're unfamilliar with how to set this up.
+
+Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
+
+1. Create a tag
+    - **`git tag v0.1`**
+2. Push the new version
+    - **`git push origin v0.1`**
+
+If everything is set up correctly and if all your steps/tests pass, the project should be deployed to Heroku. You can follow the process by navigating to the `Actions` tab on GitHub.
+
+![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
 
 ## Error handling
 
@@ -369,7 +501,7 @@ else:
 
 - **Test on a mobile device** 
 
-Open the development app on mobile via `http://your-local-ip:5173/`.
+Open the development app on mobile via `http://{VITE_API_HOST}:5173/`.
 
 #### Test cases
 
@@ -397,12 +529,12 @@ Open the development app on mobile via `http://your-local-ip:5173/`.
 
 ![Separator](docs/assets/separators/separator.png "A gray bar.")
 
-##### Age restriction
+##### 🛡️ Age restriction
 | **Test Case ID** | **Feature** | **Test Steps** | **Expected Result** | **Actual Result** | **Pass/Fail** | **Explanation** |
 |------------------|------------|---------------|--------------------|------------------|-------------| ------------|
 | TC-001 | **Signup** | 1. Enter valid details but with a birthdate younger than 13 <br> 2. Click signup button | Error should appear, telling the user they must be older than 13 to proceed | Error appears, telling the user must be 13 years or older | ✅ Pass | |
-| TC-002 | **View Post (URl)** | 1. Log in as a user older than 16 years old <br> 2. Click on a post that is age restricted <br> 3. Ensure the +16 label is present <br> 4. Copy the url (eg. /posts/post/150) <br> 5. Log out. 6. Navigate to the previously copied URL. | Error should appear telling the user they must be older than 16 to create, edit and view post. The post should not be fetched and loaded in the app. | Error appeared telling the user they must be older than 16 to create, edit and view post. The post was either fetched or loaded in the app. | ✅ Pass | |
-| TC-003 | **View Post (feed)** | 1. Log in as a user older than 16 years old <br> 2. Click on age-restricted posts <br> 3. Ensure there is a 16+ label present. <br> 4. Re-authenticate with a user younger than 16 years old. <br> 5. Click on the posts that loads in the feed | 1. Age-restricted posts loaded by the older user shouls include a  +16 label. <br> 2. No age-restricted posts should load when logged in as the younger user.| 1. Age-restricted posts loaded by the older user had a +16 label. <br> 2. No age-restricted posts loaded when logged in as the younger user. | ✅ Pass | |
+| TC-002 | **View Post (URL)** | 1. Log in as a user older than 16 years old <br> 2. Click on a post that is age restricted <br> 3. Ensure the +16 label is present <br> 4. Copy the url (eg. /posts/post/150) <br> 5. Log out. 6. Navigate to the previously copied URL. | Error should appear telling the user they must be older than 16 to create, edit and view post. The post should not be fetched or loaded in the app. | Error appeared telling the user they must be older than 16 to create, edit and view post. The post was either fetched or loaded in the app. | ✅ Pass | |
+| TC-003 | **View Post (feed)** | 1. Log in as a user older than 16 years old <br> 2. Click on age-restricted posts <br> 3. Ensure there is a 16+ label present. <br> 4. Re-authenticate with a user younger than 16 years old. <br> 5. Click on the posts that loads in the feed | 1. Age-restricted posts loaded by the older user should include a  +16 label. <br> 2. No age-restricted posts should load when logged in as the younger user.| 1. Age-restricted posts loaded by the older user had a +16 label. <br> 2. No age-restricted posts loaded when logged in as the younger user. | ✅ Pass | |
 | TC-004 | **Create Post** | 1. Log in as a user younger than than 16 years old <br> 2. Click on the "+" button and "Create post" <br> 3. Toggle to the safety card <br> 4. Enter valid details but also add any of the following: <br> Dangerous outcome <br> Harmful materials <br> Harmful tools. <br> 4. Toggle the submit card and click Submit. | Error should appear telling the user they must be older than 16 to create, edit and view post | Error appeared telling the user they must be older than 16 to create, edit and view post | ✅ Pass | |
 
 ![Separator](docs/assets/separators/separator.png "A gray bar.")
@@ -644,137 +776,6 @@ Many techniques have been used to centralize functionality, avoid repetition, an
 
 All images used for posts and profile avatars have been generated with [DALL-E](https://openai.com/) an image generation AI system.
 
-
-## Cloning the repository 
-
-To explore, develop, or experiment with this project, you can clone the repository to create a local copy. Cloning allows you to contribute, test new features, or modify the project within your own environment.
-
-#### Steps to clone
-
-Before cloning, ensure you have [Git](https://git-scm.com/) installed on your system.
-
-1. Navigate to the repository on GitHub.
-2. Click on the green Code button.
-3. Copy the repository URL (choose HTTPS, SSH, or GitHub CLI as preferred).
-4. Open your terminal or command line and type
-
-```bash
-git clone <repository-url>
-```
-
-5. Navigate into the project directory:
-```bash
-cd reoptinew
-```
-
-## Forking the repository 
-
-Forking allows you to create your own version of the repository under your GitHub account. This is useful for personalizing the project and proposing changes.
-
-#### Steps to fork
-
-1. Navigate to the repository on GitHub.
-2. Click on the Fork button at the top right corner of the page.
-3. The repository is now available in your GitHub account.
-4. Clone your forked version using the cloning steps outlined above.
-
-Once you've forked and cloned, feel free to explore and enhance the project! Check out the [README.md](README.md) for guidance on running the project locally.
-
-## Run the App
-
-After [Cloning](#cloning-the-repository) or [forking](#forking-the-repository) the repository, you are almost ready to run the app. Follow the steps below.
-
-- Configure environment variables
-    - Create **3** `.env` files with the following content.
-        - `.env`
-            - This can remain empty, for now. You may add variables here as the project grows. 
-        - `.env.production`
-            ```bash
-            # This is the URL to your deployed API.
-            VITE_API_URL=https://<your-deployed-api>.com
-            ```
-        - `.env.development` 
-            > ❕ **Info**  
-            > If you don't know your IP Adress, simply run `ipconfig` in the terminal and copy the `IPv4 Address`. 
-            ```bash
-            # This is a security feature
-            VITE_API_HOST=<your IP Address>
-            # This connects to the API that runs locally on port 8000 
-            VITE_API_PORT=8000
-            ```
-
-- Go to the project directory.
-    ```bash
-    cd reoptinew
-    ```
-- Install dependencies
-    ```bash
-    npm install
-    ```
-- Run the app
-    ```bash
-    npm run dev
-    ```
-
-## Deployment with Github Actions
-
-If you want to mimic Reoptinews's way of deploying the app, you need to first create a [Heroku](https://www.heroku.com/) account. Follow the steps below if you're unfamilliar with Heroku.
-
-1. #### Create the Heroku App
-    - Click `New` and then select `Create new app`. 
-    - Follow the instructions.
-    - Go to the `Settings` tab.
-    - Add buildpacks
-        - `Node.js` is used in this project
-
-2. #### Find the Heroku API Key
-    - Log in to [Heroku](https://www.heroku.com/)
-    - Click on the account button (upper right corner)
-    - Click on your name
-    - Scroll down and reveal your API key
-    > ⚠️ **NOTE**  
-    > This is not supposed to be shared with anyone. Do not expose this key in the live GitHub repository.
-
-#### Now you have:   
-✔️ A Heroku account  
-✔️ A Heroku app   
-✔️ The Heroku API key  
-
-You should now be ready to configure a `CI/CD pipeline` to automate the deploying process. We use a `CI/CD pipeline` to make sure the app is propely tested before publishing a new version. **Continue reading to find out how to configure such system.**
-
-### GitHub Actions
-
-In order to automate the deploy process we'll use GitHub Actions.  
-
-> ⚠️ **NOTE**  
-> When setting up a GitHub workflow, you must allow GitHub to perform the following actions:  
-> - Execute read and write actions within GitHub Actions.  
-> - Access and utilize your environment secrets.  
-
-To enable this setup, configure a GitHub workflow by adding a [deploy.yml](.github/workflows/deploy.yml) file inside `.github/workflows`. 
-
-Additionally, you need to submit your environment secrets to GitHub.
-
-1. Navigate to your repository.
-2. Click on settings
-3. Select `Actions` under the `Secrets and variables tab`.
-4. Click on `Add new repository secret`. 
-
-Once your [deploy.yml](.github/workflows/deploy.yml) is correctly configured, deployment becomes as simple as tagging a new version and pushing the tagged project.
-
-> ❕ **Info**  
-> As you may have noticed, testing is also included in the `CI/CD pipeline` ([deploy.yml](.github/workflows/deploy.yml)), please reference the [Automated Testing](#automated-testing) section if you're unfamilliar with how to set this up.
-
-Before proceeding, it's worth noting that you might want to push normally before deploying a new version. 
-
-1. Create a tag
-    - **`git tag v0.1`**
-2. Push the new version
-    - **`git push origin v0.1`**
-
-If everything is set up correctly and if all your steps/tests pass, the project should be deployed to Heroku. You can follow the process by navigating to the `Actions` tab on GitHub.
-
-![GitHub Actions deploy](./docs//assets/testing//github-actions.webp "The outcome a GitHub Actions deploy")
 
 ## References
 
