@@ -52,6 +52,7 @@ const Title = ({ title, standalone, editMode }) => {
         : {
               disabled: false,
               defaultValue: editedPost.draft.title,
+              placeholder: 'Title',
           };
 
     const titleStyle = standalone
