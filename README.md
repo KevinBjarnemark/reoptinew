@@ -77,25 +77,79 @@ Reoptinew's components are not all fully reusable, this is partly due to the tim
 
 ## Features
 
-### Loading Spinners
-![Loading Screen](docs/assets/live-app//loading-screen.gif) 
+### Loading Spinner
 
-### CRUD Posts
-![Loading Post](docs/assets/live-app//loading-a-post.gif) 
+The app is equipped with a loading spinner that tracks various processes, including backend operations, general computing loads, and queued tasks. It adapts based on system activity and transitions into a notification system to indicate successful or failed results. This keeps the user aware of the status of the app by providing real-time feedback. The spinner is initself fused with the Reoptinew logo to enhance brand awareness.
+
+![Loading Screen](docs/assets/live-app/loading-screen.gif) 
+
+### Create and Edit Posts
+
+The post component is a single component and has many forms. It can be loaded and iterated in the feed, displayed in edit mode, and create mode.
+
+![Create Post](docs/assets/live-app/create-mode.gif) 
+
+Click on the **ellipsis menu button** to edit a post.
+
+![Edit Post](docs/assets/live-app/edit-post.gif) 
+
+### Add Materials and Tools
+
+Add and remove materials and tools in an intuitive way.
+
+![Add Materials](docs/assets/live-app/add-material.gif) 
+
+### Submit Posts
+
+Here we're showcasing how to submit a post. Any dangerous materials and tools can be added too. When a post is considered to be harmful for children it will only be visible to mature authenticated users.
+
+![Rate Post](docs/assets/live-app/submit-post.gif) 
 
 ### Follow/Unfollow
+
 ![Follow](docs/assets/live-app/follow.gif) 
 
 ### Comments and Likes 
+
 ![Like](docs/assets/live-app/like.gif) 
+![Comment](docs/assets/live-app/comment-on-post.gif) 
+
+### Rate Posts
+
+Rate posts based on multiple factors. 
+
+![Rate Post](docs/assets/live-app/rate-post.gif) 
+
+### URL-Based Rendering (for sharing)
+
+Here we're showcasing the URL-based rendering. URLs are not only aware of which post to fetch, but also in which context. If you want to share a post, but also want it displayed on the author's profile, share it from their profile page!
+
+![URL-Based Rendering](docs/assets/live-app/url-based-rendering.gif) 
+
+### Age-Restricted Posts
+
+#### Backend Integrated
+
+Age-restricted posts will only be sent to the frontend if the user is mature and authenticated. Here we're showcasing this by copying the URL as a mature user, logging out, and then navigating to that URL. 
+
+![URL-Based Rendering](docs/assets/live-app/age-restriction-url.gif) 
+
+#### +16 Labels
+
+You will only see these labels if you're authenticated and older than 16. The safety card is only visible in edit mode. This is to enhance the user experience and to keep the app minimalistic. Click on the +16 label to see if the build is harmful in any way.   
+
+![URL-Based Rendering](docs/assets/live-app/age-restriction-labels.gif) 
+
+#### Restricted Fetching
+
+You must be authenticated and older than 16 to load age-restricted posts.
+
+![URL-Based Rendering](docs/assets/live-app/age-restriction-feed.gif) 
 
 ### More features:
-- URL Based Rendering
-- Age restriction system
-- Ratings
+
 - Delete Account
 - Search and Filter Posts
-- Loading spinners
 - Alerts and Notification System
 
 ## UX-Design
