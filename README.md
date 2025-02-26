@@ -79,7 +79,7 @@ Reoptinew's components are not all fully reusable, this is partly due to the tim
 
 ### Loading Spinner
 
-The app is equipped with a loading spinner that tracks various processes, including backend operations, general computing loads, and queued tasks. It adapts based on system activity and transitions into a notification system to indicate successful or failed results. This keeps the user aware of the status of the app by providing real-time feedback. The spinner is initself fused with the Reoptinew logo to enhance brand awareness.
+The app is equipped with a loading spinner that tracks various processes, including backend operations, general computing loads, and queued tasks. It adapts based on system activity and transitions into a notification system to indicate successful or failed results. This keeps the user aware of the status of the app by providing real-time feedback. The spinner is in itself fused with the Reoptinew logo to enhance brand awareness.
 
 ![Loading Screen](docs/assets/live-app/loading-screen.gif) 
 
@@ -130,7 +130,7 @@ Here we're showcasing the URL-based rendering. URLs are not only aware of which 
 
 #### Backend Integrated
 
-Age-restricted posts will only be sent to the frontend if the user is mature and authenticated. Here we're showcasing this by copying the URL as a mature user, logging out, and then navigating to that URL. 
+Age-restricted posts will only be sent to the frontend if the user is mature and authenticated. Here we're showcasing this by copying the URL as a mature user, re-authenticating as an in-mature user, and then navigating to that same URL. 
 
 ![URL-Based Rendering](docs/assets/live-app/age-restriction-url.gif) 
 
